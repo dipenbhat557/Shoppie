@@ -10,7 +10,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (status === 'loading') return;
-    if (!session) router.push('/auth/signin'); 
+    if (!session) router.push(`/auth/signin?callbackUrl=${encodeURIComponent(window.location.href)}`);
   }, [session, status, router]);
 
   if (status === 'loading') {

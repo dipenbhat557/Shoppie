@@ -34,10 +34,14 @@ export const authOptions = {
     newUser: undefined,
   },
    callbacks: {
-    async redirect({ url, baseUrl }:{url:string;baseUrl:string}) {
-      return url.startsWith(baseUrl) ? url : baseUrl + '/dashboard';
-    }
+    async redirect({ url, baseUrl }:{url:string;baseUrl:string;}) {
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      return baseUrl;
+    },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
