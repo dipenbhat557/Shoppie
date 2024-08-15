@@ -4,21 +4,18 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/navigation';
+import { CartData, cartState, ProductData } from '../utils/store';
+import { useRecoilState } from 'recoil';
 
 const PRODUCTS_PER_PAGE = 8;
 
-interface ProductData{
-    id:number;
-    title:string;
-    price:number;
-    category:string;
-    description:string;
-    image:string;
-}
+
 export default function Products() {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [cart, setCart] = useRecoilState<CartData[]>(cartState);
   const router = useRouter();
+  const [added,setAdded] = useState(false)
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
@@ -28,6 +25,33 @@ export default function Products() {
       });
   }, []);
 
+
+  const addToCart = async (product: ProductData) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+  
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [
+          ...prevCart,
+          {
+            ...product, 
+            quantity: 1,
+          },
+        ];
+      }
+    });
+
+    setAdded(true);
+    setTimeout(()=>setAdded(false),5000)
+  };
+  
+  
   const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
 
   const paginatedProducts = products.slice(
@@ -40,13 +64,15 @@ export default function Products() {
     router.push(`/products?page=${page}`, undefined);
   };
 
+
   return (
     <div>
       <Navbar />
+      {added && <div className='w-full h-[100px] text-white mt-3 bg-green-500 flex items-center justify-center font-semibold'>Item Added to Cart Successfully!!</div>}
       <div className="container mx-auto px-4">
         <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center my-8">All Products</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {paginatedProducts.map((product) => {
+          {paginatedProducts?.map((product) => {
             const discountedPrice = product.price - (product.price * 10) / 100;
 
             return (
@@ -58,8 +84,10 @@ export default function Products() {
                   <span className="text-red-500 font-bold ml-2">${discountedPrice.toFixed(2)}</span>
                 </div>
                 <p className="text-gray-500 mt-2 line-clamp-2">{product.description}...</p>
-                <button className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-                  Add to Cart
+                <button
+                  onClick={() => addToCart(product)}
+                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
+                    Add to Cart
                 </button>
               </div>
             );
