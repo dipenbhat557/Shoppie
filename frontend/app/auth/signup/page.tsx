@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -39,31 +40,43 @@ export default function SignUp() {
   };
 
   return (
+  <div className='flex '>
+      <div className='bg-orange-500 w-[40%] flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
+        <Link href="/" className='flex items-center justify-center gap-4'>
+          <Image src="/icon.svg" height={50} width={50} alt='logo' className='rounded-full' />
+          <span className="text-2xl font-bold">Shoppie</span>
+        </Link>
+       <p> Register to<br/> Enjoy Shopping </p>
+        
+    </div>
     <form onSubmit={handleSubmit} className='w-screen h-screen flex flex-col items-center justify-center gap-5'>
         <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Name"
-        className='text-black p-2 rounded-xl'
+        className='p-2 rounded-xl  border-2 border-slate-500'
       />
       <input
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
-        className='text-black p-2 rounded-xl'
+        className='p-2 rounded-xl  border-2 border-slate-500'
       />
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
-        className='text-black p-2 rounded-xl'
+        className='p-2 rounded-xl  border-2 border-slate-500'
       />
-      <button type="submit" className='px-10 py-2 rounded-xl bg-blue-900'>Sign Up</button>
+      <button type="submit" className='px-10 py-2 rounded-xl bg-orange-500'>Sign Up</button>
       
       <Link href="/auth/signin" className='text-sm text-slate-400'>Already have an account? Sign In!!</Link>
+        <Link href="/" className='text-sm text-slate-400'>Go to Home</Link>
+      
     </form>
+    </div>
   );
 }
