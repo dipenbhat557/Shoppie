@@ -48,7 +48,8 @@ export default function Products() {
     });
 
     setAdded(true);
-    setTimeout(()=>setAdded(false),5000)
+    window.scrollTo(0,0)
+    setTimeout(()=>setAdded(false),3000)
   };
   
   
@@ -68,7 +69,7 @@ export default function Products() {
   return (
     <div>
       <Navbar />
-      {added && <div className='w-full h-[100px] text-white mt-3 bg-green-500 flex items-center justify-center font-semibold'>Item Added to Cart Successfully!!</div>}
+      {added && <div className='w-full h-[100px] text-white mt-3 bg-opacity-50 bg-green-500 flex items-center justify-center font-semibold'>Item Added to Cart Successfully!!</div>}
       <div className="container mx-auto px-4">
         <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center my-8">All Products</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
