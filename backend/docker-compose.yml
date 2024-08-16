@@ -1,14 +1,46 @@
+# version: '3.8'
+
+# services:
+#   dbservice:
+#     image: mysql:latest
+#     environment:
+#       MYSQL_ROOT_PASSWORD: shoppie@123
+#       MYSQL_DATABASE: shoppie_db
+#       MYSQL_USER: shoppie_user
+#       MYSQL_PASSWORD: shoppie@123
+#     networks:
+#       - backend-network
+
+#   appservice:
+#     build:
+#       context: .
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:mysql://dbservice:3306/shoppie_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+#       SPRING_DATASOURCE_USERNAME: shoppie_user
+#       SPRING_DATASOURCE_PASSWORD: shoppie@123
+#       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#       SPRING_JPA_SHOW_SQL: true
+#       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+#     depends_on:
+#       - dbservice
+#     networks:
+#       - backend-network
+
+# networks:
+#   backend-network:
+#     driver: bridge
+
 version: '3.8'
 
 services:
   dbservice:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=shoppie@123
+      - MYSQL_ROOT_PASSWORD=deukhuri@123
     ports:
       - 3308:3306
     networks:
-      - shoppie
+      - dmc
     volumes:
       - mysql-data:/var/lib/mysql
 
@@ -19,17 +51,17 @@ services:
     environment:
       - spring.datasource.url=jdbc:mysql://dbservice:3306/shoppie_db?createDatabaseIfNotExist=true
       - spring.datasource.username=root
-      - spring.datasource.password=shoppie@123
+      - spring.datasource.password=deukhuri@123
       - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
       - spring.jpa.hibernate.ddl-auto=update
       - spring.jpa.show-sql=true
     ports:
       - 8080:8080 
     networks:
-      - shoppie
+      - dmc
 
 networks:
-  shoppie:
+  dmc:
 
 volumes:
   mysql-data:

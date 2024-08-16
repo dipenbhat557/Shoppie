@@ -6,11 +6,14 @@ import { FaHome, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import SessionProviderWrapper from './SessionProviderWrapper';
+import { useRecoilValue } from 'recoil';
+import { cartState } from '../utils/store';
 
 function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const { data: session, status } = useSession(); 
+  const cart = useRecoilValue(cartState)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -74,18 +77,26 @@ function Nav() {
 
         {/* Links for larger screens */}
         <div className="hidden sm:flex gap-4 items-center">
+
           <Link href="/" className="flex gap-2 items-center">
             <FaHome className="text-2xl" />
             <span className="hover:text-gray-200">Home</span>
           </Link>
+
           <Link href="/products" className="flex gap-2 items-center">
             <AiFillProduct className="text-2xl" />
             <span className="hover:text-gray-200">Products</span>
           </Link>
-          <Link href="/cart" className="flex gap-2 items-center">
-            <FaShoppingCart className="text-2xl" />
-            <span className="hover:text-gray-200">Cart</span>
-          </Link>
+          <Link href="/cart" className="flex items-center gap-2 relative">
+      <div className="relative">
+        <div className="absolute -top-2 -right-2 w-5 h-5 bg-orange-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">
+          {cart?.length}
+        </div>
+        <FaShoppingCart className="text-2xl" />
+      </div>
+      <span className="hover:text-gray-500 transition-colors duration-200">Cart</span>
+    </Link>
+
           <div className="relative">
             <button onClick={toggleDropdown} className="flex items-center justify-center gap-2">
               <FaUser className="text-2xl" />
@@ -113,6 +124,7 @@ function Nav() {
               </div>
             )}
           </div>
+
         </div>
       </div>
 

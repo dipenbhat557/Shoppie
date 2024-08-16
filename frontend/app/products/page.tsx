@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { useRouter } from 'next/navigation';
 import { CartData, cartState, ProductData } from '../utils/store';
 import { useRecoilState } from 'recoil';
+import Link from 'next/link';
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -78,18 +79,39 @@ export default function Products() {
 
             return (
               <div key={product.id} className="border rounded-lg p-4 shadow-lg">
-                <img src={product.image} alt={product.title} className="w-full h-[300px] sm:h-[350px] object-cover rounded-md" />
-                <h2 className="text-xl font-semibold mt-4 line-clamp-1">{product.title}</h2>
-                <div className="mt-2">
-                  <span className="text-gray-700 line-through">${product.price.toFixed(2)}</span>
-                  <span className="text-red-500 font-bold ml-2">${discountedPrice.toFixed(2)}</span>
-                </div>
-                <p className="text-gray-500 mt-2 line-clamp-2">{product.description}...</p>
+                <Link href={`/products/${product.id}`}>
+                  <div className="cursor-pointer">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-[300px] sm:h-[350px] object-cover rounded-md"
+                    />
+                    <h2 className="text-xl font-semibold mt-4 line-clamp-1">
+                      {product.title}
+                    </h2>
+                    <div className="mt-2">
+                      <span className="text-gray-700 line-through">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="text-red-500 font-bold ml-2">
+                        ${discountedPrice.toFixed(2)}
+                      </span>
+                    </div>
+                    <p className="text-gray-500 mt-2 line-clamp-2">
+                      {product.description}...
+                    </p>
+                  </div>
+                </Link>
                 <button
-                  onClick={() => addToCart(product)}
-                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-                    Add to Cart
+                  onClick={(e) => {
+                    e.stopPropagation();                     
+                    addToCart(product);
+                  }}
+                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
+                >
+                  Add to Cart
                 </button>
+
               </div>
             );
           })}
