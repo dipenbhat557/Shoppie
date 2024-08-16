@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -11,18 +11,18 @@ import { useRecoilState } from 'recoil';
 export default function Home() {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [cart, setCart] = useRecoilState<CartData[]>(cartState);
-  const [added,setAdded] = useState(false)
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products?limit=8')
-      .then(res => res.json())
-      .then(data => setProducts(data));
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
   }, []);
 
   const addToCart = async (product: ProductData) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
-  
+
       if (existingItem) {
         return prevCart.map((item) =>
           item.id === product.id
@@ -33,7 +33,7 @@ export default function Home() {
         return [
           ...prevCart,
           {
-            ...product, 
+            ...product,
             quantity: 1,
           },
         ];
@@ -41,35 +41,61 @@ export default function Home() {
     });
 
     setAdded(true);
-    window.scrollTo(0,0)
-    setTimeout(()=>setAdded(false),3000)
+    window.scrollTo(0, 0);
+    setTimeout(() => setAdded(false), 3000);
   };
 
-  
   return (
     <div>
       <Navbar />
-      <Hero/>
-      {added && <div className='w-full h-[100px] bg-opacity-50 text-white mt-3 bg-green-500 flex items-center justify-center font-semibold'>Item Added to Cart Successfully!!</div>}
+      <Hero />
+      {added && (
+        <div className="w-full h-[100px] bg-opacity-50 text-white mt-3 bg-green-500 flex items-center justify-center font-semibold">
+          Item Added to Cart Successfully!!
+        </div>
+      )}
       <div className="container mx-auto px-4">
-        <h1 className=" text-2xl sm:text-4xl font-bold text-center my-8 text-orange-500">Featured Products</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold text-center my-8 text-orange-500">
+          Featured Products
+        </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {products.map((product:ProductData) => {
-            const discountedPrice: number= product.price - (product.price * 10) / 100;
+          {products.map((product: ProductData) => {
+            const discountedPrice: number =
+              product.price - (product.price * 10) / 100;
 
             return (
               <div key={product.id} className="border rounded-lg p-4 shadow-lg">
-                <img src={product.image} alt={product.title} className="w-full h-[300px] sm:h-[350px] object-cover rounded-md" />
-                <h2 className="text-xl font-semibold mt-4 line-clamp-1">{product.title}</h2>
-                <div className="mt-2">
-                  <span className="text-gray-700 line-through">${product.price.toFixed(2)}</span>
-                  <span className="text-red-500 font-bold ml-2">${discountedPrice.toFixed(2)}</span>
-                </div>
-                <p className="text-gray-500 mt-2 line-clamp-2">{product.description}...</p>
-                <button 
-                  onClick={() => addToCart(product)} 
-                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-                    Add to Cart
+                <Link href={`/products/${product.id}`}>
+                  <div className="cursor-pointer">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-[300px] sm:h-[350px] object-cover rounded-md"
+                    />
+                    <h2 className="text-xl font-semibold mt-4 line-clamp-1">
+                      {product.title}
+                    </h2>
+                    <div className="mt-2">
+                      <span className="text-gray-700 line-through">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="text-red-500 font-bold ml-2">
+                        ${discountedPrice.toFixed(2)}
+                      </span>
+                    </div>
+                    <p className="text-gray-500 mt-2 line-clamp-2">
+                      {product.description}...
+                    </p>
+                  </div>
+                </Link>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();                     
+                    addToCart(product);
+                  }}
+                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
+                >
+                  Add to Cart
                 </button>
               </div>
             );
@@ -77,7 +103,7 @@ export default function Home() {
         </div>
         <div className="text-center mt-8">
           <Link href="/products">
-            <p className="text-blue-500 hover:underline">View All Products</p>
+            <p className="text-orange-500 hover:underline">View All Products</p>
           </Link>
         </div>
       </div>

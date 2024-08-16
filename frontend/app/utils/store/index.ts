@@ -5,6 +5,8 @@ export const cartState = atom({
   default: [] as CartData[], 
 });
 
+
+
 export interface ProductData {
   id: number;
   title: string;

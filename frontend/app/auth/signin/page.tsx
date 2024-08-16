@@ -33,7 +33,7 @@ export default function SignIn() {
 
   return (
     <div className='flex '>
-      <div className='bg-orange-500 w-[40%] flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
+      <div className='bg-orange-500 w-[40%] hidden sm:flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
         <Link href="/" className='flex items-center justify-center gap-4'>
           <Image src="/icon.svg" height={50} width={50} alt='logo' className='rounded-full' />
           <span className="text-2xl font-bold">Shoppie</span>

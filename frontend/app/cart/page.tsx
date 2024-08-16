@@ -75,7 +75,7 @@ const CartPage = () => {
   return (
     <>
     <Navbar/>
-     {checkedout && <div className='w-full h-[150px] text-white mt-3 bg-green-500 bg-opacity-50 flex flex-col gap-2 items-center justify-center font-semibold'><p>Thanks for shopping with us.</p><p>Please explore more and enjoy exclusive discounts.</p></div>}
+     {checkedout && <div className='w-full h-[150px] text-white mt-3 bg-green-500 bg-opacity-50 flex flex-col gap-2 items-center justify-center font-semibold'><p>Thanks for shopping with us.</p><p className='w-[80%] text-center'>Please explore more and enjoy exclusive discounts.</p></div>}
       
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center mb-8">Your Cart</h1>
