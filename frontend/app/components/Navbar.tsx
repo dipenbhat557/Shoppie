@@ -88,14 +88,14 @@ function Nav() {
             <span className="hover:text-gray-200">Products</span>
           </Link>
           <Link href="/cart" className="flex items-center gap-2 relative">
-      <div className="relative">
-        <div className="absolute -top-2 -right-2 w-5 h-5 bg-orange-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">
-          {cart?.length}
-        </div>
-        <FaShoppingCart className="text-2xl" />
-      </div>
-      <span className="hover:text-gray-500 transition-colors duration-200">Cart</span>
-    </Link>
+            <div className="relative">
+              <div className="absolute -top-2 -right-2 w-5 h-5 bg-orange-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">
+                {cart?.length}
+              </div>
+              <FaShoppingCart className="text-2xl" />
+            </div>
+            <span className="hover:text-gray-500 transition-colors duration-200">Cart</span>
+          </Link>
 
           <div className="relative">
             <button onClick={toggleDropdown} className="flex items-center justify-center gap-2">

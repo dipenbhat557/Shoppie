@@ -7,11 +7,14 @@ import Link from 'next/link';
 import Hero from './components/Hero';
 import { CartData, cartState, ProductData } from './utils/store';
 import { useRecoilState } from 'recoil';
+import "./globals.css"
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function Home() {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [cart, setCart] = useRecoilState<CartData[]>(cartState);
   const [added, setAdded] = useState(false);
+  const [addedItem, setAddedItem] = useState(0);
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products?limit=8')
@@ -40,20 +43,25 @@ export default function Home() {
       }
     });
 
-    setAdded(true);
-    window.scrollTo(0, 0);
-    setTimeout(() => setAdded(false), 3000);
+    
+    setAddedItem(product?.id)
+    setTimeout(()=>{
+      setAddedItem(0)
+      setAdded(true)
+    },1000)
+    // window.scrollTo(0, 0);
+    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
     <div>
       <Navbar />
       <Hero />
-      {added && (
+      {/* {added && (
         <div className="w-full h-[100px] bg-opacity-50 text-white mt-3 bg-green-500 flex items-center justify-center font-semibold">
           Item Added to Cart Successfully!!
         </div>
-      )}
+      )} */}
       <div className="container mx-auto px-4">
         <h1 className="text-2xl sm:text-4xl font-bold text-center my-8 text-orange-500">
           Featured Products
@@ -88,17 +96,26 @@ export default function Home() {
                     </p>
                   </div>
                 </Link>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();                     
-                    addToCart(product);
-                  }}
-                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
-                >
-                  Add to Cart
-                </button>
+                {!(product?.id === addedItem) ?(
+                  <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();                     
+                      addToCart(product);
+                    }}
+                    className={`mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 `}
+                  >
+                   Add to Cart
+                  </button>
+                  <p></p>
+                  </>
+                ):(
+                <div className='mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded flex items-center justify-center'>
+                  <BiLoaderAlt className=' animate-spin'/>
+                </div>
+                )}
               </div>
-            );
+            )
           })}
         </div>
         <div className="text-center mt-8">

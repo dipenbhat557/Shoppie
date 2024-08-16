@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 } */
+
+@keyframes addToCart {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.button-added {
+  animation: addToCart 0.3s ease;
+}
