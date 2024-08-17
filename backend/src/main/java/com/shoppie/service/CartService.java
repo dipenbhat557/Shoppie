@@ -14,7 +14,7 @@ public interface CartService {
 
     public Cart getByUserId(int userId);
 
-    public Cart clearByUserId(int userId);
+    public void clearByUserId(int userId);
 
     public void delete(int cartId);
 
