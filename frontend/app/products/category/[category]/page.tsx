@@ -13,9 +13,15 @@ import Loading from '@/app/components/Loading';
 const PRODUCTS_PER_PAGE = 8;
 
 export default function ProductPage() {
-  const category = useParams()?.category 
-  ? decodeURIComponent(useParams()?.category) 
-  : '';
+  const params = useParams();
+let category: string = '';
+
+if (typeof params?.category === 'string') {
+  category = decodeURIComponent(params.category);
+} else if (Array.isArray(params?.category)) {
+  // If for some reason category is an array, handle it accordingly
+  category = decodeURIComponent(params.category.join(' ')); // or choose how you want to handle the array
+}
 
   const [products, setProducts] = useState<ProductData[]>([]);
   const [loading, setLoading] = useState(true);

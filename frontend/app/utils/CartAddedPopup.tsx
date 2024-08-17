@@ -1,7 +1,8 @@
 "use client";
 
 import { RecoilRoot, useRecoilValue } from "recoil";
-import { addedState } from "../utils/store";
+import { addedState, productState } from "../utils/store";
+import Loading from "../components/Loading";
 
 export default function CartAddedPopup({
   children,
@@ -9,6 +10,10 @@ export default function CartAddedPopup({
   children: React.ReactNode;
 }) {
   const added = useRecoilValue(addedState);
+  const products = useRecoilValue(productState)
+
+  if(products.length === 0)
+    return <Loading/>
   
   return (
     <div className="relative">

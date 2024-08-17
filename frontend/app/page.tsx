@@ -6,34 +6,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Hero from "./components/Hero";
 import { ProductData, productState } from "./utils/store";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import "./globals.css";
-import Loading from "./components/Loading";
 import ProductItem from "./components/ProductItem";
 
 export default function Home() {
-  const [products, setProducts] = useRecoilState<ProductData[]>(productState);
+  const products= useRecoilValue<ProductData[]>(productState);
   
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-      fetch(`https://fakestoreapi.com/products`)
-        .then((res) => res.json())
-        .then((data) => {
-            setProducts(data.sort(() => 0.5 - Math.random()));
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching product:', error);
-          setLoading(false);
-        });
-    
-  }, []);
-
-  if (loading) {
-    return <Loading/>
-  }
-
   return (
     <div>
       <Navbar />

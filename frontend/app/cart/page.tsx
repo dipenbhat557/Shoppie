@@ -37,14 +37,14 @@ const CartPage = () => {
   }
 
   return (
-    <>
+    <div className='min-h-screen'>
     <Navbar/>
      {checkedout && <div className='w-full h-[150px] text-white mt-3 bg-green-500 bg-opacity-50 flex flex-col gap-2 items-center justify-center font-semibold'><p>Thanks for shopping with us.</p><p className='w-[80%] text-center'>Please explore more and enjoy exclusive discounts.</p></div>}
       
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center mb-8">Your Cart</h1>
       {cartItems?.length === 0 ? (
-        <p className="text-center text-gray-500">Your cart is empty</p>
+        <p className="text-center text-gray-500 h-[400px] flex items-center justify-center text-[40px]">Your cart is empty</p>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -68,7 +68,7 @@ const CartPage = () => {
       )}
     </div>
     <Footer/>
-    </>
+    </div>
   );
 };
 

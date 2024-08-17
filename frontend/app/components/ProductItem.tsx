@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 const ProductItem = ({product}:{product:ProductData}) => {
-    const setCart= useSetRecoilState<CartData[]>(cartState);
+    const setCart = useSetRecoilState<CartData[]>(cartState);
   const [addedItem, setAddedItem] = useState(0);
   const [uselastid, setlastid] = useState(0);
   const  setGlobalAdded = useSetRecoilState(addedState)
