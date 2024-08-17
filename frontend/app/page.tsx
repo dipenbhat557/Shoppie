@@ -1,23 +1,25 @@
 "use client";
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Hero from './components/Hero';
-import { CartData, cartState, ProductData } from './utils/store';
-import { useRecoilState } from 'recoil';
-import "./globals.css"
-import { BiLoaderAlt } from 'react-icons/bi';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Hero from "./components/Hero";
+import { addedState, CartData, cartState, ProductData } from "./utils/store";
+import { useRecoilState } from "recoil";
+import "./globals.css";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [cart, setCart] = useRecoilState<CartData[]>(cartState);
   const [added, setAdded] = useState(false);
   const [addedItem, setAddedItem] = useState(0);
+  const [uselastid, setlastid] = useState(0);
+  const [globalAdded, setGlobalAdded] = useRecoilState(addedState)
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products?limit=8')
+    fetch("https://fakestoreapi.com/products?limit=8")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
@@ -43,12 +45,20 @@ export default function Home() {
       }
     });
 
-    
-    setAddedItem(product?.id)
-    setTimeout(()=>{
-      setAddedItem(0)
-      setAdded(true)
-    },1000)
+    setAddedItem(product?.id);
+    setlastid(product?.id);
+
+    setTimeout(() => {
+      setAddedItem(0);
+      setAdded(true);
+      setGlobalAdded(true)
+    }, 1000);
+
+    setTimeout(() => {
+      setlastid(0);
+      setGlobalAdded(false)
+    }, 4000);
+
     // window.scrollTo(0, 0);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -96,26 +106,33 @@ export default function Home() {
                     </p>
                   </div>
                 </Link>
-                {!(product?.id === addedItem) ?(
+                {!(product?.id === addedItem) ? (
                   <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();                     
-                      addToCart(product);
-                    }}
-                    className={`mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 `}
-                  >
-                   Add to Cart
-                  </button>
-                  <p></p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                      className={`mt-4 w-full  text-white py-2 px-4 rounded hover:bg-orange-600 ${
+                        uselastid === product.id
+                          ? "bg-orange-900"
+                          : "bg-orange-500"
+                      }`}
+                    >
+                      {uselastid == product.id ? (
+                        <p>Added to Cart</p>
+                      ) : (
+                        <> Add to Cart </>
+                      )}
+                    </button>
                   </>
-                ):(
-                <div className='mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded flex items-center justify-center'>
-                  <BiLoaderAlt className=' animate-spin'/>
-                </div>
+                ) : (
+                  <div className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded flex items-center justify-center">
+                    <BiLoaderAlt className=" animate-spin" />
+                  </div>
                 )}
               </div>
-            )
+            );
           })}
         </div>
         <div className="text-center mt-8">

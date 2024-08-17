@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import RecoilWrapper from "./components/RecoilWrapper";
+import CartAddedPopup from "./components/CartAddedPopup";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <RecoilWrapper>{children}</RecoilWrapper>
+        <RecoilWrapper><CartAddedPopup>{children}</CartAddedPopup></RecoilWrapper>
       </body>
     </html>
   );

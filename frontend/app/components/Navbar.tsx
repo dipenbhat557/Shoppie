@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { AiFillProduct } from 'react-icons/ai';
 import { FaHome, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import SessionProviderWrapper from './SessionProviderWrapper';
 import { useRecoilValue } from 'recoil';
 import { cartState } from '../utils/store';
@@ -14,6 +14,7 @@ function Nav() {
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const { data: session, status } = useSession(); 
   const cart = useRecoilValue(cartState)
+  let timeoutId: NodeJS.Timeout;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -23,13 +24,22 @@ function Nav() {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleSignOut = () => {
-    signOut();
+  const handleMouseLeave = () => {
+    timeoutId = setTimeout(() => {
+      setDropdownOpen(false);
+    }, 1000);
   };
 
-  const handleSignIn = () => {
-    signIn();
+  const handleMouseOverDropdown = () => {
+    setDropdownOpen(true);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   };
+
+  const handleSignOut = () =>{
+    signOut()
+  }
 
   return (
     <nav className="bg-orange-500 text-white px-4 py-4">
@@ -52,13 +62,10 @@ function Nav() {
               <div className="absolute right-0 mt-2 bg-white text-black rounded-lg shadow-lg w-48">
                 {!session ? (
                   <div>
-                    <button
-                      onClick={handleSignIn}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                    >
-                      Sign In
-                    </button>
-                    <Link href="/signup" onClick={toggleDropdown}>
+                     <Link href="/auth/signin" onClick={toggleDropdown}>
+                      <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign In</span>
+                    </Link>
+                    <Link href="/auth/signup" onClick={toggleDropdown}>
                       <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign Up</span>
                     </Link>
                   </div>
@@ -98,16 +105,27 @@ function Nav() {
           </Link>
 
           <div className="relative">
-            <button onClick={toggleDropdown} className="flex items-center justify-center gap-2">
+            <button onClick={toggleDropdown}  
+              onMouseEnter={() => {
+                    setDropdownOpen(true);
+                }}
+                onMouseLeave={() => {
+                    handleMouseLeave();
+                }} className="flex items-center justify-center gap-2">
+                  
               <FaUser className="text-2xl" />
               <span className="text-md font-bold">{session?.user?.name || "User"}</span>
             </button>
             {dropdownOpen && (
-              <div className="absolute -right-32 mt-2 bg-white text-black rounded-b-lg shadow-lg w-11 sm:w-48">
+              <div 
+              onMouseLeave={() => handleMouseLeave()}
+              onMouseOver={() => handleMouseOverDropdown()} 
+              className="absolute -right-32 mt-2 bg-white text-black rounded-b-lg shadow-lg w-11 sm:w-48">
+                
                 {!session ? (
                   <div>
                    <Link href="/auth/signin" onClick={toggleDropdown}>
-                      <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign Up</span>
+                      <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign In</span>
                     </Link>
                     <Link href="/auth/signup" onClick={toggleDropdown}>
                       <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign Up</span>

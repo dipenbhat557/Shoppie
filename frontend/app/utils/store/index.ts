@@ -5,7 +5,10 @@ export const cartState = atom({
   default: [] as CartData[], 
 });
 
-
+export const addedState = atom({
+  key: 'addedState',
+  default: false
+})
 
 export interface ProductData {
   id: number;

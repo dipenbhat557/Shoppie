@@ -25,15 +25,14 @@ export default function SignUp() {
         },
         {
             headers: {
-                'Content-Type': 'application/json',
-      
+                'Content-Type': 'application/json',     
             }
         }
     )
 
     if (res.status==200) {
       alert("Registered successfully")
-      router.push("/dashboard")
+      router.push("/")
     } else {
       alert("Some error occurred")
     }
