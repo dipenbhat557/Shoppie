@@ -3,6 +3,8 @@ package com.shoppie.service;
 import java.util.List;
 
 import com.shoppie.model.Cart;
+import com.shoppie.model.CartItem;
+import com.shoppie.payload.CartReq;
 
 public interface CartService {
 
@@ -18,6 +20,6 @@ public interface CartService {
 
     public void delete(int cartId);
 
-    public Cart update(int userId, Cart cart);
+    public Cart update(int userId, CartReq cartReq);
     
 }

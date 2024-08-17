@@ -15,7 +15,7 @@ export async function POST(request:NextRequest) {
     }
 
   const res = await axios.post(
-        'http://localhost:8080/auth/signup',
+        `${process.env.API_ROOT}/auth/signup`,
         backendFormData,
         {
           headers: {

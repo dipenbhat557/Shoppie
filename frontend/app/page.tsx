@@ -40,6 +40,7 @@ export default function Home() {
       {categories?.map((c:string,index:number)=>{return(
         <CategorywiseProduct category={c} key={index}/>
       )})}</div>
+    <div className='bg-white w-full h-[100px] flex' />
       <Footer />
     </div>
   );

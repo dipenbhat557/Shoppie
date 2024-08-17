@@ -120,6 +120,7 @@ if (typeof params?.category === 'string') {
           ))}
         </div>
       </div>
+    <div className='bg-white w-full h-[100px] flex' />
          <Footer />
     </div>
   );

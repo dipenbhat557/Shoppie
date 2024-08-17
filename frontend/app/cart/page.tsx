@@ -20,7 +20,7 @@ const CartPage = () => {
       0
     );
     setSubtotal(total);
-    console.log("cart item is ",cartItems)
+    // console.log("cart item is ",cartItems)
   }, [cartItems]);
 
   
@@ -37,7 +37,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen relative '>
     <Navbar/>
      {checkedout && <div className='w-full h-[150px] text-white mt-3 bg-green-500 bg-opacity-50 flex flex-col gap-2 items-center justify-center font-semibold'><p>Thanks for shopping with us.</p><p className='w-[80%] text-center'>Please explore more and enjoy exclusive discounts.</p></div>}
       
@@ -67,6 +67,7 @@ const CartPage = () => {
         </>
       )}
     </div>
+    <div className='bg-white w-full h-[100px] flex' />
     <Footer/>
     </div>
   );

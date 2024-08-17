@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shoppie.model.Cart;
+import com.shoppie.model.CartItem;
+import com.shoppie.payload.CartReq;
 import com.shoppie.service.CartService;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api/cart")
@@ -59,8 +59,9 @@ public class CartController {
    }
 
    @PutMapping("/user/{userId}")
-   public ResponseEntity<Cart> updateByUserId(@PathVariable int userId, @RequestBody Cart cart){
-    return new ResponseEntity<>(this.cartService.update(userId, cart),HttpStatus.OK);
+   public ResponseEntity<Cart> updateByUserId(@PathVariable int userId, @RequestBody CartReq cartReq){
+    System.out.println("Controller reached with "+cartReq.getProductId());
+    return new ResponseEntity<>(this.cartService.update(userId, cartReq),HttpStatus.OK);
    }
    
 }

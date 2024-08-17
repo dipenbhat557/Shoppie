@@ -10,7 +10,7 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const res = await fetch('http://localhost:8080/auth/signin', {
+        const res = await fetch(`${process.env.API_ROOT}/auth/signin`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
