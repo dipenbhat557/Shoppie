@@ -17,7 +17,7 @@ const CategorywiseProduct = ({category}:{category:string}) => {
         <h1 className="text-2xl sm:text-4xl font-bold my-8 text-grey-800">
           {category?.toLocaleUpperCase()}
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 items-center sm:grid-cols-2 md:grid-cols-4 gap-6">
           {items?.slice(0,4)?.map((product: ProductData,index:number) => {
             return <ProductItem key={index} product={product}/>
           })}

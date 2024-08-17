@@ -49,7 +49,7 @@ const ProductItem = ({ product }: { product: ProductData }) => {
   const discountedPrice: number = product.price - (product.price * 10) / 100;
 
   return (
-    <div key={product.id} className="">
+    <div key={product.id} className=" flex flex-col items-center">
       <Link href={`/products/${product.id}`}>
         <div className="cursor-pointer w-72 p-5 rounded-xl bg-[#Ffffff] text-center shadow-md">
           <div className="mb-4">

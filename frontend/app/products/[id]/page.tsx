@@ -130,7 +130,7 @@ export default function ProductPage() {
 
       </div>
       
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto p-4">
         <h1 className="text-2xl sm:text-4xl font-bold text-center my-8 text-slate-800">
           More like this
         </h1>

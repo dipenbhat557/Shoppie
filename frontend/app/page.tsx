@@ -36,9 +36,10 @@ export default function Home() {
         </div>
       </div>
 
+      <div className="py-2">
       {categories?.map((c:string,index:number)=>{return(
         <CategorywiseProduct category={c} key={index}/>
-      )})}
+      )})}</div>
       <Footer />
     </div>
   );
