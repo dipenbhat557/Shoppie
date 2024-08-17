@@ -107,38 +107,40 @@ function Nav() {
           <div className="relative">
             <button onClick={toggleDropdown}  
               onMouseEnter={() => {
-                    setDropdownOpen(true);
-                }}
-                onMouseLeave={() => {
-                    handleMouseLeave();
-                }} className="flex items-center justify-center gap-2">
+                setDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                handleMouseLeave();
+              }} 
+              className="flex items-center justify-center gap-2">
                   
               <FaUser className="text-2xl" />
               <span className="text-md font-bold">{session?.user?.name || "User"}</span>
             </button>
+
             {dropdownOpen && (
               <div 
-              onMouseLeave={() => handleMouseLeave()}
-              onMouseOver={() => handleMouseOverDropdown()} 
-              className="absolute -right-32 mt-2 bg-white text-black rounded-b-lg shadow-lg w-11 sm:w-48">
+                onMouseLeave={() => handleMouseLeave()}
+                onMouseOver={() => handleMouseOverDropdown()} 
+                className="absolute -right-32 mt-2 bg-white text-black rounded-b-lg shadow-lg w-11 sm:w-48">
                 
-                {!session ? (
-                  <div>
-                   <Link href="/auth/signin" onClick={toggleDropdown}>
-                      <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign In</span>
-                    </Link>
-                    <Link href="/auth/signup" onClick={toggleDropdown}>
-                      <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign Up</span>
-                    </Link>
-                  </div>
-                ) : (
-                  <button
-                    onClick={handleSignOut}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                  >
-                    Sign Out
-                  </button>
-                )}
+                  {!session ? (
+                    <div>
+                    <Link href="/auth/signin" onClick={toggleDropdown}>
+                        <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign In</span>
+                      </Link>
+                      <Link href="/auth/signup" onClick={toggleDropdown}>
+                        <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">Sign Up</span>
+                      </Link>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleSignOut}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+                      Sign Out
+                    </button>
+                  )}
               </div>
             )}
           </div>

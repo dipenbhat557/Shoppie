@@ -34,7 +34,7 @@ export default function SignUp() {
       alert("Registered successfully")
       router.push("/")
     } else {
-      alert("Some error occurred")
+      alert("Please enter a valid credentials")
     }
   };
 
