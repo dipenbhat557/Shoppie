@@ -71,7 +71,7 @@ export default function ProductPage() {
     setTimeout(() => {
       setlastid(0);
       setGlobalAdded(false)
-    }, 4000);
+    }, 2000);
 
   };
 
@@ -108,21 +108,21 @@ export default function ProductPage() {
                         e.stopPropagation();
                         addToCart(product);
                       }}
-                      className={`mt-4 w-full  text-white py-2 px-4 rounded hover:bg-orange-600 ${
+                      className={`mt-4 w-full  text-white py-2 px-4 rounded hover:bg-slate-700 ${
                         uselastid === product.id
-                          ? "bg-orange-900"
-                          : "bg-orange-500"
+                          ? "bg-slate-900"
+                          : "bg-slate-800"
                       }`}
                     >
                       {uselastid == product.id ? (
                         <p>Added to Cart</p>
                       ) : (
-                        <> Add to Cart </>
+                        <p> Add to Cart </p>
                       )}
                     </button>
                   </>
                 ) : (
-                  <div className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded flex items-center justify-center">
+                  <div className="mt-4 w-full bg-slate-800 text-white py-2 px-4 rounded flex items-center justify-center">
                     <BiLoaderAlt className=" animate-spin" />
                   </div>
                 )}          </div>
@@ -131,7 +131,7 @@ export default function ProductPage() {
       </div>
       
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl sm:text-4xl font-bold text-center my-8 text-orange-500">
+        <h1 className="text-2xl sm:text-4xl font-bold text-center my-8 text-slate-800">
           More like this
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -142,7 +142,7 @@ export default function ProductPage() {
         
         <div className="text-center mt-8">
           <Link href="/products">
-            <p className="text-orange-500 hover:underline">View All Products</p>
+            <p className="text-slate-800 hover:underline">View All Products</p>
           </Link>
         </div>
       </div>

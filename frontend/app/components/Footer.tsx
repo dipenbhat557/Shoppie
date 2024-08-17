@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="container mx-auto text-center">
           <p>&copy; 2024 Profile.fyi. All rights reserved.</p>
           <p className="mt-2">
-            Designed by <a href="https://profile.fyi" className="text-orange-400 hover:underline">Profile.fyi Team</a>
+            Designed by <a href="https://profile.fyi" className="text-white hover:underline">Profile.fyi Team</a>
           </p>
         </div>
         </div>

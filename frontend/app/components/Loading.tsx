@@ -5,9 +5,9 @@ import { BiLoaderAlt } from 'react-icons/bi'
 const Loading = () => {
   return (
     <div className='w-screen h-screen flex justify-center items-center flex-col gap-5'>
-        <BiLoaderAlt className=" animate-spin text-5xl text-orange-500" />
+        <BiLoaderAlt className=" animate-spin text-5xl text-slate-800" />
         <div className="flex items-center justify-center gap-4">
-          <Image src="/icon.svg" height={50} width={50} alt="logo" className="rounded-full" />
+          <Image src="/icon.png" height={50} width={50} alt="logo" className="rounded-full" />
           <span className="text-2xl font-bold">Shoppie</span>
         </div>
     </div>

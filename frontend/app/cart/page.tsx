@@ -42,7 +42,7 @@ const CartPage = () => {
      {checkedout && <div className='w-full h-[150px] text-white mt-3 bg-green-500 bg-opacity-50 flex flex-col gap-2 items-center justify-center font-semibold'><p>Thanks for shopping with us.</p><p className='w-[80%] text-center'>Please explore more and enjoy exclusive discounts.</p></div>}
       
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center mb-8">Your Cart</h1>
+      <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 text-center mb-8">Your Cart</h1>
       {cartItems?.length === 0 ? (
         <p className="text-center text-gray-500 h-[400px] flex items-center justify-center text-[40px]">Your cart is empty</p>
       ) : (
@@ -57,10 +57,10 @@ const CartPage = () => {
           <div className="mt-8 p-6 bg-gray-100 rounded-lg shadow-lg text-center">
             <p className="text-lg">Subtotal: ${subtotal.toFixed(2)}</p>
             <p className="text-lg">Discount: {discount}%</p>
-            <p className="text-2xl font-semibold text-orange-500">
+            <p className="text-2xl font-semibold text-slate-800">
               Total: ${totalAfterDiscount.toFixed(2)}
             </p>
-            <button onClick={handleCheckout} className="mt-4 bg-orange-500 text-white py-2 px-6 rounded hover:bg-orange-600">
+            <button onClick={handleCheckout} className="mt-4 bg-slate-800 text-white py-2 px-6 rounded hover:bg-slate-900">
               Proceed to Checkout
             </button>
           </div>

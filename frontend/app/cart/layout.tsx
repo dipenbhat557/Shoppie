@@ -11,7 +11,6 @@ export default async function CartLayout({
   return (
       <div className={inter.className}>
         <SessionProviderWrapper>{children}</SessionProviderWrapper>
-        {children}
       </div>
   )
 }

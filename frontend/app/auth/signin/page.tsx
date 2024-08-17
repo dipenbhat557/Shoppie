@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn } from 'next-auth/react';
+import { signIn, } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {  useSearchParams } from 'next/navigation';
@@ -15,7 +15,6 @@ export default function SignIn() {
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
-    console.log("clicked")
     setError('');
     const result = await signIn('credentials', {
       redirect: false,
@@ -27,13 +26,7 @@ export default function SignIn() {
       setError(result.error);
       console.error(result.error);
     } else {
-      console.log("result is ",result)
-      // const userImageUrl = result?.user?.image;
-      
-      // Store user image and other data in local storage
-      // localStorage.setItem('userImage', userImageUrl);
-
-      // window.location.href = result?.url || callbackUrl;
+      window.location.href = result?.url || callbackUrl;
     }
   };
 

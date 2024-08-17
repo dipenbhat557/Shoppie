@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Shoppie",
   description: "E-commerce for assignment",
   icons: {
-    icon: '/icon.svg'
+    icon: '/iconwhite.jpg'
   }
 
 };
