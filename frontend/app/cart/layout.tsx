@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import React from 'react'
-import SessionProviderWrapper from '../components/SessionProviderWrapper';
+import SessionProviderWrapper from '../utils/SessionProviderWrapper';
 
 const inter = Inter({ subsets: ["latin"] });
 export default async function CartLayout({
@@ -9,11 +9,9 @@ export default async function CartLayout({
     children: React.ReactNode;
   }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+      <div className={inter.className}>
         {/* <SessionProviderWrapper>{children}</SessionProviderWrapper> */}
         {children}
-      </body>
-    </html>
+      </div>
   )
 }

@@ -13,7 +13,10 @@ import Loading from '@/app/components/Loading';
 const PRODUCTS_PER_PAGE = 8;
 
 export default function ProductPage() {
-    const category = useParams()?.category
+  const category = useParams()?.category 
+  ? decodeURIComponent(useParams()?.category) 
+  : '';
+
   const [products, setProducts] = useState<ProductData[]>([]);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
@@ -92,7 +95,7 @@ export default function ProductPage() {
         </div>
       )}
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center my-8">All Products</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold text-orange-500 text-center my-8">{category?.toLocaleUpperCase()}</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {paginatedProducts?.map((product) => {
             const discountedPrice = product.price - (product.price * 10) / 100;

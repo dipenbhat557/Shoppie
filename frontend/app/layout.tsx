@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import RecoilWrapper from "./components/RecoilWrapper";
-import CartAddedPopup from "./components/CartAddedPopup";
+import RecoilWrapper from "./utils/RecoilWrapper";
+import CartAddedPopup from "./utils/CartAddedPopup";
 
 const inter = Inter({ subsets: ["latin"] });
 

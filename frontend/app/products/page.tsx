@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { CartData, cartState, ProductData } from '../utils/store';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
+import Loading from '../components/Loading';
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -17,15 +18,24 @@ export default function Products() {
   const [cart, setCart] = useRecoilState<CartData[]>(cartState);
   const router = useRouter();
   const [added,setAdded] = useState(false)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
-      .then(res => res.json())
-      .then(data => {
-        setProducts(data.sort(() => 0.5 - Math.random()));
-      });
+      .then((res) => res.json())
+        .then((data) => {
+            setProducts(data.sort(() => 0.5 - Math.random()));
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching product:', error);
+          setLoading(false);
+        });  
   }, []);
-
+        
+  if (loading) {
+    return <Loading/>
+  }
 
   const addToCart = async (product: ProductData) => {
     setCart((prevCart) => {
