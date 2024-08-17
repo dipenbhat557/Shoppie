@@ -23,6 +23,7 @@ function Nav() {
 
   // Fetch categories from API
   useEffect(() => {
+    console.log("session user is ",session?.user)
     fetch('https://fakestoreapi.com/products/categories')
       .then((res) => res.json())
       .then((data) => {

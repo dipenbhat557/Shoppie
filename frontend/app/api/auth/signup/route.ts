@@ -2,24 +2,29 @@ import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request:NextRequest) {
-  const { name,username, password } = await request.json();
+  const formData = await request.formData();
+    const reqData = formData.get('req');
+    const file = formData.get('file');
+
+    const parsedData = reqData ? JSON.parse(reqData as string) : null;
+
+    const backendFormData = new FormData();
+    backendFormData.append('req', JSON.stringify(parsedData));
+    if (file) {
+      backendFormData.append('file', file);
+    }
 
   const res = await axios.post(
         'http://localhost:8080/auth/signup',
+        backendFormData,
         {
-            name:name,
-            username:username,
-            password:password
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json',
-      
-            }
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
     )
 
-  if (res.status==200) {
+  if (res.status==201 || res.status == 200) {
     return NextResponse.json(await res.data);
   } else {
     return NextResponse.json({ error: 'Sign up failed' }, { status: res.status });

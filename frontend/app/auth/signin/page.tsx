@@ -27,7 +27,13 @@ export default function SignIn() {
       setError(result.error);
       console.error(result.error);
     } else {
-       window.location.href = result?.url || callbackUrl;
+      console.log("result is ",result)
+      // const userImageUrl = result?.user?.image;
+      
+      // Store user image and other data in local storage
+      // localStorage.setItem('userImage', userImageUrl);
+
+      // window.location.href = result?.url || callbackUrl;
     }
   };
 
@@ -57,7 +63,7 @@ export default function SignIn() {
         placeholder="Password"
         className='p-2 rounded-xl  border-2 border-slate-500'
       />
-      <button type="submit" className='bg-orange-500 px-10 py-2 rounded-xl text-white'>Sign In</button>
+      <button type="submit" className='disabled:bg-slate-200  bg-orange-500 px-10 py-2 rounded-xl text-white' disabled={username.length==0 || password.length==0}>Sign In</button>
       <Link href="/auth/signup" className='text-sm text-slate-400'>Don't have an account? Register Now!!</Link>
        <Link href="/" className='text-sm text-slate-400'>Go to Home</Link>
       

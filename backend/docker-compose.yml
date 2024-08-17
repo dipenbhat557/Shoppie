@@ -1,35 +1,3 @@
-# version: '3.8'
-
-# services:
-#   dbservice:
-#     image: mysql:latest
-#     environment:
-#       MYSQL_ROOT_PASSWORD: shoppie@123
-#       MYSQL_DATABASE: shoppie_db
-#       MYSQL_USER: shoppie_user
-#       MYSQL_PASSWORD: shoppie@123
-#     networks:
-#       - backend-network
-
-#   appservice:
-#     build:
-#       context: .
-#     environment:
-#       SPRING_DATASOURCE_URL: jdbc:mysql://dbservice:3306/shoppie_db?createDatabaseIfNotExist=true&serverTimezone=UTC
-#       SPRING_DATASOURCE_USERNAME: shoppie_user
-#       SPRING_DATASOURCE_PASSWORD: shoppie@123
-#       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-#       SPRING_JPA_SHOW_SQL: true
-#       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
-#     depends_on:
-#       - dbservice
-#     networks:
-#       - backend-network
-
-# networks:
-#   backend-network:
-#     driver: bridge
-
 version: '3.8'
 
 services:

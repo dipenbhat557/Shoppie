@@ -1,7 +1,10 @@
 package com.shoppie.serviceImpl;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.shoppie.model.User;
 import com.shoppie.payload.SigninRequest;
@@ -21,14 +24,23 @@ public class AuthServiceImpl implements AuthService{
     // private PasswordEncoder passwordEncoder;
 
     @Override
-    public User register(SignupRequest req) {
+    public User register(SignupRequest req, MultipartFile file) throws Exception {
         User user = new User();
 
         user.setUsername(req.getUsername());
         user.setName(req.getName());
         // user.setPassword(passwordEncoder.encode(req.getPassword(?)));
         user.setPassword(req.getPassword());
-        return userRepo.save(user);
+
+        try {
+            if(file != null){
+                user.setImg(file.getBytes());
+            }
+        } catch (IOException e) {
+            throw new Exception("Image not found");
+        }
+
+        return this.userRepo.save(user);
     }
     
     @Override
@@ -40,5 +52,7 @@ public class AuthServiceImpl implements AuthService{
         }
         throw new RuntimeException("Invalid credentials");
     }
+
+    
 
 }
