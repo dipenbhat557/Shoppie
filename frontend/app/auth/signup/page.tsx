@@ -4,7 +4,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { FaShop } from 'react-icons/fa6';
 
 export default function SignUp() {
@@ -14,16 +14,20 @@ export default function SignUp() {
     password: '',
     confirmPassword: ''
   });
-
   const [img, setImg] = useState<File | null>(null);
+  const [error, setError] = useState('');
   const [dataSaved, setDataSaved] = useState(false);
 
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Create a default image if no image is uploaded
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
     const defaultImage = await fetch('/iconwhite.jpg')
       .then((res) => res.blob())
       .then((blob) => new File([blob], 'default.jpg', { type: 'image/jpeg' }));
@@ -34,13 +38,7 @@ export default function SignUp() {
       username: formData.username,
       password: formData.password
     }));
-
-    // Append the image (either user-provided or default)
-    if (img) {
-      formDataToSend.append("file", img);
-    } else {
-      formDataToSend.append("file", defaultImage);
-    }
+    formDataToSend.append("file", img || defaultImage);
 
     try {
       const res = await axios.post('/api/auth/signup', formDataToSend, {
@@ -50,31 +48,25 @@ export default function SignUp() {
       });
 
       if (res.status === 201 || res.status === 200) {
-        alert("Registered successfully");
-        setFormData({
-          name: '',
-          username: '',
-          password: '',
-          confirmPassword: ''
-        });
-        setImg(null);
         setDataSaved(true);
-        setTimeout(() => setDataSaved(false), 3000);
-        router.push("/auth/signin");
+        setTimeout(() => {
+          setDataSaved(false);
+          router.push("/auth/signin");
+        }, 3000);
       } else {
-        alert("Please enter valid credentials");
+        setError("Please enter valid credentials");
       }
-    } catch (error) {
-      alert("An error occurred during registration. Please try again.");
+    } catch {
+      setError("An error occurred during registration. Please try again.");
     }
-  };
+  }, [formData, img, router]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImg(file);
     }
-  };
+  }, []);
 
   return (
     <div className='flex'>
@@ -86,43 +78,32 @@ export default function SignUp() {
         <p>Register to<br /> Enjoy Shopping</p>
       </div>
       <form onSubmit={handleSubmit} className='w-screen h-screen flex flex-col items-center justify-center gap-5'>
+        {error && <p className='text-red-800 text-sm'>{error}</p>}
         <input
           type="text"
           value={formData.name}
-          onChange={(e) => setFormData((prevState) => ({
-            ...prevState,
-            name: e.target.value,
-          }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
           placeholder="Name"
           className='p-2 rounded-xl border-2 border-slate-500'
         />
         <input
           type="text"
           value={formData.username}
-          onChange={(e) => setFormData((prevState) => ({
-            ...prevState,
-            username: e.target.value,
-          }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, username: e.target.value }))}
           placeholder="Username"
           className='p-2 rounded-xl border-2 border-slate-500'
         />
         <input
           type="password"
           value={formData.password}
-          onChange={(e) => setFormData((prevState) => ({
-            ...prevState,
-            password: e.target.value,
-          }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
           placeholder="Password"
           className='p-2 rounded-xl border-2 border-slate-500'
         />
         <input
           type="password"
           value={formData.confirmPassword}
-          onChange={(e) => setFormData((prevState) => ({
-            ...prevState,
-            confirmPassword: e.target.value,
-          }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
           placeholder="Confirm Password"
           className='p-2 rounded-xl border-2 border-slate-500'
         />
@@ -139,7 +120,7 @@ export default function SignUp() {
         <button
           type="submit"
           className='disabled:bg-slate-100 px-10 py-2 rounded-xl bg-slate-800 text-white font-semibold'
-          disabled={formData.password === '' || formData.password !== formData.confirmPassword}
+          disabled={formData.password !== formData.confirmPassword}
         >
           Sign Up
         </button>

@@ -5,7 +5,7 @@ const nextConfig = { images: {
   typescript: {
     ignoreBuildErrors: true,
   },
-  staticPageGenerationTimeout: 300,
+  staticPageGenerationTimeout: 700,
 };
 
 export default nextConfig;
