@@ -70,9 +70,9 @@ export default function SignUp() {
 
   return (
   <div className='flex '>
-      <div className='bg-orange-500 w-[40%] hidden sm:flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
+      <div className='bg-slate-800 w-[40%] hidden sm:flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
         <Link href="/" className='flex items-center justify-center gap-4'>
-          <Image src="/icon.svg" height={50} width={50} alt='logo' className='rounded-full' />
+          <Image src="/icon.png" height={50} width={50} alt='logo' className='rounded-full' />
           <span className="text-2xl font-bold">Shoppie</span>
         </Link>
        <p> Register to<br/> Enjoy Shopping </p>
@@ -137,7 +137,7 @@ export default function SignUp() {
                   type="file"
                   className="p-1 mx-auto rounded-xl  border-2 border-slate-500"
                 />
-      <button type="submit" className='disabled:bg-slate-100 px-10 py-2 rounded-xl bg-orange-500 text-white font-semibold' disabled={formData?.password?.length === 0 || formData?.password!==formData?.confirmPassword}>Sign Up</button>
+      <button type="submit" className='disabled:bg-slate-100 px-10 py-2 rounded-xl bg-slate-800 text-white font-semibold' disabled={formData?.password?.length === 0 || formData?.password!==formData?.confirmPassword}>Sign Up</button>
       
       <Link href="/auth/signin" className='text-sm text-slate-400'>Already have an account? Sign In!!</Link>
         <Link href="/" className='text-sm text-slate-400'>Go to Home</Link>

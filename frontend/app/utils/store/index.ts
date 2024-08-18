@@ -1,8 +1,9 @@
 import { atom, selector } from 'recoil';
 
-export const cartState = atom({
-  key: 'cartState', 
-  default: [] as CartData[], 
+// CartData is the shape of your cart items
+export const cartState = atom<CartData[]>({
+  key: 'cartState',
+  default: [] as CartData[],
 });
 
 export const addedState = atom({

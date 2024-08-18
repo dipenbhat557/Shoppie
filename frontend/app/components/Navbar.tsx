@@ -7,7 +7,7 @@ import { HiMenu, HiX } from "react-icons/hi";
 import { useSession, signOut } from "next-auth/react";
 import SessionProviderWrapper from "../utils/SessionProviderWrapper";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, categoryState } from "../utils/store";
+import { CartData, cartState, categoryState, productState } from "../utils/store";
 import Loading from "./Loading";
 import { BiCategory } from "react-icons/bi";
 import Search from "./Search";
@@ -17,10 +17,13 @@ function Nav() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // Auth dropdown state
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false); // Category dropdown state
   const { data: session } = useSession(); // User session data
-  const cart = useRecoilValue(cartState); // Recoil cart state
+  const [cart,setCartItems] = useRecoilState(cartState); // Recoil cart state
   const [categories, setCategories] = useRecoilState(categoryState); // Recoil categories state
   const [loading, setLoading] = useState(true); // Loading state for fetching categories
   let timeoutId: NodeJS.Timeout;
+  const products = useRecoilValue(productState)
+  // const userId = localStorage.getItem("userId")
+
 
   // Fetch categories from API
   useEffect(() => {
@@ -36,6 +39,49 @@ function Nav() {
       });
   }, [setCategories]);
 
+  
+  useEffect(() => {
+    const getUserId = () => {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem("userId");
+      }
+      return null;
+    };
+    
+    // In your selector or component
+    const userId = getUserId();
+    
+    const fetchCartData = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`/api/cart/user/${userId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch cart data");
+          }
+          const data: any = await response.json();
+          console.log("data from navbar is ", data?.items);
+  
+          // Assuming products is an array of product objects
+          const newCartItems: CartData[] = data?.items?.map((i: any) => {
+            // Find the product in the products array
+            const itemProduct = products?.find(p => p?.id === i?.productId);
+            // Return a new object with the found product and its quantity
+            return itemProduct ? { ...itemProduct, quantity: i?.quantity } : null;
+          }).filter((item: CartData | null) => item !== null); // Filter out any null items
+          
+          console.log("new cart items is ",newCartItems)
+          setCartItems(newCartItems); // Set the fetched data into Recoil state
+        } catch (error) {
+          console.error("Error fetching cart data:", error);
+          setCartItems([]); // Reset cart items in case of error
+        }
+      } 
+    };
+  
+    // Fetch cart data when component mounts
+    fetchCartData();
+  }, []);
+  
   if (loading) {
     return <Loading />;
   }
@@ -86,6 +132,7 @@ function Nav() {
 
   const handleSignOut = () => {
     signOut();
+    localStorage.removeItem("userId")
   };
 
   return (

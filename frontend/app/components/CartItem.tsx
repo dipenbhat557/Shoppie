@@ -1,8 +1,10 @@
 import React from 'react'
 import { CartData } from '../utils/store';
 import Image from 'next/image';
+import useCart from './CartData';
 
 const CartItem = ({item,setCartItems}:{item:CartData;setCartItems:any}) => {
+  const {removeItem} = useCart();
 
     const handleIncreaseQuantity = (id: number) => {
         setCartItems((prevCartItems:CartData[]) =>
@@ -23,9 +25,10 @@ const CartItem = ({item,setCartItems}:{item:CartData;setCartItems:any}) => {
       };
     
       const handleRemoveItem = (id: number) => {
-        setCartItems((prevCartItems:CartData[]) =>
-          prevCartItems.filter((item) => item.id !== id)
-        );
+        // setCartItems((prevCartItems:CartData[]) =>
+        //   prevCartItems.filter((item) => item.id !== id)
+        // );
+        removeItem(id)
       };
 
       const discountedPrice: number= item.price - (item.price * 10) / 100;

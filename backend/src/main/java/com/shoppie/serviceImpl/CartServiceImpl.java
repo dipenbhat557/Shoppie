@@ -1,12 +1,9 @@
 package com.shoppie.serviceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.shoppie.model.Cart;
@@ -52,13 +49,22 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-public void clearByUserId(int userId) {
-    Cart cart = this.cartRepo.findByUserId(userId);
-    if (cart != null) {
-        cart.setItems(null);
-        this.cartRepo.save(cart);
+    public void clearProductOfUser(int userId,int productId) {
+        Cart cart = this.cartRepo.findByUserId(userId);
+        if (cart != null) {
+            // Filter out the product with the specified productId
+            List<CartItem> updatedItems = cart.getItems().stream()
+                .filter(item -> item.getProductId() != productId)
+                .collect(Collectors.toList());
+            
+            // Update the cart with the filtered list
+            cart.setItems(updatedItems);
+
+            
+            // Save the updated cart
+            this.cartRepo.save(cart);
+        }
     }
-}
 
 
     @Override
@@ -88,7 +94,6 @@ public void clearByUserId(int userId) {
             CartItem newItem = new CartItem();
             newItem.setProductId(cartReq.getProductId());
             newItem.setQuantity(cartReq.getQuantity());
-            newItem.setCart(existingCart); // Set both sides of the relationship
     
             // Add the new item to the cart and save
             existingCart.getItems().add(newItem);

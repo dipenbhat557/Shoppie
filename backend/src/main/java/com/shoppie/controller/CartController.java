@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shoppie.model.Cart;
-import com.shoppie.model.CartItem;
 import com.shoppie.payload.CartReq;
 import com.shoppie.service.CartService;
 
@@ -51,12 +50,13 @@ public class CartController {
     this.cartService.delete(cartId);
     return new ResponseEntity<>("Deleted successfully",HttpStatus.OK);
    }
-
-   @DeleteMapping("/user/{userId}")
-   public ResponseEntity<String> deleteByUserId(@PathVariable int userId){
-    this.cartService.clearByUserId(userId);
-    return new ResponseEntity<>("Deleted successfully by user",HttpStatus.OK);
+   
+   @DeleteMapping("/user/{userId}/{productId}")
+   public ResponseEntity<String> deleteByUserId(@PathVariable int userId, @PathVariable int productId) {
+       this.cartService.clearProductOfUser(userId, productId);
+       return new ResponseEntity<>("Deleted successfully by user", HttpStatus.OK);
    }
+   
 
    @PutMapping("/user/{userId}")
    public ResponseEntity<Cart> updateByUserId(@PathVariable int userId, @RequestBody CartReq cartReq){
