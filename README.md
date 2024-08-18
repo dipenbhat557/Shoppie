@@ -6,7 +6,7 @@ Shoppie is an e-commerce application with a Spring Boot backend and a Next.js Ty
 
 - **Frontend**: Next.js with TypeScript
 - **Backend**: Spring Boot
-- **Frontend Hosting**: Vercel
+- **Frontend Hosting**: Hostinger VPS
 - **Backend Hosting**: Hostinger VPS
 
 ## Features
@@ -107,7 +107,7 @@ Shoppie is an e-commerce application with a Spring Boot backend and a Next.js Ty
 
 The frontend is already deployed and can be accessed at:
 
-- **Frontend**: [https://shoppie-git-main-dipendra-bhattas-projects.vercel.app/](https://shoppie-git-main-dipendra-bhattas-projects.vercel.app/)
+- **Frontend**: [https://sidd.live](https://sidd.live/)
 
 ## Contributing
 
