@@ -9,6 +9,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BiLoaderAlt } from 'react-icons/bi';
 import Link from 'next/link';
 import ProductItem from '@/app/components/ProductItem';
+import useCart from '@/app/components/CartData';
 
 export default function ProductPage() {
     const id = useParams()?.id
@@ -19,6 +20,7 @@ export default function ProductPage() {
   const [uselastid, setlastid] = useState(0);
   const  setGlobalAdded = useSetRecoilState(addedState)
   const products = useRecoilValue(productState)
+  const {updateCart,cart} = useCart()
 
   useEffect(() => {
     if (id) {
@@ -40,25 +42,30 @@ export default function ProductPage() {
 
   
   const addToCart = async (product: ProductData) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
+    // Check if product already exists in cart
+    const existingItem = cart.find(item => item.id === product.id);
+    let newCart:CartData[] = [...cart];
 
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [
-          ...prevCart,
-          {
-            ...product,
-            quantity: 1,
-          },
-        ];
-      }
-    });
+    if (existingItem) {
+      // Update quantity if product already exists
+      newCart = newCart.map(item =>
+        item.id === product?.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    } else {
+      // Add new item if product does not exist
+      newCart.push({ ...product,quantity:1 });
+    }
+
+    // Create CartReq object
+  const cartReq: {productId:number;quantity:number} = {
+    productId: product.id,
+    quantity: 1,
+  };
+
+  // Update the cart
+  await updateCart(cartReq);
 
     setAddedItem(product?.id);
     setlastid(product?.id);

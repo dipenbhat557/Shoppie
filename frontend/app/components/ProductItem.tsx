@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { addedState, CartData, cartState, ProductData } from "../utils/store";
 import Link from "next/link";
 import { useSetRecoilState } from "recoil";
 import { BiLoaderAlt } from "react-icons/bi";
-import { getSession } from "next-auth/react";
-import Image from "next/image";
 import SessionProviderWrapper from "../utils/SessionProviderWrapper";
 import useCart from "./CartData";
 

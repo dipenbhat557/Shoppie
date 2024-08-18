@@ -7,7 +7,6 @@ import Footer from '@/app/components/Footer';
 import { useParams } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import Loading from '@/app/components/Loading';
 import ProductItem from '@/app/components/ProductItem';
 
@@ -55,33 +54,7 @@ if (typeof params?.category === 'string') {
   }
 
   
-  const addToCart = async (product: ProductData) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
-
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [
-          ...prevCart,
-          {
-            ...product,
-            quantity: 1,
-          },
-        ];
-      }
-    });
-
-    setAdded(true);
-    window.scrollTo(0, 0);
-    setTimeout(() => setAdded(false), 3000);
-  };
-
-  const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
 
   const paginatedProducts = products.slice(
     (currentPage - 1) * PRODUCTS_PER_PAGE,
