@@ -5,6 +5,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { BiLoaderAlt } from "react-icons/bi";
 import SessionProviderWrapper from "../utils/SessionProviderWrapper";
 import useCart from "./CartData";
+import Image from "next/image";
 
 const Item = ({ product }: { product: ProductData }) => {
   const [cart,setCart] = useRecoilState(cartState); // Use Recoil to manage cart
@@ -61,9 +62,11 @@ const Item = ({ product }: { product: ProductData }) => {
       <Link href={`/products/${product.id}`}>
         <div className="cursor-pointer w-72 p-5 rounded-xl bg-[#FFFFFF] text-center shadow-md">
           <div className="mb-4">
-            <img
+            <Image
               src={product.image}
               alt={product.title}
+              width={100}
+              height={52}
               className="w-full h-52 rounded-lg object-contain"
             />
             <h2 className="text-[18px] line-clamp-1 mb-2">{product.title}</h2>

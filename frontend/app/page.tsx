@@ -2,11 +2,10 @@
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Hero from "./components/Hero";
 import { categoryState, ProductData, productState } from "./utils/store";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import "./globals.css";
 import ProductItem from "./components/ProductItem";
 import CategorywiseProduct from "./components/CategorywiseProduct";

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AiFillProduct } from "react-icons/ai";
@@ -17,100 +17,86 @@ function Nav() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // Auth dropdown state
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false); // Category dropdown state
   const { data: session } = useSession(); // User session data
-  const [cart,setCartItems] = useRecoilState(cartState); // Recoil cart state
+  const [cart, setCartItems] = useRecoilState(cartState); // Recoil cart state
   const [categories, setCategories] = useRecoilState(categoryState); // Recoil categories state
   const [loading, setLoading] = useState(true); // Loading state for fetching categories
-  let timeoutId: NodeJS.Timeout;
-  const products = useRecoilValue(productState)
-  // const userId = localStorage.getItem("userId")
+  const timeoutId = useRef<NodeJS.Timeout | null>(null); // Ref for managing timeout
 
+  const products = useRecoilValue(productState);
 
   // Fetch categories from API
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products/categories")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("https://fakestoreapi.com/products/categories");
+        if (!response.ok) throw new Error("Failed to fetch categories");
+        const data = await response.json();
         setCategories(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCategories();
   }, [setCategories]);
 
-  
   useEffect(() => {
-    const getUserId = () => {
-      if (typeof window !== 'undefined') {
-        return localStorage.getItem("userId");
-      }
-      return null;
-    };
-    
-    // In your selector or component
-    const userId = getUserId();
-    
     const fetchCartData = async () => {
+      const userId = typeof window !== 'undefined' ? localStorage.getItem("userId") : null;
+
       if (userId) {
         try {
           const response = await fetch(`/api/cart/user/${userId}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch cart data");
-          }
+          if (!response.ok) throw new Error("Failed to fetch cart data");
           const data: any = await response.json();
-          console.log("data from navbar is ", data?.items);
-  
-          // Assuming products is an array of product objects
+
           const newCartItems: CartData[] = data?.items?.map((i: any) => {
-            // Find the product in the products array
-            const itemProduct = products?.find(p => p?.id === i?.productId);
-            // Return a new object with the found product and its quantity
-            return itemProduct ? { ...itemProduct, quantity: i?.quantity } : null;
-          }).filter((item: CartData | null) => item !== null); // Filter out any null items
-          
-          console.log("new cart items is ",newCartItems)
-          setCartItems(newCartItems); // Set the fetched data into Recoil state
+            const itemProduct = products?.find(p => p.id === i.productId);
+            return itemProduct ? { ...itemProduct, quantity: i.quantity } : null;
+          }).filter((item: CartData | null) => item !== null) || [];
+
+          setCartItems(newCartItems);
         } catch (error) {
           console.error("Error fetching cart data:", error);
-          setCartItems([]); // Reset cart items in case of error
+          setCartItems([]);
         }
-      } 
+      }
     };
-  
-    // Fetch cart data when component mounts
+
     fetchCartData();
-  }, []);
-  
+  }, [products, setCartItems]);
+
   if (loading) {
     return <Loading />;
   }
 
   // Mobile menu toggle
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev);
   };
 
   // Auth dropdown toggle for mobile
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen(prev => !prev);
   };
 
   const handleCategoryDropdown = () => {
-    setCategoryDropdownOpen(!categoryDropdownOpen);
+    setCategoryDropdownOpen(prev => !prev);
   };
 
   // Show auth dropdown on larger screens
   const handleMouseOverDropdown = () => {
     setDropdownOpen(true);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
     }
   };
 
   // Hide auth dropdown with a delay on larger screens
   const handleMouseLeaveDropdown = () => {
-    timeoutId = setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       setDropdownOpen(false);
     }, 1000);
   };
@@ -118,25 +104,25 @@ function Nav() {
   // Show category dropdown on larger screens
   const handleMouseOverCategory = () => {
     setCategoryDropdownOpen(true);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
     }
   };
 
   // Hide category dropdown with a delay on larger screens
   const handleMouseLeaveCategory = () => {
-    timeoutId = setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       setCategoryDropdownOpen(false);
     }, 1000);
   };
 
   const handleSignOut = () => {
     signOut();
-    localStorage.removeItem("userId")
+    localStorage.removeItem("userId");
   };
 
   return (
-    <nav className="bg-#F2F0F1 text-black px-4 py-4">
+    <nav className="bg-[#F2F0F1] text-black px-4 py-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Main Logo */}
         <Link href="/" className="flex items-center justify-center gap-4">
@@ -199,11 +185,6 @@ function Nav() {
             <span className="hover:text-gray-800">Home</span>
           </Link>
 
-          {/* <Link href="/products" className="flex gap-2 items-center">
-          <AiFillProduct className="text-2xl" />
-          <span className="hover:text-gray-200">Products</span>
-        </Link> */}
-
           {/* Category dropdown */}
           <div
             className="relative"
@@ -215,7 +196,7 @@ function Nav() {
               <span className="hover:text-gray-800">Categories</span>
             </button>
             {categoryDropdownOpen && (
-              <div className="absolute left-0  z-10 mt-2 bg-white text-black rounded-lg shadow-lg w-52">
+              <div className="absolute left-0 z-10 mt-2 bg-white text-black rounded-lg shadow-lg w-52">
                 {categories.map((category, index) => (
                   <Link
                     href={`/products/category/${category}`}
@@ -232,7 +213,7 @@ function Nav() {
           <Link href="/cart" className="flex items-center gap-2 relative">
             <div className="relative">
               <div className="absolute -top-2 -right-2 w-5 h-5 bg-black text-white text-xs font-semibold flex items-center justify-center rounded-full">
-                {cart?.length}
+                {cart.length}
               </div>
               <FaShoppingCart className="text-2xl" />
             </div>
@@ -254,15 +235,15 @@ function Nav() {
               </span>
             </button>
             {dropdownOpen && (
-              <div className="absolute z-30 sm:-right-5 mt-2 bg-white text-black rounded-b-lg shadow-lg w-48">
+              <div className="absolute right-0 mt-2 bg-white text-black rounded-lg shadow-lg w-48">
                 {!session ? (
                   <>
-                    <Link href="/auth/signin" onClick={toggleDropdown}>
+                    <Link href="/auth/signin">
                       <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">
                         Sign In
                       </span>
                     </Link>
-                    <Link href="/auth/signup" onClick={toggleDropdown}>
+                    <Link href="/auth/signup">
                       <span className="block w-full text-left px-4 py-2 hover:bg-gray-200">
                         Sign Up
                       </span>
@@ -282,51 +263,47 @@ function Nav() {
         </div>
       </div>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile menu items */}
       {isOpen && (
-        <div className="sm:hidden flex flex-col gap-4 mt-4 bg-slate-700 text-white px-4 py-4">
-          <Link
-            href="/"
-            onClick={toggleMenu}
-            className="flex gap-2 items-center"
-          >
-            <FaHome className="text-2xl" />
-            <span className="hover:text-gray-200">Home</span>
+        <div className="sm:hidden flex flex-col items-center gap-4 mt-4">
+          <Link href="/" onClick={toggleMenu}>
+            Home
           </Link>
-          {/* <Link href="/products" onClick={toggleMenu} className="flex gap-2 items-center">
-          <AiFillProduct className="text-2xl" />
-          <span className="hover:text-gray-200">Products</span>
-        </Link> */}
-          <Link href="/cart" className="flex items-center gap-2 relative">
-            <div className="relative">
-              <div className="absolute -top-2 -right-2 w-5 h-5 bg-slate-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">
-                {cart?.length}
-              </div>
-              <FaShoppingCart className="text-2xl" />
-            </div>
-            <span className="hover:text-gray-500 transition-colors duration-200">
-              Cart
-            </span>
-          </Link>
-
-          {/* Category dropdown */}
-          <div className="relative" onClick={handleCategoryDropdown}>
-            <button className="flex gap-2 items-center">
-              <BiCategory className="text-2xl" />
-              <span className="hover:text-gray-200">Categories</span>
+          <div className="relative">
+            <button onClick={handleCategoryDropdown}>
+              Categories
             </button>
             {categoryDropdownOpen && (
-              <div className="">
+              <div className="absolute z-10 mt-2 bg-white text-black rounded-lg shadow-lg w-52">
                 {categories.map((category, index) => (
                   <Link
                     href={`/products/category/${category}`}
                     key={index}
-                    className="block px-4 py-2"
+                    className="block px-4 py-2 hover:bg-gray-200"
                   >
                     {category.toLocaleUpperCase()}
                   </Link>
                 ))}
               </div>
+            )}
+          </div>
+          <Link href="/cart" onClick={toggleMenu}>
+            Cart ({cart.length})
+          </Link>
+          <div>
+            {!session ? (
+              <>
+                <Link href="/auth/signin" onClick={toggleMenu}>
+                  Sign In
+                </Link>
+                <Link href="/auth/signup" onClick={toggleMenu}>
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              <button onClick={handleSignOut}>
+                Sign Out
+              </button>
             )}
           </div>
         </div>

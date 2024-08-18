@@ -1,16 +1,9 @@
-
-
 import { NextRequest, NextResponse } from "next/server";
 
+// Handles PUT requests to update the cart for a specific user
 export async function PUT(req: NextRequest) {
   try {
-    // const session = await getSession();
-    // if (!session) {
-    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    // }
-
-    // const userId = session?.user?.id;
-
+    // Extract userId from the URL path
     const url = new URL(req.url);
     const userId = url.pathname.split('/').pop(); // Get userId from the URL path
 
@@ -19,18 +12,19 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid userId' }, { status: 400 });
     }
 
-    console.log("user id is ",userId)
+    // Parse the request body
     const cartReq = await req.json();
-    console.log("cart req from cart route is ",cartReq)
 
+    // Forward the request to the backend API
     const response = await fetch(`${process.env.API_ROOT}/api/cart/user/${userId}`, {
-      method: "PUT", // Assuming you want to update the cart
+      method: "PUT", // Update the cart
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(cartReq),
     });
 
+    // Parse and return the response
     const data = await response.json();
 
     if (!response.ok) {
@@ -42,9 +36,11 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   }
 }
+
+// Handles GET requests to retrieve the cart for a specific user
 export async function GET(req: NextRequest) {
   try {
-    console.log("-------------------------------")
+    // Extract userId from the URL path
     const url = new URL(req.url);
     const userId = url.pathname.split('/').pop(); // Get userId from the URL path
 
@@ -53,10 +49,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid userId' }, { status: 400 });
     }
 
-    console.log("user id is wait for mw ",userId)
-
+    // Forward the request to the backend API
     const response = await fetch(`${process.env.API_ROOT}/api/cart/user/${userId}`);
 
+    // Parse and return the response
     const data = await response.json();
 
     if (!response.ok) {
