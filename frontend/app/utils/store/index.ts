@@ -35,19 +35,20 @@ export interface CartData {
   quantity: number;
 }
 
-export const productState = selector<ProductData[]>({
+export const productState = atom<ProductData[]>({
   key: 'productState',
-  get: async () => {
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-      const data: ProductData[] = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      return [];
-    }
-  },
+  // get: async () => {
+  //   try {
+  //     const response = await fetch(`https://fakestoreapi.com/products`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch products');
+  //     }
+  //     const data: ProductData[] = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //     return [];
+  //   }
+  // },
+  default: [] as ProductData[]
 });

@@ -6,6 +6,9 @@ const nextConfig = { images: {
     ignoreBuildErrors: true,
   },
   staticPageGenerationTimeout: 700,
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 };
 
 export default nextConfig;

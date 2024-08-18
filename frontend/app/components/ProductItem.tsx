@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { addedState, CartData, cartState, ProductData } from "../utils/store";
+import React, { useEffect, useState } from "react";
+import { addedState, CartData, cartState, ProductData, productState } from "../utils/store";
 import Link from "next/link";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { BiLoaderAlt } from "react-icons/bi";
 import SessionProviderWrapper from "../utils/SessionProviderWrapper";
 import useCart from "./CartData";
 import Image from "next/image";
+import { fetchProducts } from "../utils/api";
 
 const Item = ({ product }: { product: ProductData }) => {
   const [cart,setCart] = useRecoilState(cartState); // Use Recoil to manage cart
@@ -13,6 +14,17 @@ const Item = ({ product }: { product: ProductData }) => {
   const [uselastid, setlastid] = useState(0);
   const setGlobalAdded = useSetRecoilState(addedState);
   const {updateCart} = useCart()
+  const setProducts = useSetRecoilState(productState)
+
+  useEffect(()=>{
+    const loadProducts = async () =>{
+      const data = await fetchProducts();
+
+      setProducts(data)
+    }
+
+    loadProducts()
+  },[])
 
   const addToCart = async (product: ProductData) => {
 
