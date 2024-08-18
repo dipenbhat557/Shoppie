@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FaShop } from 'react-icons/fa6';
 
 export default function SignUp() {
 
@@ -23,10 +24,19 @@ export default function SignUp() {
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
+    // Create a default image if no image is uploaded
+    const defaultImage = await fetch('/iconwhite.jpg')
+      .then((res) => res.blob())
+      .then((blob) => new File([blob], 'default.jpg', { type: 'image/jpeg' }));
+
     const formDataToSend = new FormData();
-    formDataToSend.append("req", JSON.stringify({name:formData?.name,username:formData?.username,password:formData?.password}));
+    formDataToSend.append("req", JSON.stringify({ name: formData.name, username: formData.username, password: formData.password }));
+
+    // Append the image (either user-provided or default)
     if (img) {
       formDataToSend.append("file", img);
+    } else {
+      formDataToSend.append("file", defaultImage);
     }
     
 
@@ -42,7 +52,8 @@ export default function SignUp() {
 
     if (res.status==201 || res.status == 200) {
       alert("Registered successfully")
-      console.log("user is ",res.data)
+      // console.log("user is ",res.data)
+      // localStorage.setItem("userId",res?.data?.id)
       setFormData({
         name: '',
         username: "",
@@ -53,7 +64,7 @@ export default function SignUp() {
       setImg(null);
       setDataSaved(true);
       setTimeout(() => setDataSaved(false), 3000);
-      router.push("/")
+      router.push("/auth/signin")
 
     } else {
       alert("Please enter a valid credentials")
@@ -72,7 +83,7 @@ export default function SignUp() {
   <div className='flex '>
       <div className='bg-slate-800 w-[40%] hidden sm:flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
         <Link href="/" className='flex items-center justify-center gap-4'>
-          <Image src="/icon.png" height={50} width={50} alt='logo' className='rounded-full' />
+          <FaShop  className='rounded-full text-white text-5xl' />
           <span className="text-2xl font-bold">Shoppie</span>
         </Link>
        <p> Register to<br/> Enjoy Shopping </p>

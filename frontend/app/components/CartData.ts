@@ -77,33 +77,54 @@ function useCart() {
       } catch (error) {
         console.error('Error updating cart:', error);
       }
-    } 
-  };
-  
-  const removeItem = async (productId: number) => {
-    const session = await getSession();
-    const userId = session?.user?.id;
-  
-    if (userId) {
-      try {
-        const response = await fetch(`/api/cart/user/${userId}/${productId}`, {
-          method: 'DELETE',
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to delete item');
+    }else {
+      // User is not authenticated, manage the cart locally
+      const existingItem = cart.find(item => item.id === newCartState.productId);
+
+      if (existingItem) {
+        setCart(cart.map(item =>
+          item.id === newCartState.productId
+            ? { ...item, quantity: item.quantity + newCartState.quantity }
+            : item
+        ));
+      } else {
+        const product = products.find(p => p.id === newCartState.productId);
+        if (product) {
+          setCart([...cart, { ...product, quantity: newCartState.quantity }]);
         }
+      } 
+  }
+}
   
-        // Update the cart items
-        const newCartItems: CartData[] = cart?.filter(c => c?.id !== productId);
-        console.log("New cart items:", newCartItems);
-        setCart(newCartItems);
-      } catch (error) {
-        console.error('Error deleting item:', error);
+const removeItem = async (productId: number) => {
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  if (userId) {
+    try {
+      const response = await fetch(`/api/cart/user/${userId}/${productId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete item');
       }
+
+      // Update the cart items locally after successful removal from backend
+      const newCartItems: CartData[] = cart?.filter(c => c?.id !== productId);
+      setCart(newCartItems);
+    } catch (error) {
+      console.error('Error deleting item:', error);
     }
-  };
-  
+  } else {
+    // User is not authenticated, manage the cart locally
+    const updatedCart = cart.filter(item => item.id !== productId);
+
+    // Update the Recoil state with the locally updated cart
+    setCart(updatedCart);
+  }
+};
+
 
   return {
     removeItem,

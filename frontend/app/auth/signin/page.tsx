@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {  useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { FaShop } from 'react-icons/fa6';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -41,7 +42,7 @@ export default function SignIn() {
     <div className='flex '>
       <div className='bg-slate-800 w-[40%] hidden sm:flex flex-col gap-10 items-center justify-center text-center text-[40px] text-white font-semibold' > 
         <Link href="/" className='flex items-center justify-center gap-4'>
-          <Image src="/icon.png" height={50} width={50} alt='logo' className='rounded-full' />
+          <FaShop className=' text-white text-5xl' />
           <span className="text-2xl font-bold">Shoppie</span>
         </Link>
        <p> Sign In to<br/> Enjoy Shopping </p>
