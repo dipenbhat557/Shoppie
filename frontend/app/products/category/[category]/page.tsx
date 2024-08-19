@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { CartData, cartState, ProductData } from '@/app/utils/store';
-import Navbar from '@/app/components/Navbar';
-import Footer from '@/app/components/Footer';
 import { useParams } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/navigation';
@@ -26,7 +24,6 @@ if (typeof params?.category === 'string') {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
-  const [cart, setCart] = useRecoilState<CartData[]>(cartState);
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter()
 
@@ -68,7 +65,6 @@ if (typeof params?.category === 'string') {
 
   return (
     <div>
-      <Navbar />
       {added && (
         <div className="w-full h-[100px] bg-opacity-50 text-white mt-3 bg-green-500 flex items-center justify-center font-semibold">
           Item Added to Cart Successfully!!
@@ -93,8 +89,6 @@ if (typeof params?.category === 'string') {
           ))}
         </div>
       </div>
-    <div className='bg-white w-full h-[100px] flex' />
-         <Footer />
     </div>
   );
 }

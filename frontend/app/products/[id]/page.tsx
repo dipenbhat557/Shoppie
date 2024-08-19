@@ -1,26 +1,23 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { addedState, CartData, ProductData, productState } from '@/app/utils/store';
-import Navbar from '@/app/components/Navbar';
-import Footer from '@/app/components/Footer';
+import { addedState, CartData, ProductData, } from '@/app/utils/store';
 import { useParams } from 'next/navigation';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { BiLoaderAlt } from 'react-icons/bi';
 import Link from 'next/link';
 import ProductItem from '@/app/components/ProductItem';
 import useCart from '@/app/components/CartData';
 import Image from 'next/image';
 
-export default function ProductPage() {
+export default function ProductPage({products}:{products:ProductData[]}) {
   const id = useParams()?.id;
   const [product, setProduct] = useState<ProductData | null>(null);
   const [moreProducts, setMoreProducts] = useState<ProductData[]>([]);
   const [addedItem, setAddedItem] = useState<number | null>(null);
   const [uselastid, setlastid] = useState<number | null>(null);
   const setGlobalAdded = useSetRecoilState(addedState);
-  const products = useRecoilValue(productState);
-  const { updateCart, cart } = useCart();
+  const { updateCart, cart } = useCart(products);
 
   useEffect(() => {
     if (id) {
@@ -83,7 +80,6 @@ export default function ProductPage() {
 
   return (
     <div>
-      <Navbar />
 
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -144,7 +140,6 @@ export default function ProductPage() {
       </div>
       
       <div className='bg-white w-full h-[100px] flex' />
-      <Footer />
     </div>
   );
 }

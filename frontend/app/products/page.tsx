@@ -1,20 +1,13 @@
-"use client"
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import ProductsClient from '../components/ProductsClient';
-import { useRecoilValue } from 'recoil';
-import { productState } from '../utils/store';
+import { fetchProducts } from '../utils/api';
 
-const ProductsPage = () => {
-  const products = useRecoilValue(productState);
+export default async function ProductsPage () {
 
+  const products = await fetchProducts();
   return (
     <div>
-      <Navbar />
       <ProductsClient products={products} />
-      <Footer />
     </div>
   );
 };
 
-export default ProductsPage;

@@ -3,8 +3,6 @@
 import { useRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
 import { CartData, cartState } from '../utils/store';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import CartItem from '../components/CartItem';
 
 const CartPage = () => {
@@ -37,7 +35,6 @@ const CartPage = () => {
 
   return (
     <div className='min-h-screen relative'>
-      <Navbar />
 
       {/* Show success message if checked out */}
       {checkedout && (
@@ -87,7 +84,6 @@ const CartPage = () => {
       </div>
       
       <div className='bg-white w-full h-[100px] flex' />
-      <Footer />
     </div>
   );
 };
