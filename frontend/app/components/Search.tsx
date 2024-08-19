@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ProductData, productState } from '../utils/store';
-import { useRecoilValue } from 'recoil';
+import { ProductData } from '../utils/store';
 import Link from 'next/link';
 
-const Search: React.FC = () => {
-    const products = useRecoilValue(productState);
+const Search = ({products}:{products:ProductData[]}) => {
     const [searchResult, setSearchResult] = useState<ProductData[]>([]);
     const [input, setInput] = useState("");
 

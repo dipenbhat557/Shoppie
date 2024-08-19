@@ -1,17 +1,16 @@
 "use client"; // Mark this file as a Client Component
 
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { ProductData, productState } from '../utils/store';
+import { ProductData} from '../utils/store';
 import ProductItem from './ProductItem';
 
 interface CategorywiseProductProps {
   category: string;
+  allProducts:ProductData[]
 }
 
-const CategorywiseProduct: React.FC<CategorywiseProductProps> = ({ category }) => {
+const CategorywiseProduct: React.FC<CategorywiseProductProps> = ({ category,allProducts }) => {
   const [products, setProducts] = useState<ProductData[]>([]);
-  const allProducts = useRecoilValue(productState);
 
   useEffect(() => {
     // Filter products by category
