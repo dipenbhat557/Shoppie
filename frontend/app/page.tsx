@@ -1,32 +1,28 @@
-"use client";
-
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Link from "next/link";
 import Hero from "./components/Hero";
-import { categoryState, ProductData, productState } from "./utils/store";
-import { useRecoilValue } from "recoil";
-import "./globals.css";
+import { fetchProducts } from "./utils/api";
 import ProductItem from "./components/ProductItem";
 import CategorywiseProduct from "./components/CategorywiseProduct";
 
-export default function Home() {
-  const products = useRecoilValue<ProductData[]>(productState);
-  const categories = useRecoilValue(categoryState)
-  
+export default async function Home() {
+  const products = await fetchProducts();
+  const categories = [...new Set(products.map(p => p.category))];
+
   return (
     <div>
       <Navbar />
       <Hero />
 
       <div className="container mx-auto px-4 border border-grey-800 mt-2 p-2 rounded-lg">
-        <h1 className="text-2xl sm:text-4xl font-bold  my-8 text-grey-800">
+        <h1 className="text-2xl sm:text-4xl font-bold my-8 text-grey-800">
           Featured Products
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {products?.slice(0,4)?.map((product: ProductData,index:number) => {
-            return <ProductItem key={index} product={product}/>
-          })}
+          {products.slice(0, 4).map(product => (
+            <ProductItem key={product.id} product={product} />
+          ))}
         </div>
         <div className="text-center mt-8">
           <Link href="/products">
@@ -36,10 +32,11 @@ export default function Home() {
       </div>
 
       <div className="py-2">
-      {categories?.map((c:string,index:number)=>{return(
-        <CategorywiseProduct category={c} key={index}/>
-      )})}</div>
-    <div className='bg-white w-full h-[100px] flex' />
+        {categories.map((category, index) => (
+          <CategorywiseProduct category={category} key={index} />
+        ))}
+      </div>
+      <div className="bg-white w-full h-[100px] flex" />
       <Footer />
     </div>
   );

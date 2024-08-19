@@ -12,7 +12,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  staticPageGenerationTimeout: 700,
+  staticPageGenerationTimeout: 300,
   eslint: {
     ignoreDuringBuilds: true,
   },

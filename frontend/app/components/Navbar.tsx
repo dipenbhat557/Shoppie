@@ -1,7 +1,7 @@
+"use client"
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AiFillProduct } from "react-icons/ai";
 import { FaHome, FaShoppingCart, FaUser } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useSession, signOut } from "next-auth/react";
@@ -12,7 +12,7 @@ import Loading from "./Loading";
 import { BiCategory } from "react-icons/bi";
 import Search from "./Search";
 
-function Nav() {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu state
   const [dropdownOpen, setDropdownOpen] = useState(false); // Auth dropdown state
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false); // Category dropdown state
@@ -312,11 +312,3 @@ function Nav() {
   );
 }
 
-export default function Navbar() {
-  return (
-    // session provider wrapper for getting user session
-    <SessionProviderWrapper>
-      <Nav />
-    </SessionProviderWrapper>
-  );
-}

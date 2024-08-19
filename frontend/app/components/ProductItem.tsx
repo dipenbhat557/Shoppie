@@ -1,46 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { addedState, CartData, cartState, ProductData, productState } from "../utils/store";
-import Link from "next/link";
+import React from "react";
+import { addedState, CartData, cartState, ProductData } from "../utils/store";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { BiLoaderAlt } from "react-icons/bi";
-import SessionProviderWrapper from "../utils/SessionProviderWrapper";
 import useCart from "./CartData";
 import Image from "next/image";
+import Link from "next/link";
+import { BiLoaderAlt } from "react-icons/bi";
 
 const Item = ({ product }: { product: ProductData }) => {
-  const [cart,setCart] = useRecoilState(cartState); // Use Recoil to manage cart
-  const [addedItem, setAddedItem] = useState(0);
-  const [uselastid, setlastid] = useState(0);
+  const [cart, setCart] = useRecoilState(cartState);
+  const [addedItem, setAddedItem] = React.useState(0);
+  const [uselastid, setlastid] = React.useState(0);
   const setGlobalAdded = useSetRecoilState(addedState);
-  const {updateCart} = useCart()
- 
+  const { updateCart } = useCart([]); // Pass empty array initially
 
   const addToCart = async (product: ProductData) => {
-
-    // Check if product already exists in cart
     const existingItem = cart.find(item => item.id === product.id);
-    let newCart:CartData[] = [...cart];
+    let newCart: CartData[] = [...cart];
 
     if (existingItem) {
-      // Update quantity if product already exists
       newCart = newCart.map(item =>
         item.id === product?.id
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
     } else {
-      // Add new item if product does not exist
-      newCart.push({ ...product,quantity:1 });
+      newCart.push({ ...product, quantity: 1 });
     }
 
-    // Create CartReq object
-  const cartReq: {productId:number;quantity:number} = {
-    productId: product.id,
-    quantity: 1,
-  };
+    const cartReq: { productId: number; quantity: number } = {
+      productId: product.id,
+      quantity: 1,
+    };
 
-  // Update the cart
-  await updateCart(cartReq);
+    await updateCart(cartReq);
 
     setAddedItem(product?.id);
     setlastid(product?.id);
@@ -103,7 +95,7 @@ const Item = ({ product }: { product: ProductData }) => {
         </>
       ) : (
         <div className="mt-4 w-full bg-gray-800 text-white py-2 px-4 rounded flex items-center justify-center">
-          <BiLoaderAlt className=" animate-spin" />
+          <BiLoaderAlt className="animate-spin" />
         </div>
       )}
     </div>
@@ -112,9 +104,7 @@ const Item = ({ product }: { product: ProductData }) => {
 
 const ProductItem = ({ product }: { product: ProductData }) => {
   return (
-    <SessionProviderWrapper>
-      <Item product={product} />
-    </SessionProviderWrapper>
+    <Item product={product} />
   );
 };
 

@@ -1,21 +1,19 @@
 import { atom, selector } from 'recoil';
 
-// CartData is the shape of your cart items
 export const cartState = atom<CartData[]>({
   key: 'cartState',
-  default: [] as CartData[],
+  default: [],
 });
 
-export const addedState = atom({
+export const addedState = atom<boolean>({
   key: 'addedState',
-  default: false
-})
+  default: false,
+});
 
-export const categoryState = atom({
+export const categoryState = atom<string[]>({
   key: 'categoryState',
-  default: [] as string[]
-})
-
+  default: [],
+});
 
 export interface ProductData {
   id: number;
@@ -25,6 +23,7 @@ export interface ProductData {
   description: string;
   image: string;
 }
+
 export interface CartData {
   id: number;
   title: string;
@@ -40,11 +39,8 @@ export const productState = selector<ProductData[]>({
   get: async () => {
     try {
       const response = await fetch(`https://fakestoreapi.com/products`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-      const data: ProductData[] = await response.json();
-      return data;
+      if (!response.ok) throw new Error('Failed to fetch products');
+      return await response.json();
     } catch (error) {
       console.error("Error fetching products:", error);
       return [];
