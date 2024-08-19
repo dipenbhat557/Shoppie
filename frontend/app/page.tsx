@@ -12,7 +12,6 @@ export default async function Home() {
 
   return (
     <div>
-      <Navbar />
       <Hero />
 
       <div className="container mx-auto px-4 border border-grey-800 mt-2 p-2 rounded-lg">
@@ -37,7 +36,6 @@ export default async function Home() {
         ))}
       </div>
       <div className="bg-white w-full h-[100px] flex" />
-      <Footer />
     </div>
   );
 }

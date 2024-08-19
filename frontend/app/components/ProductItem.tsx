@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { addedState, CartData, cartState, ProductData } from "../utils/store";
 import { useRecoilState, useSetRecoilState } from "recoil";
