@@ -1,96 +1,29 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { CartData, cartState, ProductData } from '../utils/store';
-import { getSession } from 'next-auth/react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { cartState, ProductData, userIdState, } from '../utils/store';
+import { fetchCartData, removeCartItem, updateCartData } from '../utils/cartUtils';
 
-function useCart(products: ProductData[]) { // Accept products as an argument
+function useCart(products: ProductData[]) {
   const [cart, setCart] = useRecoilState(cartState);
-  const [userId, setUserId] = useState<string | null>(null);
+  const userId = useRecoilValue(userIdState);
 
   useEffect(() => {
-    const fetchCartData = async () => {
-      const session = await getSession();
-      setUserId(session?.user?.id || null);
-
-      if (userId) {
-        try {
-          const response = await fetch(`/api/cart/user/${userId}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch cart data');
-          }
-          const data: any = await response.json();
-
-          const newCartItems: CartData[] = data?.items?.map((i: any) => {
-            const itemProduct = products.find(p => p.id === i.productId);
-            return itemProduct ? { ...itemProduct, quantity: i.quantity } : null;
-          }).filter((item: CartData | null) => item !== null);
-
-          setCart(newCartItems);
-        } catch (error) {
-          console.error('Error fetching cart data:', error);
-          setCart([]);
-        }
-      }
+    const loadCart = async () => {
+      const cartData = await fetchCartData(userId, products,cart);
+      setCart(cartData);
     };
-
-    fetchCartData();
-  }, [userId, setCart, products]);
+    loadCart();
+  }, [ setCart]);
 
   const updateCart = async (newCartState: { productId: number; quantity: number }) => {
-    const session = await getSession();
-    const userId = session?.user?.id;
-
-    if (userId) {
-      try {
-        const response = await fetch(`/api/cart/user/${userId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newCartState),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to update cart');
-        }
-        const data: any = await response.json();
-
-        const newCartItems: CartData[] = data?.items?.map((i: any) => {
-          const itemProduct = products.find(p => p.id === i.productId);
-          return itemProduct ? { ...itemProduct, quantity: i.quantity } : null;
-        }).filter((item: CartData | null) => item !== null);
-
-        setCart(newCartItems);
-      } catch (error) {
-        console.error('Error updating cart:', error);
-      }
-    } 
+    const updatedCart = await updateCartData(userId, newCartState, products,cart);
+    setCart(updatedCart);
   };
 
   const removeItem = async (productId: number) => {
-    const session = await getSession();
-    const userId = session?.user?.id;
-
-    if (userId) {
-      try {
-        const response = await fetch(`/api/cart/user/${userId}/${productId}`, {
-          method: 'DELETE',
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to delete item');
-        }
-
-        const newCartItems: CartData[] = cart.filter(c => c.id !== productId);
-        setCart(newCartItems);
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      }
-    } else {
-      const updatedCart = cart.filter(item => item.id !== productId);
-      setCart(updatedCart);
-    }
+    const updatedCart = await removeCartItem(userId, productId, cart);
+    setCart(updatedCart);
   };
 
   return {

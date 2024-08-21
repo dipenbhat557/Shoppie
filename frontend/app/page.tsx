@@ -1,5 +1,3 @@
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Link from "next/link";
 import Hero from "./components/Hero";
 import { fetchProducts } from "./utils/api";

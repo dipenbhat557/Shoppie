@@ -15,6 +15,11 @@ export const categoryState = atom<string[]>({
   default: [],
 });
 
+export const userIdState = atom({
+  key: 'userIdState',
+  default: null
+})
+
 export interface ProductData {
   id: number;
   title: string;

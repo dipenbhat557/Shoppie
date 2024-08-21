@@ -59,8 +59,8 @@ const MobileMenu = ({
       <FaHome className="text-2xl" />
             Home
           </Link>
-          <div className="relative">
-            <button className="flex gap-2" onClick={handleCategoryDropdown}>
+          <div className="relative" onClick={handleCategoryDropdown}>
+            <button className="flex gap-2" >
         <BiCategory className="text-2xl" />
               Categories
             </button>
@@ -71,6 +71,7 @@ const MobileMenu = ({
                     href={`/products/category/${category}`}
                     key={index}
                     className="block px-4 py-2 hover:bg-gray-200"
+                    onClick={handleCategoryDropdown}
                   >
                     {category.toLocaleUpperCase()}
                   </Link>

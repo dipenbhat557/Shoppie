@@ -1,15 +1,18 @@
 'use client'
 
+import { userIdState } from '@/app/utils/store';
 import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useCallback, useMemo } from 'react';
 import { FaShop } from 'react-icons/fa6';
+import { useSetRecoilState } from 'recoil';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const setUserId = useSetRecoilState(userIdState)
 
   const searchParams = useSearchParams();
   const callbackUrl = useMemo(() => searchParams.get('callbackUrl') || '/', [searchParams]);
@@ -31,9 +34,7 @@ export default function SignIn() {
         setError(result.error);
       } else {
         const session = await getSession();
-        if (session?.user) {
-          localStorage.setItem("userId", session.user.id);
-        }
+        setUserId(session?.user?.id)
         if (result?.url) {
           router.push(result.url);
         }
