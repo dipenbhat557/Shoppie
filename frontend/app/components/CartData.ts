@@ -65,22 +65,7 @@ function useCart(products: ProductData[]) { // Accept products as an argument
       } catch (error) {
         console.error('Error updating cart:', error);
       }
-    } else {
-      const existingItem = cart.find(item => item.id === newCartState.productId);
-
-      if (existingItem) {
-        setCart(cart.map(item =>
-          item.id === newCartState.productId
-            ? { ...item, quantity: item.quantity + newCartState.quantity }
-            : item
-        ));
-      } else {
-        const product = products.find(p => p.id === newCartState.productId);
-        if (product) {
-          setCart([...cart, { ...product, quantity: newCartState.quantity }]);
-        }
-      }
-    }
+    } 
   };
 
   const removeItem = async (productId: number) => {

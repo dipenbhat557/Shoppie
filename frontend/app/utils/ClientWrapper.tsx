@@ -11,9 +11,11 @@ export default function ClientWrapper({ children,categories,products }: { childr
   return (
         <SessionProvider>
           <RecoilRoot>
-            <Navbar categories={categories} products={products}/>
-            <CartAddedPopup >{children}</CartAddedPopup>
-            <Footer />
+            <div className='min-h-screen flex flex-col justify-between'>
+              <Navbar categories={categories} products={products}/>
+              <CartAddedPopup >{children}</CartAddedPopup>
+              <Footer />
+            </div>
           </RecoilRoot>
         </SessionProvider>
   );

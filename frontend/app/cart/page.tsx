@@ -34,7 +34,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className='min-h-screen relative'>
+    <div className=' relative'>
 
       {/* Show success message if checked out */}
       {checkedout && (
