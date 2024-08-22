@@ -30,6 +30,9 @@ const Item = ({ product }: { product: ProductData }) => {
       setCart(newCart)
     }
 
+   console.log("product is ",product) 
+    console.log("cart is ",cart)
+
     const cartReq: { productId: number; quantity: number } = {
       productId: product.id,
       quantity: 1,
