@@ -30,7 +30,7 @@ export default async function Home() {
 
       <div className="py-2">
         {categories.map((category, index) => (
-          <CategorywiseProduct category={category} allProducts={products} key={index} />
+          <CategorywiseProduct category={category} key={index} />
         ))}
       </div>
       <div className="bg-white w-full h-[100px] flex" />

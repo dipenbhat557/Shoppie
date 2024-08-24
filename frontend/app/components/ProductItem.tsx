@@ -7,12 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { BiLoaderAlt } from "react-icons/bi";
 
-const Item = ({ product,products }: { product: ProductData,products:ProductData[] }) => {
+const Item = ({ product }: { product: ProductData}) => {
   const [cart, setCart] = useRecoilState(cartState);
   const [addedItem, setAddedItem] = React.useState(0);
   const [uselastid, setlastid] = React.useState(0);
   const setGlobalAdded = useSetRecoilState(addedState);
-  const { updateCart } = useCart(products); // Pass empty array initially
+  const { updateCart } = useCart(); // Pass empty array initially
 
   const addToCart = async (product: ProductData) => {
     const existingItem = cart.find(item => item.id === product.id);
@@ -108,7 +108,7 @@ const Item = ({ product,products }: { product: ProductData,products:ProductData[
 
 const ProductItem = ({ product }: { product: ProductData }) => {
   return (
-    <Item product={product} />
+    <Item product={product}  />
   );
 };
 

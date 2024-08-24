@@ -20,6 +20,11 @@ export const userIdState = atom({
   default: null
 })
 
+export const productState = atom<ProductData[]>({
+  key: 'productState',
+  default: [],
+});
+
 export interface ProductData {
   id: number;
   title: string;

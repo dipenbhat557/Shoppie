@@ -17,7 +17,7 @@ export default function ProductPage({products}:{products:ProductData[]}) {
   const [addedItem, setAddedItem] = useState<number | null>(null);
   const [uselastid, setlastid] = useState<number | null>(null);
   const setGlobalAdded = useSetRecoilState(addedState);
-  const { updateCart, cart } = useCart(products);
+  const { updateCart, cart } = useCart();
 
   useEffect(() => {
     if (id) {
