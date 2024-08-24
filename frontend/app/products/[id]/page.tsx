@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { addedState, CartData, ProductData, } from '@/app/utils/store';
+import { addedState, CartData, ProductData, productState, } from '@/app/utils/store';
 import { useParams } from 'next/navigation';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { BiLoaderAlt } from 'react-icons/bi';
 import Link from 'next/link';
 import ProductItem from '@/app/components/ProductItem';
 import useCart from '@/app/components/CartData';
 import Image from 'next/image';
 
-export default function ProductPage({products}:{products:ProductData[]}) {
+export default function ProductPage() {
   const id = useParams()?.id;
+  const products = useRecoilValue(productState)
   const [product, setProduct] = useState<ProductData | null>(null);
   const [moreProducts, setMoreProducts] = useState<ProductData[]>([]);
   const [addedItem, setAddedItem] = useState<number | null>(null);

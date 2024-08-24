@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ProductData } from '../utils/store';
 import Link from 'next/link';
 
 const Search = ({products}:{products:ProductData[]}) => {
     const [searchResult, setSearchResult] = useState<ProductData[]>([]);
     const [input, setInput] = useState("");
+    const [searchOpen, setSearchOpen] = useState(false)
+    
+  const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (input) {
@@ -13,10 +16,21 @@ const Search = ({products}:{products:ProductData[]}) => {
                     product.title.toLowerCase().includes(input.toLowerCase())
                 )
             );
+            
         } else {
             setSearchResult([]);
         }
+        handleMouseOverSearch();
     }, [input, products]);
+
+    const handleMouseOverSearch = () => {
+        setSearchOpen(true);
+        if (timeoutId.current) clearTimeout(timeoutId.current);
+      };
+    
+      const handleMouseLeaveSearch = () => {
+        timeoutId.current = setTimeout(() => setSearchOpen(false), 1000);
+      };
 
     return (
         <div className="relative w-full max-w-lg">
@@ -39,8 +53,11 @@ const Search = ({products}:{products:ProductData[]}) => {
                     clipRule="evenodd"
                 />
             </svg>
-            {input && (
-                <div className='absolute top-12 w-full max-w-lg bg-white shadow-lg rounded-lg z-20'>
+            {input && searchOpen && (
+                <div
+                 onMouseEnter={handleMouseOverSearch}
+                 onMouseLeave={handleMouseLeaveSearch}
+                 className='absolute top-12 w-full max-w-lg bg-white shadow-lg rounded-lg z-20'>
                     {searchResult.length > 0 ? (
                         searchResult.map((product) => (
                             <Link href={`/products/${product.id}`} key={product.id}>
