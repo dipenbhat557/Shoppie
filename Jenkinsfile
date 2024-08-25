@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+        DOCKER_HOST = "unix:///Users/avashneupane/.docker/run/docker.sock"
+    }
+
     stages {
         stage('Build Docker Images') {
             steps {
