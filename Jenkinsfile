@@ -1,7 +1,8 @@
 pipeline {
     agent any
-    
-
+     environment {
+        PATH = "/usr/local/bin:$PATH"
+    }
     stages {
         stage('Build Docker Images') {
             steps {
@@ -17,7 +18,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-              docker.withRegistry('', 'dockerhub-cred') {
+              docker.withRegistry('https://hub.docker.com/', 'dockerhub-cred') {
         
                         docker.image('avash9857/shoppie-frontendservice').push('latest')
                         
