@@ -13,7 +13,9 @@ services:
       - mysql-data:/var/lib/mysql
 
   appservice:
-    build: .
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     depends_on:
       - dbservice
     environment:
@@ -27,6 +29,18 @@ services:
       - 8080:8080 
     networks:
       - dmc
+    
+  frontendservice:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on: 
+      - appservice
+    ports:
+      -  3000:3000   
+    networks:
+      - dmc
+
 
 networks:
   dmc:
