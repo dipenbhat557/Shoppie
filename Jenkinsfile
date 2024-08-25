@@ -20,7 +20,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', '10') {
+               withDockerRegistry([credentialsId: '10', url: 'https://index.docker.io/v1/']) {
         
                         docker.image('avash9857/shoppie-frontendservice').push('latest')
                         
