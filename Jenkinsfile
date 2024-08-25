@@ -10,10 +10,10 @@ pipeline {
             steps {
                 script {
                     
-                    docker.build('avash9857/shoppie-frontendservice', './frontend/Dockerfile')
+                    docker.build('avash9857/shoppie-frontendservice', './frontend')
                     
         
-                    docker.build('avash9857/shoppie-appservice', './backend/Dockerfile')
+                    docker.build('avash9857/shoppie-appservice', './backend')
                 }
             }
         }
