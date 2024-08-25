@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     
-                    docker.withRegistry('https://hub.docker.com/', 'dockerhub-cred') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-cred') {
 
                         def  shoppiefrontendservice =  docker.build('avash9857/shoppie-frontendservice', './frontend')
 
