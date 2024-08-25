@@ -17,8 +17,7 @@ let category: string = '';
 if (typeof params?.category === 'string') {
   category = decodeURIComponent(params.category);
 } else if (Array.isArray(params?.category)) {
-  // If for some reason category is an array, handle it accordingly
-  category = decodeURIComponent(params.category.join(' ')); // or choose how you want to handle the array
+  category = decodeURIComponent(params.category.join(' ')); 
 }
 
   const [products, setProducts] = useState<ProductData[]>([]);

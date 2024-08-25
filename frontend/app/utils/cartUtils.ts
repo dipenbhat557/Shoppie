@@ -50,8 +50,6 @@ export const updateCartData = async (userId: string | null, newCartState: { prod
       console.error('Error updating cart:', error);
       return [];
     }
-  }else{
-    return cart;
   }
 };
 

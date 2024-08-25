@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { useRecoilState } from "recoil";
+import {useRecoilValue } from "recoil";
 import { cartState } from "../utils/store";
 import MainLogo from "./MainLogo";
 import MobileMenu from "./MobileMenu";
@@ -12,7 +12,7 @@ const Navbar = ({ categories,products }: NavbarProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const { data: session } = useSession();
-  const [cart, setCartItems] = useRecoilState(cartState);
+  const cart = useRecoilValue(cartState);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
   const toggleMenu = () => setIsOpen(prev => !prev);

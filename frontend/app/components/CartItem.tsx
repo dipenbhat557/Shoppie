@@ -2,16 +2,14 @@ import React from 'react';
 import { CartData } from '../utils/store';
 import Image from 'next/image';
 import useCart from './CartData';
-import { fetchProducts } from '../utils/api';
 
 interface CartItemProps {
   item: CartData;
   setCartItems: React.Dispatch<React.SetStateAction<CartData[]>>;
 }
 
-export default async function CartItem ({ item, setCartItems }:CartItemProps) {
-  const products = await fetchProducts();
-  const { removeItem } = useCart(products);
+export default function CartItem ({ item, setCartItems }:CartItemProps) {
+  const { removeItem } = useCart();
 
   // Increase the quantity of the item in the cart
   const handleIncreaseQuantity = (id: number) => {
