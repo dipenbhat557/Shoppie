@@ -10,12 +10,12 @@ pipeline {
                     
                     docker.withRegistry('https://hub.docker.com/', 'dockerhub-cred') {
 
-                        def  shoppie-frontendservice =  docker.build('avash9857/shoppie-frontendservice', './frontend')
+                        def  shoppiefrontendservice =  docker.build('avash9857/shoppie-frontendservice', './frontend')
 
-                        shoppie-frontendservice.push()
+                        shoppiefrontendservice.push()
                       
-                        def  shoppie-appservice =  docker.build('avash9857/shoppie-appservice', './backend')
-                         shoppie-appservice.push()
+                        def  shoppieappservice =  docker.build('avash9857/shoppie-appservice', './backend')
+                         shoppieappservice.push()
                     }
                     
                 }
