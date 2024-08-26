@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: frontend-depo
+spec:
+  selector:
+    matchLabels:   
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:  
+        - name: frontend 
+          image: avash9857/shoppie-frontendservice:latest   
+          ports:
+            - containerPort: 3000  
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 3000

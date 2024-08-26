@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: backend-depo
+spec:
+  selector:
+    matchLabels: 
+      app: backend
+  replicas: 1
+  template: 
+    metadata:
+      labels:
+        app: backend
+    spec: 
+      containers:
+        - name: backend
+          image: avash9857/shoppie-appservice 
+          env:
+          - name: spring.datasource.url
+            value: jdbc:mysql://mysql:3306/shoppie_db?createDatabaseIfNotExist=true
+          - name: spring.datasource.username
+            value: root
+          - name: spring.datasource.password
+            value: deukhuri@123
+          - name: spring.jpa.properties.hibernate.dialect
+            value: org.hibernate.dialect.MySQL8Dialect
+          - name: spring.jpa.hibernate.ddl-auto
+            value: update
+          - name: spring.jpa.show-sql
+            value: "true"
+          ports:
+          - containerPort: 8080    
+            name: http  
+
+---
+apiVersion: v1
+kind: Service
+metadata:  
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+     app: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30007  # Specify a port between 30000-32767
+
