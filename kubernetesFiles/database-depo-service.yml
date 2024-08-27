@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: database-depo
+spec: 
+  selector:
+    matchLabels: 
+      app: database
+  replicas: 1
+  template:
+    metadata:
+      labels: 
+        app: database   
+    spec: 
+      containers:
+        - name: database  
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD  
+              value: deukhuri@123
+          ports:
+            - containerPort: 3306  
+              name: mysql         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+spec: 
+  type: LoadBalancer
+  selector:
+    app: database
+  ports:
+    - port: 3306
+      targetPort: 3306  
