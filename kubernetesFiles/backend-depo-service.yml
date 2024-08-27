@@ -38,11 +38,11 @@ kind: Service
 metadata:  
   name: backend-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
      app: backend
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30007  # Specify a port between 30000-32767
+    
 
