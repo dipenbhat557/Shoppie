@@ -1,5 +1,13 @@
 type Query {
     bookById(id: ID): Book
+    products: [Product!]!
+    product(id: ID!): Product
+}
+
+type Mutation {
+    createProduct(input: ProductInput!): Product!
+    updateProduct(id: ID!, input: ProductInput!): Product!
+    deleteProduct(id: ID!): String!
 }
 
 type Book {
@@ -13,4 +21,17 @@ type Author {
     id: ID
     firstName: String
     lastName: String
+}
+
+type Product {
+    id: ID!
+    name: String!
+    price: Float!
+    description: String
+}
+
+input ProductInput {
+    name: String!
+    price: Float!
+    description: String
 }
