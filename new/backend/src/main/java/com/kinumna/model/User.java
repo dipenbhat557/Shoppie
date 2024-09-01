@@ -1,5 +1,6 @@
 package com.kinumna.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -8,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,6 +24,19 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+
+    private String password;
+
+    private boolean isVerified;
+
+    private String phoneNo;
+
+    private Date dob;
+
+    private Gender gender;
+
+    @OneToOne
+    private Image profile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orders;
