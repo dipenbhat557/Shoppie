@@ -23,7 +23,7 @@ public class Product {
 
     private String description;
     private Integer stock;
-    private Integer price;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "sale_id")
