@@ -1,7 +1,6 @@
 package com.kinumna.model;
 
 import java.util.Set;
-import java.util.Locale.Category;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,20 +15,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
-
-    private String name;
-    private String description;
-    private Double price;
+    private Integer orderId;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<ProductVariant> variants;
+    private Double totalAmount;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItems;
 }
