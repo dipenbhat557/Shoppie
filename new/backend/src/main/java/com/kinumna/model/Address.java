@@ -22,7 +22,7 @@ public class Address {
 
     private int houseNo;
 
-    private String steet;
+    private String street;
 
     private String city;
 

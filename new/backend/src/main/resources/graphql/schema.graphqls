@@ -1,3 +1,50 @@
+type Query {
+  
+  getAddress(id: Int!): Address
+  listAddresses: [Address]
+
+  getAllProducts: [Product]
+  getProductById(productId: ID!): Product
+}
+
+type Mutation {
+  
+  createAddress(input: AddressInput!): Address
+  updateAddress(id: Int!, input: AddressInput!): Address
+  deleteAddress(id: Int!): Boolean
+
+  createProduct(name: String!, description: String, price: Float, categoryId: ID): Product
+  updateProduct(productId: ID!, name: String, description: String, price: Float, categoryId: ID): Product
+  deleteProduct(productId: ID!): Boolean
+  
+}
+
+
+type Address {
+    id: Int
+    houseNo: Int
+    street: String
+    city: String
+    district: String
+    state: String
+    pinCode: String
+    landmark: String
+    isPrimary: Boolean
+    user: User
+}
+
+input AddressInput {
+    houseNo: Int!
+    street: String!
+    city: String!
+    district: String!
+    state: String!
+    pinCode: String!
+    landmark: String
+    isPrimary: Boolean!
+    userId: Int!
+}
+
 type Product {
   productId: ID!
   name: String!
@@ -19,15 +66,4 @@ type Category {
   categoryId: ID!
   categoryName: String!
   products: [Product]
-}
-
-type Query {
-  getAllProducts: [Product]
-  getProductById(productId: ID!): Product
-}
-
-type Mutation {
-  createProduct(name: String!, description: String, price: Float, categoryId: ID): Product
-  updateProduct(productId: ID!, name: String, description: String, price: Float, categoryId: ID): Product
-  deleteProduct(productId: ID!): Boolean
 }
