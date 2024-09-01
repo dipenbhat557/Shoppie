@@ -2,9 +2,9 @@ package com.kinumna.serviceImpl;
 
 import org.springframework.stereotype.Service;
 
-import com.kinumna.service.StoreService;
+import com.kinumna.service.SaleService;
 
 @Service
-public class StoreServiceImpl implements StoreService {
+public class SaleServiceImpl implements SaleService{
     
 }
