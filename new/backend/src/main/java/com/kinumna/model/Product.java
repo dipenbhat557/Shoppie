@@ -1,7 +1,6 @@
 package com.kinumna.model;
 
 import java.util.Set;
-import java.util.Locale.Category;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

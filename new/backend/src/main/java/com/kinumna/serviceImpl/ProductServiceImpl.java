@@ -8,7 +8,6 @@ import com.kinumna.repo.ProductRepo;
 import com.kinumna.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -17,23 +16,31 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepo productRepository;
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
-    }
-
-    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public Product getProductById(Integer productId) {
+        return productRepository.findById(productId).orElse(null);
     }
 
+    @Override
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Product updateProduct(Integer productId, Product product) {
+        if (productRepository.existsById(productId)) {
+            product.setProductId(productId);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        productRepository.deleteById(productId);
+    }
 }
