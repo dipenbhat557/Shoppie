@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,27 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Product")
-public class Product {
+@Table(name = "cart_item")
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
+    private Integer cartItemId;
 
-    private String description;
-    private Integer stock;
-    private Integer price;
+    private Integer totalPrice;
+    private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "sale_id")
-    private Sale sale;
+    @OneToOne
+    private ProductVariant productVariant;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    private String name;
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 }

@@ -38,6 +38,4 @@ public class User {
     @OneToOne
     private Image profile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Order> orders;
 }
