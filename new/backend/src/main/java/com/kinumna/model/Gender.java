@@ -1,8 +1,5 @@
 package com.kinumna.model;
 
 public enum Gender {
-    MALE,
-    FEMALE,
-    OTHER,
-    NOTSAY
+    MALE, FEMALE, OTHER, NOT_SAY
 }
