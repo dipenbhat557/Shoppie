@@ -4,7 +4,9 @@ import { BuyAgainComp } from "./components/BuyAgainComp";
 import { CarouselComponent } from "./components/CarouselComponent";
 import { HomeDecor } from "./components/HomeDecor";
 import { RecentItem } from "./components/RecentItem";
+import { Support } from "./components/Support";
 import TopDeals from "./components/TopDeals";
+
 
 export default function Home() {
   return (
@@ -16,6 +18,7 @@ export default function Home() {
       <RecentItem/>
       <AdBanner1/>
       <BuyAgainComp/>
+      <Support/>
     </div>
   )
 } 

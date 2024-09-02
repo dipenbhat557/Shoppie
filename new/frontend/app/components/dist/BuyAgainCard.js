@@ -3,11 +3,13 @@ exports.__esModule = true;
 exports.BuyAgainCard = void 0;
 var image_1 = require("next/image");
 var fa_1 = require("react-icons/fa");
+var styles_1 = require("../utils/styles");
 exports.BuyAgainCard = function (_a) {
     var name = _a.name, imageSrc = _a.imageSrc, price = _a.price, discount = _a.discount, altText = _a.altText, rating = _a.rating;
-    return (React.createElement("div", { className: "flex flex-col w-[20%]  " },
-        React.createElement(image_1["default"], { src: imageSrc, alt: altText }),
-        React.createElement("div", { className: "flex flex-col justify-between gap-2  h-[60%] items-center w-full" },
+    return (React.createElement("div", { className: "flex flex-col   items-center" },
+        React.createElement("div", { className: " rounded-lg  shadow-md " + styles_1.styles.productCardColor + "   " },
+            React.createElement(image_1["default"], { src: imageSrc, alt: altText })),
+        React.createElement("div", { className: "flex flex-col justify-between gap-2 py-2  h-[60%] items-center w-full" },
             React.createElement("p", { className: " text-[20px] font-semibold" },
                 " ",
                 name),
@@ -25,9 +27,9 @@ exports.BuyAgainCard = function (_a) {
                     React.createElement("p", { className: "text-[18px]" },
                         "Rs. ",
                         price - discount)),
-                React.createElement("div", { className: " text-[12px] absolute -top-4 right-10 py-1 px-3 bg-red-300  bg-opacity-35  border rounded-lg   text-red-500" },
+                React.createElement("div", { className: " text-[12px] absolute -top-5 right-6 py-1 px-3 bg-red-300   bg-opacity-35  border rounded-lg   text-red-500" },
                     "-Rs ",
                     discount)),
             React.createElement("div", { className: "flex items-center justify-center w-full" },
-                React.createElement("button", { className: "bg-[#FFC633] font-medium  w-[80%]  p-2" }, "Buy now")))));
+                React.createElement("button", { className: " " + styles_1.styles.buyNowButtonColor + " " + styles_1.styles.buyNowButtonHoverColor + " font-medium  w-[80%]  p-2" }, "Buy now")))));
 };

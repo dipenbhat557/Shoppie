@@ -6,6 +6,8 @@ import tv from "../../public/images/appliance/tv.png";
 
 import { BestDealsProductCard } from "./BestDealsProductCard";
 import { BestDealsAdd } from "./BestDealsAdd";
+import { useEffect, useRef, useState } from "react";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 export const featuredProducts = [
   {
@@ -65,6 +67,26 @@ export const featuredProducts = [
 ];
 
 export const BestDeals = () => {
+  const scrollref = useRef<HTMLDivElement>(null);
+  const [showLeftButton, setShowLeftButton] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollref.current) {
+        setShowLeftButton(scrollref.current.scrollLeft > 0);
+      }
+    };
+
+    if (scrollref.current) {
+      scrollref.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollref.current) {
+        scrollref.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <div className="flex max-w-[90%] mx-auto py-4">
       <div className="w-1/4  bg-gray-100  flex justify-center items-center">
@@ -76,9 +98,9 @@ export const BestDeals = () => {
           Best Deals on Appliances
         </h2>
         <div className="relative">
-          <div className="flex overflow-x-auto scrollbar-hide space-x-4">
+          <div ref={scrollref} className="flex overflow-x-auto scrollbar-hide space-x-2">
             {featuredProducts.map((product, index) => (
-              <div key={index} className="max-w-[50%] min-w-[19%]">
+              <div key={index} className="lg:max-w-[50%] md:max-w-[60%] sm:max-w-[90%]  md:min-w-[22%] sm:min-w-[20%] lg:min-w-[24%] ">
                 <BestDealsProductCard
                   imageSrc={product.imageSrc}
                   name={product.name}
@@ -88,14 +110,34 @@ export const BestDeals = () => {
               </div>
             ))}
           </div>
+          {showLeftButton && (
+            <button
+              className="absolute md:-left-2 lg:-left-5 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => {
+                if (scrollref.current) {
+                  scrollref.current.scrollBy({
+                    left: -400,
+                    behavior: "smooth",
+                  });
+                }
+              }}
+            >
+              <SlArrowLeft size={22}/>
+            </button>
+          )}
           <button
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
             onClick={() => {
-              const container = document.querySelector(".overflow-x-auto");
-              container!.scrollBy({ left: 400, behavior: "smooth" });
+              if (scrollref.current) {
+                scrollref.current.scrollBy({
+                  left: 400,
+                  behavior: "smooth",
+                });
+              }
             }}
           >
-            &gt;
+         <SlArrowRight size={22}/>
+         
           </button>
         </div>
       </div>

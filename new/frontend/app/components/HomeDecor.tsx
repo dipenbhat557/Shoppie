@@ -8,7 +8,6 @@ export const HomeDecor = () => {
   return (
     <div className="  w-[90%]  mx-auto py-4">
       <h1 className="pt-2 text-3xl  font-bold">Home & Decor</h1>
-
       <div className="flex">
         <div className=" flex w-[60%]  gap-2 pt-8">
           <HomeDecorComponent

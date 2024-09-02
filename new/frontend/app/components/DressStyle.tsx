@@ -13,20 +13,22 @@ interface Props {
 
 const DressStyleItem = ({ imageUrl, style, index }: Props) => {
   return (
+    
     <div 
-      className={`relative   rounded-lg overflow-hidden ${
+      className={`relative      rounded-lg overflow-hidden ${
         index == 0 || index == 3 ? "w-[34%]" : "w-[64%]"
       } `}
     >
       <Image
         src={imageUrl}
         alt={style}
-        className="w-full   h-24  md:h-32 object-cover"
+        className="w-full    h-24  md:h-32 object-cover"
       />
-      <div className="absolute  left-6 top-6    bg-opacity-50 flex items-center justify-center">
+      <div className="absolute  left-6 top-6   bg-opacity-50flex items-center justify-center">
         <h3 className="text-black text-lg font-bold">{style}</h3>
       </div>
     </div>
+    
   );
 };
 
@@ -58,6 +60,7 @@ export const DressStyle = () => {
       <div className="flex  flex-wrap  gap-2">
         {dressStyles.map((dressStyle, index) => (
           <DressStyleItem
+
             key={dressStyle.style}
             imageUrl={dressStyle.imageUrl}
             style={dressStyle.style}

@@ -8,12 +8,12 @@ import Image from "next/image";
 
 export const BestDealsAdd = () => {
   return (
-    <div className="px-4 bg-white shadow-md rounded-lg   max-w-xl mx-auto">
-      <p className="text-xl font-bold mb-4">
-        Up 40% off | Men`s and Women`s Footwear
+    <div className="px-4 bg-white hover:bg-slate-100 shadow-md rounded-lg max-w-xl mx-auto">
+      <p className="lg:text-xl md:text-xs font-bold p-4 ">
+        Up to 40% off | Men's and Women's Footwear
       </p>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 ">
         <div className="flex flex-col items-center">
           <Image
             src={men}
@@ -27,7 +27,7 @@ export const BestDealsAdd = () => {
           <Image
             src={women_shoe}
             alt="Women's shoes"
-            className="w-full h-32 object-cover rounded-md border-2 "
+            className="w-full h-32 object-cover rounded-md"
           />
           <p className="mt-2 font-medium">Women's shoes</p>
         </div>
@@ -38,7 +38,7 @@ export const BestDealsAdd = () => {
             alt="Men's Casual"
             className="w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Men`s Casual</p>
+          <p className="mt-2 font-medium">Men's Casual</p>
         </div>
 
         <div className="flex flex-col items-center">
@@ -47,7 +47,7 @@ export const BestDealsAdd = () => {
             alt="Women's Footwear"
             className="w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Women`s Footwear</p>
+          <p className="mt-2 font-medium">Women's Footwear</p>
         </div>
       </div>
     </div>

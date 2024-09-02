@@ -1,7 +1,9 @@
+import { styles } from "../utils/styles";
+
 export const Topbar = () => {
   return (
     <div className="bg-black text-white w-full p-3  ">
-      <div className="flex  justify-between">
+      <div className={`flex ${styles.maxScreenWidth}  ${styles.screenMarginAuto}  justify-between`}>
         <div className="pl-2">Delivery All over Nepal</div>
 
         <div className="flex justify-evenly sm:w-1/2 md:w-3/5 lg:w-2/5">

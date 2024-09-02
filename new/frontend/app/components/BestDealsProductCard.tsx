@@ -16,7 +16,7 @@ export const BestDealsProductCard = ({
   altText,
 }: Product) => {
   return (
-    <div className="flex flex-col items-center p-2">
+    <div className="flex w-full flex-col items-center p-2">
       <Image
         src={imageSrc}
         alt={altText}
