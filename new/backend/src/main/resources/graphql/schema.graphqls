@@ -67,3 +67,26 @@ type Category {
   categoryName: String!
   products: [Product]
 }
+
+type User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
+    phoneNumber: String!
+    profile: String
+    dob: Date
+    isVerified: Boolean!
+    gender: String!
+}
+
+input UserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    password: String!
+    dob: Date
+    gender: String!
+}

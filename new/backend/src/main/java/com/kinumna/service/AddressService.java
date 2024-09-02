@@ -1,13 +1,14 @@
 package com.kinumna.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.kinumna.model.Address;
+import com.kinumna.payload.requests.AddressInput;
 
 public interface AddressService {
-    Address save(Address address);
-    Optional<Address> findById(Integer id);
+    Address save(AddressInput input);
+    Address findById(Integer id);
     List<Address> findAll();
-    void deleteById(Integer id);
+    boolean deleteById(Integer id);
+    public Address updateAddress(Integer id, AddressInput input);
 }
