@@ -3,6 +3,7 @@ package com.kinumna.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class AddressController {
     private AddressService addressService;
 
     @QueryMapping
-    public Address getAddress(Integer id) {
+    public Address getAddress(@Argument Integer id) {
         return this.addressService.findById(id);
     }
 
@@ -28,17 +29,17 @@ public class AddressController {
     }
 
     @MutationMapping
-    public Address createAddress(AddressInput input) {
+    public Address createAddress(@Argument AddressInput input) {
         return addressService.save(input);
     }
 
     @MutationMapping
-    public Address updateAddress(Integer id, AddressInput input) {
+    public Address updateAddress(@Argument Integer id, @Argument AddressInput input) {
         return this.addressService.updateAddress(id, input);
     }
 
     @MutationMapping
-    public Boolean deleteAddress(Integer id) {
+    public Boolean deleteAddress(@Argument Integer id) {
         return this.addressService.deleteById(id);
     }
 }

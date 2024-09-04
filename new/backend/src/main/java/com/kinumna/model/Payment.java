@@ -1,5 +1,7 @@
 package com.kinumna.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,12 +23,12 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
 
-    private Integer paymentDate;
-    private Integer amount;
+    private LocalDateTime paymentDate;
+    private Float amount;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    private Integer referenceId;
+    private String referenceId;
     private String method;
 }

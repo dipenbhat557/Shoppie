@@ -1,3 +1,6 @@
+scalar Date
+scalar Upload
+
 type Query {
   
   getAddress(id: Int!): Address
@@ -5,6 +8,9 @@ type Query {
 
   getAllProducts: [Product]
   getProductById(productId: ID!): Product
+
+  getUser(id: Int!): User
+  getAllUsers: [User]
 }
 
 type Mutation {
@@ -16,7 +22,11 @@ type Mutation {
   createProduct(name: String!, description: String, price: Float, categoryId: ID): Product
   updateProduct(productId: ID!, name: String, description: String, price: Float, categoryId: ID): Product
   deleteProduct(productId: ID!): Boolean
-  
+
+  createUser(input: UserInput!, profilePicture: Upload): User
+  updateUser(id: Int!, input: UserInput!, profilePicture: Upload): User
+  deleteUser(id: Int!): Boolean
+
 }
 
 

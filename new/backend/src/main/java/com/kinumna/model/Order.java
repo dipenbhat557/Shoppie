@@ -1,6 +1,6 @@
 package com.kinumna.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,11 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +31,8 @@ public class Order {
     private OrderStatus status;
 
     private String vendor;
-    private Date orderDate;
-    private Date deliveryDate;
+    private LocalDateTime orderDate;
+    private LocalDateTime deliveryDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
