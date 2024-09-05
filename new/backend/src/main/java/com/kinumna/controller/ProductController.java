@@ -1,7 +1,4 @@
 package com.kinumna.controller;
-
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,17 +13,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @QueryMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @QueryMapping
     public Product getProductById(int productId) {
         return productService.getProductById(productId);
     }
 
-    @MutationMapping
     public Product createProduct(String name, String description, Double price, int categoryId) {
         Product product = new Product();
         product.setName(name);
@@ -36,7 +30,6 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @MutationMapping
     public Product updateProduct(int productId, String name, String description, Double price, int categoryId) {
         Product product = productService.getProductById(productId);
         if (product != null) {
@@ -49,7 +42,6 @@ public class ProductController {
         return null;
     }
 
-    @MutationMapping
     public boolean deleteProduct(int productId) {
         productService.deleteProduct(productId);
         return true;
