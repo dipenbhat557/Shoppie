@@ -8,16 +8,16 @@ import { styles } from "../utils/styles";
 const Navbar = () => {
   return (
     <div
-      className={`bg-white text-black w-full ${styles.paddingX}  flex flex-col md:flex-row  justify-between `}
+      className={` text-black  w-full ${styles.screenMarginAuto} ${styles.paddingX}  flex flex-col md:flex-row  justify-between `}
     >
-      <div className="flex  justify-between sm:w-full md:w-1/2 ">
+      <div className="flex justify-between sm:w-full md:w-1/2">
         <div className="p-3">
           <Image src={nav_iamge} width={180} height={150} alt="Nav Logo" />
         </div>
-        <SearchBar />
+          <SearchBar />
       </div>
 
-      <div className="flex justify-evenly sm:w-full md:w-1/4 pr-2  ">
+      <div className="flex justify-evenly sm:w-full md:w-1/2 lg:w-1/4  pr-2  ">
         <div className="flex items-center  gap-2 border  border-black rounded-md px-4 py-2">
           <FaChevronDown size={22} />
           <span>Clearance</span>

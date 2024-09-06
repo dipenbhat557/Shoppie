@@ -9,9 +9,9 @@ var f3_png_1 = require("../../public/images/fashion/f3.png");
 var f4_png_1 = require("../../public/images/fashion/f4.png");
 var DressStyleItem = function (_a) {
     var imageUrl = _a.imageUrl, style = _a.style, index = _a.index;
-    return (react_1["default"].createElement("div", { className: "relative   rounded-lg overflow-hidden " + (index == 0 || index == 3 ? "w-[34%]" : "w-[64%]") + " " },
-        react_1["default"].createElement(image_1["default"], { src: imageUrl, alt: style, className: "w-full   h-24  md:h-32 object-cover" }),
-        react_1["default"].createElement("div", { className: "absolute  left-6 top-6    bg-opacity-50 flex items-center justify-center" },
+    return (react_1["default"].createElement("div", { className: "relative      rounded-lg overflow-hidden " + (index == 0 || index == 3 ? "w-[34%]" : "w-[64%]") + " " },
+        react_1["default"].createElement(image_1["default"], { src: imageUrl, alt: style, className: "w-full    h-24  md:h-32 object-cover" }),
+        react_1["default"].createElement("div", { className: "absolute  left-6 top-6   bg-opacity-50flex items-center justify-center" },
             react_1["default"].createElement("h3", { className: "text-black text-lg font-bold" }, style))));
 };
 exports.DressStyle = function () {

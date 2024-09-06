@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import { FaStar } from "react-icons/fa";
+import { styles } from "../utils/styles";
 
 interface BuyAgainCardProps {
   name: string;
@@ -18,9 +19,11 @@ export const BuyAgainCard = ({
   rating,
 }: BuyAgainCardProps) => {
   return (
-    <div className="flex flex-col w-[20%]  ">
-      <Image src={imageSrc} alt={altText} />
-      <div className="flex flex-col justify-between gap-2  h-[60%] items-center w-full">
+    <div className="flex flex-col   items-center">
+      <div className={` rounded-lg  shadow-md ${styles.productCardColor}   `} >
+        <Image src={imageSrc} alt={altText} />
+      </div>
+      <div className="flex flex-col justify-between gap-2 py-2  h-[60%] items-center w-full">
         <p className=" text-[20px] font-semibold"> {name}</p>
         <div className="w-full flex pb-4  justify-center gap-3">
           <div className=" flex  gap-2">
@@ -44,12 +47,12 @@ export const BuyAgainCard = ({
           <p className="text-[18px]">Rs. {price - discount}</p>
           </div>
 
-          <div className=" text-[12px] absolute -top-4 right-10 py-1 px-3 bg-red-300  bg-opacity-35  border rounded-lg   text-red-500">
+          <div className=" text-[12px] absolute -top-5 right-6 py-1 px-3 bg-red-300   bg-opacity-35  border rounded-lg   text-red-500">
               -Rs {discount}
           </div>
         </div>
         <div className="flex items-center justify-center w-full">
-          <button className="bg-[#FFC633] font-medium  w-[80%]  p-2">
+          <button className={` ${styles.buyNowButtonColor} ${styles.buyNowButtonHoverColor} font-medium  w-[80%]  p-2`}>
             Buy now
           </button>
         </div>

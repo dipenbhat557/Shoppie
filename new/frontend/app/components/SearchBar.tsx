@@ -10,7 +10,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="flex items-center border border-black rounded-3xl px-4 py-2 w-full ">
+    <div className="flex  items-center border border-black rounded-3xl px-4 py-2 w-full ">
       {!inputValue && <FaSearch className="text-gray-500 mr-2" />}
       <input
         type="text"

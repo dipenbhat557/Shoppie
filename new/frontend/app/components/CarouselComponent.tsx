@@ -7,14 +7,15 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { styles } from "../utils/styles";
 
 export const CarouselComponent = () => {
   return (
-    <div className="relative w-full  overflow-hidden flex items-center justify-center pt-10">
+    <div className={`relative w-[90%] overflow-hidden ${styles.screenMarginAuto} flex items-center justify-center pt-10`}>
       <Carousel
         plugins={[
           Autoplay({
-            delay: 3000,
+            delay: 4000,
           }),
         ]}
       >
@@ -24,12 +25,14 @@ export const CarouselComponent = () => {
               src={c1} 
                height={800}
                width={1750} 
+              
               alt="c1" 
             />
           </CarouselItem>
-          <CarouselItem className="relative w-full h-full flex items-center justify-center">
+          <CarouselItem className="relative  w-full h-full flex items-center justify-center">
             <Image 
               src={c1} 
+              
               height={800}
               width={1750} 
 
