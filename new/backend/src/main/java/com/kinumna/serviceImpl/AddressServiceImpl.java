@@ -9,14 +9,11 @@ import com.kinumna.payload.responses.AddressResponse;
 import com.kinumna.repo.AddressRepo;
 import com.kinumna.service.AddressService;
 
-import io.jsonwebtoken.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AddressServiceImpl implements AddressService {
