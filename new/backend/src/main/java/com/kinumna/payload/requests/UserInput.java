@@ -2,6 +2,8 @@ package com.kinumna.payload.requests;
 
 import java.util.Date;
 
+import com.kinumna.model.Gender;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,5 @@ public class UserInput {
     private String phoneNumber;
     private String password;
     private Date dob;  
-    private String gender;
+    private Gender gender;
 }

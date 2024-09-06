@@ -1,14 +1,19 @@
 package com.kinumna.serviceImpl;
 
+import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.Address;
-import com.kinumna.model.User;
+import com.kinumna.payload.ObjectFromInput;
+import com.kinumna.payload.ResponseFromObject;
 import com.kinumna.payload.requests.AddressInput;
+import com.kinumna.payload.responses.AddressResponse;
 import com.kinumna.repo.AddressRepo;
 import com.kinumna.service.AddressService;
-import com.kinumna.service.UserService;
+
+import io.jsonwebtoken.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,55 +25,48 @@ public class AddressServiceImpl implements AddressService {
     private AddressRepo addressRepository;
 
     @Autowired
-    private UserService userService;
+    private ObjectFromInput objectFromInput;
+    
+    @Autowired
+    private ResponseFromObject responseFromObject;
 
     @Override
-    public Address save(AddressInput input) {
+    public AddressResponse save(AddressInput input) {
         Address address = new Address();
-        address.setHouseNo(input.getHouseNo());
-        address.setStreet(input.getStreet());
-        address.setCity(input.getCity());
-        address.setDistrict(input.getDistrict());
-        address.setState(input.getState());
-        address.setPinCode(input.getPinCode());
-        address.setLandmark(input.getLandmark());
-        address.setPrimary(input.isPrimary());
+
+        address = this.objectFromInput.getAddress(address, input);
         
-        User user = userService.findById(input.getUserId());
-        address.setUser(user);
-        
-        return addressRepository.save(address);
+        address = addressRepository.save(address);
+
+        return this.responseFromObject.getAddressResponse(address);
     }
 
-    public Address updateAddress(Integer id, AddressInput input) {
-        Optional<Address> existingAddress = addressRepository.findById(id);
-        if (existingAddress.isPresent()) {
-            Address address = existingAddress.get();
-            address.setHouseNo(input.getHouseNo());
-            address.setStreet(input.getStreet());
-            address.setCity(input.getCity());
-            address.setDistrict(input.getDistrict());
-            address.setState(input.getState());
-            address.setPinCode(input.getPinCode());
-            address.setLandmark(input.getLandmark());
-            address.setPrimary(input.isPrimary());
+    public AddressResponse updateAddress(Integer id, AddressInput input) {
+        Address address = addressRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("expected address is not found"));
+        if (address != null) {
+            address = this.objectFromInput.getAddress(address, input);
 
-            User user = userService.findById(input.getUserId());
-            address.setUser(user);
-
-            return addressRepository.save(address);
+            addressRepository.save(address);
+            
+            return this.responseFromObject.getAddressResponse(address);
         }
         return null;
     }
 
     @Override
-    public Address findById(Integer id) {
-        return addressRepository.findById(id).orElse(null);
+    public AddressResponse findById(Integer id) {
+        Address address = addressRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("expected address not found"));
+
+        return this.responseFromObject.getAddressResponse(address);
     }
 
     @Override
-    public List<Address> findAll() {
-        return addressRepository.findAll();
+    public List<AddressResponse> findAll() {
+        List<Address> addresses = addressRepository.findAll();
+
+        return addresses.stream()
+                    .map(a -> this.responseFromObject.getAddressResponse(a))
+                    .collect(Collectors.toList());
     }
 
     @Override
@@ -79,5 +77,15 @@ public class AddressServiceImpl implements AddressService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String setPrimaryAddress(Integer id){
+        Address address = this.addressRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("can't find address"));
+
+        address.setPrimary(true);
+        this.addressRepository.save(address);
+
+        return "Primary address changes";
     }
 }

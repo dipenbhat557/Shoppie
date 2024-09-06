@@ -1,13 +1,14 @@
 package com.kinumna.serviceImpl;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.User;
+import com.kinumna.payload.ObjectFromInput;
 import com.kinumna.payload.requests.UserInput;
 import com.kinumna.repo.UserRepo;
 import com.kinumna.service.UserService;
@@ -18,9 +19,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepository;
 
+    @Autowired
+    private ObjectFromInput objectFromInput;
+
     @Override
     public User findById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
@@ -31,20 +35,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createUser(UserInput input, MultipartFile profilePicture) {
         User user = new User();
-        user.setFirstName(input.getFirstName());
-        user.setLastName(input.getLastName());
-        user.setEmail(input.getEmail());
-        user.setPhoneNo(input.getPhoneNumber());
-        user.setPassword(input.getPassword());
-        user.setDob(input.getDob());
-
-        if(profilePicture != null){
-            try {
-                user.setProfile(profilePicture.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        
+        user = this.objectFromInput.getUser(user, input, profilePicture);
         
         return userRepository.save(user);
     }
@@ -53,20 +45,7 @@ public class UserServiceImpl implements UserService{
     public User updateUser(Integer id, UserInput input, MultipartFile profilePicture) {
         User user = findById(id);
 
-        user.setFirstName(input.getFirstName());
-        user.setLastName(input.getLastName());
-        user.setEmail(input.getEmail());
-        user.setPhoneNo(input.getPhoneNumber());
-        user.setPassword(input.getPassword());
-        user.setDob(input.getDob());
-
-        if(profilePicture != null){
-            try {
-                user.setProfile(profilePicture.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        user = this.objectFromInput.getUser(user, input, profilePicture);
         
         return userRepository.save(user);
     }
@@ -75,6 +54,17 @@ public class UserServiceImpl implements UserService{
     public boolean deleteUser(Integer id) {
         userRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public String verifyUser(Integer id){
+        User user = findById(id);
+
+        user.setVerified(true);
+
+        this.userRepository.save(user);
+
+        return "User verified successfully";
     }
     
 }

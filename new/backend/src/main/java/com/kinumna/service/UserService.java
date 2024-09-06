@@ -17,4 +17,6 @@ public interface UserService {
     User updateUser(Integer id, UserInput input, MultipartFile profilePicture);
 
     boolean deleteUser(Integer id);
+
+    String verifyUser(Integer id);
 }

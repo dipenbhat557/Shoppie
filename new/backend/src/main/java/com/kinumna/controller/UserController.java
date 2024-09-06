@@ -66,4 +66,9 @@ public class UserController {
     public ResponseEntity<Boolean> deleteUser(@PathVariable int id) {
         return new ResponseEntity<>( userService.deleteUser(id),HttpStatus.OK);
     }
+
+    @PutMapping("/verify/{id}")
+    public ResponseEntity<String> verifyUser(@PathVariable int id){
+        return new ResponseEntity<>(userService.verifyUser(id),HttpStatus.OK);
+    }
 }
