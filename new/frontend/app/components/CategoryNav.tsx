@@ -48,17 +48,25 @@ const categories: Category[] = [
 export const CategoryNav = () => {
   return (
     <div
-      className={`bg-white  rounded-xl border border-slate-100 shadow-lg  w-[90%] ${styles.maxScreenWidth} ${styles.screenMarginAuto} ${styles.paddingY} `}
+      className={`bg-white   w-screen md:w-full lg:rounded-xl border border-slate-100 shadow-lg lg:w-[90%] lg:${styles.maxScreenWidth} ${styles.screenMarginAuto} ${styles.paddingY}`}
     >
-      <div className="grid grid-cols-8 gap-0">
-        {categories.map((category, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <div className=" lg:w-16 lg:h-16 md:w-14 md:h-14 sm:h-12 sm:w-12">{category.icon}</div>
-            <span className="text-center lg:text-xl md:text-sm sm:text-xs sm:p-4 font-medium text-gray-700">
-              {category.name}
-            </span>
-          </div>
-        ))}
+      {/* Restrict the visible items to 5 and make the rest scrollable */}
+      <div className="flex overflow-x-auto sm:overflow-x-scroll scrollbar-hide">
+        <div className="flex   justify-evenly  sm:w-[100%] gap-4">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-2 items-center sm:inline-block"
+            >
+              <div className="lg:w-16 lg:h-16 md:w-12 md:h-12 sm:h-8 sm:w-8 p-2">
+                {category.icon}
+              </div>
+              <span className="text-center lg:text-xl md:text-sm text-xs sm:p-2 font-medium text-gray-700">
+                {category.name}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

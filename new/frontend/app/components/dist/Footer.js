@@ -1,88 +1,11 @@
 "use strict";
 exports.__esModule = true;
 exports.Footer = void 0;
-var image_1 = require("next/image");
 var react_1 = require("react");
-var foot_png_1 = require("../../public/images/foot/foot.png");
-var visa_png_1 = require("../../public/images/foot/visa.png");
-var apay_png_1 = require("../../public/images/foot/apay.png");
-var gpay_png_1 = require("../../public/images/foot/gpay.png");
-var bs_1 = require("react-icons/bs");
-var fa_1 = require("react-icons/fa");
+var DesktopFooter_1 = require("./DesktopFooter");
+var MobileFooter_1 = require("./MobileFooter");
 exports.Footer = function () {
-    return (react_1["default"].createElement("footer", { className: "bg-gray-100 py-10  " },
-        react_1["default"].createElement("div", { className: " w-full px-4 sm:px-6 lg:px-8 max-w-[90%] mx-auto" },
-            react_1["default"].createElement("div", { className: "bg-black  max-w-[80%]     mx-auto text-white rounded-lg py-6 px-8 mb-10" },
-                react_1["default"].createElement("div", { className: "flex  justify-between   items-center" },
-                    react_1["default"].createElement("h2", { className: "text-5xl font-sans font-bold" },
-                        "STAY UP TO DATE ABOUT ",
-                        react_1["default"].createElement("br", null),
-                        " OUR LATEST OFFERS"),
-                    react_1["default"].createElement("div", { className: "flex  flex-col gap-5 items-center space-x-4" },
-                        react_1["default"].createElement("input", { type: "email", placeholder: "Enter your email address", className: "py-2  px-4 rounded-full text-black" }),
-                        react_1["default"].createElement("button", { className: "bg-white text-black px-6 py-2 rounded-full font-bold" }, "Subscribe to Newsletter")))),
-            react_1["default"].createElement("div", { className: "grid grid-cols-1 md:grid-cols-5 gap-8" },
-                react_1["default"].createElement("div", null,
-                    react_1["default"].createElement("h3", { className: "text-xl font-bold" }, "SHOP.CO"),
-                    react_1["default"].createElement("p", { className: "text-gray-600 mt-4" }, "We have clothes that suit your style and which you`re proud to wear. From women to men."),
-                    react_1["default"].createElement("div", { className: "flex space-x-4 mt-4" },
-                        react_1["default"].createElement("a", { href: "#" },
-                            react_1["default"].createElement(bs_1.BsTwitter, null)),
-                        react_1["default"].createElement("a", { href: "#" },
-                            react_1["default"].createElement(bs_1.BsFacebook, null)),
-                        react_1["default"].createElement("a", { href: "#" },
-                            react_1["default"].createElement(fa_1.FaInstagram, null)),
-                        react_1["default"].createElement("a", { href: "#" },
-                            react_1["default"].createElement(bs_1.BsPinterest, null)))),
-                react_1["default"].createElement("div", null,
-                    react_1["default"].createElement("h4", { className: "text-lg font-bold" }, "COMPANY"),
-                    react_1["default"].createElement("ul", { className: "mt-4 space-y-2" },
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "About")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Features")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Works")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Career")))),
-                react_1["default"].createElement("div", null,
-                    react_1["default"].createElement("h4", { className: "text-lg font-bold" }, "HELP"),
-                    react_1["default"].createElement("ul", { className: "mt-4 space-y-2" },
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Customer Support")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Delivery Details")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Terms & Conditions")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Privacy Policy")))),
-                react_1["default"].createElement("div", null,
-                    react_1["default"].createElement("h4", { className: "text-lg font-bold" }, "FAQ"),
-                    react_1["default"].createElement("ul", { className: "mt-4 space-y-2" },
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Account")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Manage Deliveries")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Orders")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Payments")))),
-                react_1["default"].createElement("div", null,
-                    react_1["default"].createElement("h4", { className: "text-lg font-bold" }, "RESOURCES"),
-                    react_1["default"].createElement("ul", { className: "mt-4 space-y-2" },
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Free eBooks")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Development Tutorial")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "How to - Blog")),
-                        react_1["default"].createElement("li", null,
-                            react_1["default"].createElement("a", { href: "#", className: "text-gray-600 hover:text-black" }, "Youtube Playlist"))))),
-            react_1["default"].createElement("div", { className: "mt-8 flex justify-between items-center" },
-                react_1["default"].createElement("p", { className: "text-gray-600" }, "Shop.co \u00A9 2000-2023, All Rights Reserved"),
-                react_1["default"].createElement("div", { className: "flex space-x-4" },
-                    react_1["default"].createElement(image_1["default"], { src: visa_png_1["default"], alt: "Visa" }),
-                    react_1["default"].createElement(image_1["default"], { src: foot_png_1["default"], alt: "PayPal" }),
-                    react_1["default"].createElement(image_1["default"], { src: apay_png_1["default"], alt: "Apple Pay" }),
-                    react_1["default"].createElement(image_1["default"], { src: gpay_png_1["default"], alt: "Google Pay" }))))));
+    return (react_1["default"].createElement(react_1["default"].Fragment, null,
+        react_1["default"].createElement(MobileFooter_1.MobileFooter, null),
+        react_1["default"].createElement(DesktopFooter_1.DesktopFooter, null)));
 };

@@ -62,10 +62,14 @@ export const featuredProducts = [
 export const RecentItem = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
+  const [showRightButton, setShowRightButton] = useState(true);
+
   useEffect(() => {
     const handleScroll = () => {
       if (scrollContainerRef.current) {
-        setShowLeftButton(scrollContainerRef.current.scrollLeft > 0);
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        setShowLeftButton(scrollLeft > 0);
+        setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
       }
     };
 
@@ -80,58 +84,58 @@ export const RecentItem = () => {
     };
   }, []);
 
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <div className={`py-8 ${styles.maxScreenWidth} mx-auto`}>
-    <div className="flex-1">
-      <h2 className="text-3xl font-bold font-sans pb-2">Recently Viewed Items</h2>
-      <div className="relative">
-        <div
-          ref={scrollContainerRef}
-          className="flex overflow-x-auto scrollbar-hide"
-          onScroll={() => {
-            if (scrollContainerRef.current) {
-              setShowLeftButton(scrollContainerRef.current.scrollLeft > 0);
-            }
-          }}
-        >
-          {featuredProducts.map((product, index) => (
-            <div
-              key={index}
-              className="max-w-[80%] sm:max-w-[60%] md:max-w-[50%] lg:max-w-[25%] min-w-[60%] sm:min-w-[40%] md:min-w-[25%] lg:min-w-[20%] px-2"
-            >
-              <ProductCard imageSrc={product.imageSrc} altText={product.altText} />
-            </div>
-          ))}
-        </div>
+    <div className={`py-4 sm:py-8 ${styles.maxScreenWidth} mx-auto px-4 sm:px-6 lg:px-8`}>
+      <div className="flex-1">
+        <h2 className="text-2xl sm:text-3xl font-bold font-sans pb-2 sm:pb-4">Recently Viewed Items</h2>
+        <div className="relative">
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto scrollbar-hide -mx-2 sm:mx-0"
+            onScroll={() => {
+              if (scrollContainerRef.current) {
+                const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+                setShowLeftButton(scrollLeft > 0);
+                setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
+              }
+            }}
+          >
+            {featuredProducts.map((product, index) => (
+              <div
+                key={index}
+                className="w-1/3 sm:w-1/4 md:w-1/4 lg:w-1/5 flex-shrink-0 px-2"
+              >
+                <ProductCard imageSrc={product.imageSrc} altText={product.altText} />
+              </div>
+            ))}
+          </div>
+
           {showLeftButton && (
             <button
-              className="absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => {
-                if (scrollContainerRef.current) {
-                  scrollContainerRef.current.scrollBy({
-                    left: -400,
-                    behavior: "smooth",
-                  });
-                }
-              }}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block"
+              onClick={() => scroll('left')}
             >
               <SlArrowLeft size={22}/>
             </button>
           )}
-          <button
-            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-            onClick={() => {
-              if (scrollContainerRef.current) {
-                scrollContainerRef.current.scrollBy({
-                  left: 400,
-                  behavior: "smooth",
-                });
-              }
-            }}
-          >
-         <SlArrowRight size={22}/>
-         
-          </button>
+          {showRightButton && (
+            <button
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block"
+              onClick={() => scroll('right')}
+            >
+              <SlArrowRight size={22}/>
+            </button>
+          )}
         </div>
       </div>
     </div>
