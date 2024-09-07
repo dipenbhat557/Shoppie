@@ -21,9 +21,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
 
+    private String name;
+
     private String description;
     private Integer stock;
-    private Double price;
+    private Integer price;
 
     @ManyToOne
     @JoinColumn(name = "sale_id")
@@ -36,7 +38,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-    private String name;
 
 }

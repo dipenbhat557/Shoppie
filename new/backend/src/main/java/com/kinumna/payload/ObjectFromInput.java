@@ -8,14 +8,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.Address;
 import com.kinumna.model.Category;
+import com.kinumna.model.Payment;
+import com.kinumna.model.Store;
 import com.kinumna.model.User;
 import com.kinumna.payload.requests.AddressInput;
 import com.kinumna.payload.requests.CategoryInput;
+import com.kinumna.payload.requests.PaymentInput;
+import com.kinumna.payload.requests.StoreInput;
 import com.kinumna.payload.requests.UserInput;
 import com.kinumna.repo.CategoryRepo;
-import com.kinumna.service.CategoryService;
 import com.kinumna.service.UserService;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 @Component
@@ -78,5 +82,24 @@ public class ObjectFromInput {
         }
 
         return category;
+    }
+
+    public Payment getPayment(Payment payment, PaymentInput input){
+        payment.setPaymentDate(LocalDateTime.now());
+        payment.setAmount(input.getAmount());
+        payment.setStatus(input.getStatus());
+        payment.setReferenceId(input.getReferenceId());
+        payment.setMethod(input.getMethod());
+
+        return payment;
+    }
+
+    public Store getStore(Store store, StoreInput input){
+        store.setName(input.getName());
+        store.setLocation(input.getLocation());
+        store.setContact(input.getContact());
+
+        return store;
+
     }
 }

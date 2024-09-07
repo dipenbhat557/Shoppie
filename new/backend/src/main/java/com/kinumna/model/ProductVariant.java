@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -27,20 +29,19 @@ public class ProductVariant {
     private Integer variantId;
 
     private String sku;
-    private Double price;
+    private Integer price;
     private Integer stock;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "product_option_group_id")
-    private ProductOptionGroup productOptionGroup;
-
-    @ManyToOne
-    @JoinColumn(name = "product_option_id")
-    private ProductOption productOption;
+    @ManyToMany
+    @JoinTable(
+        name = "product_variant_options", 
+        joinColumns = @JoinColumn(name = "variant_id"), 
+        inverseJoinColumns = @JoinColumn(name = "product_option_id"))
+    private List<ProductOption> productOptions = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_id")

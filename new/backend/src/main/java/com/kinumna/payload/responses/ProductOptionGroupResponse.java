@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryResponse {
-    private int categoryId;
-    private String categoryName;
-    private int parentCategoryId;
-    private byte[] image;
-    private List<Integer> productOptionGroupIds = new ArrayList<>();
+public class ProductOptionGroupResponse {
+    private int id;
+    private String name;
+    private List<Integer> productOptionIds = new ArrayList<>();
 }

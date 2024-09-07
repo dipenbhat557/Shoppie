@@ -20,10 +20,20 @@ public class ProductOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "product_option_group_id")
     private ProductOptionGroup productOptionGroup;
 
-    private String name;
+    @Override
+    public String toString() {
+        return "ProductOption{" +
+                "id=" + id +
+                "name=" + name +
+               "group=" + productOptionGroup.getId() + // Calls toString() on ProductOptionGroup
+               '}';
+    }
+
 }

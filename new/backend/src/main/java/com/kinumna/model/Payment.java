@@ -24,7 +24,7 @@ public class Payment {
     private Integer paymentId;
 
     private LocalDateTime paymentDate;
-    private Float amount;
+    private Integer amount;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;

@@ -27,5 +27,14 @@ public class Image {
 
     @ManyToOne
     private ProductVariant productVariant;
+
+    @Override
+    public String toString() {
+        return "Image{" +
+               "id=" + id + // Calls toString() on ProductOptionGroup
+               "productVariant=" + productVariant.getVariantId() +
+               "image=" + image +
+               '}';
+    }
     
 }
