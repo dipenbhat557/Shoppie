@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.kinumna.model.Address;
 import com.kinumna.model.Cart;
 import com.kinumna.model.Category;
+import com.kinumna.model.Image;
 import com.kinumna.model.Product;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
@@ -56,6 +57,15 @@ public class ResponseFromObject {
         response.setCategoryName(category.getCategoryName());
         response.setParentCategoryId(category.getParentCategory().getCategoryId());
         response.setImage(category.getImage());
+
+        return response;
+    }
+
+    public ImageResponse getImageResponse(Image image){
+        ImageResponse response = new ImageResponse();
+
+        response.setId(image.getId());
+        response.setImg(image.getImage());
 
         return response;
     }

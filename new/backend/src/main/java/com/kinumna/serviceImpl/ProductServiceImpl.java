@@ -161,6 +161,12 @@ public class ProductServiceImpl implements ProductService {
 		return this.productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("product not found"));
 	}
 
+    @Override
+    public List<Product> getByCategory(int categoryId){
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category not found"));
+        return this.productRepository.findByCategory(category);
+    }
+
 	@Override
 	public ProductDTO update(CreateProductRequestDTO request, List<MultipartFile> images) {
 		Product product = this.productRepository.findById(request.getProductId()).orElse(new Product());

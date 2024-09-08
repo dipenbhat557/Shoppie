@@ -12,6 +12,7 @@ public interface ProductService {
     public ProductDTO createProductWithVariants(CreateProductRequestDTO request, List<MultipartFile> images);
     public List<Product> getAll();
     public Product getById(int id);
+    public List<Product> getByCategory(int categoryId);
     public ProductDTO update( CreateProductRequestDTO request, List<MultipartFile> images);
     public void delete(int id);
 }

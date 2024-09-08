@@ -14,23 +14,4 @@ public class ProductOptionGroupController {
     @Autowired
     private ProductOptionGroupService optionGroupService;
 
-    public List<ProductOptionGroup> getAllOptionGroups() {
-        return optionGroupService.getAllOptionGroups();
-    }
-
-    public ProductOptionGroup getOptionGroupById(Integer id) {
-        return optionGroupService.getOptionGroupById(id);
-    }
-
-    public ProductOptionGroup createOptionGroup(ProductOptionGroup optionGroup) {
-        return optionGroupService.createOptionGroup(optionGroup);
-    }
-
-    public ProductOptionGroup updateOptionGroup(Integer id, ProductOptionGroup optionGroup) {
-        return optionGroupService.updateOptionGroup(id, optionGroup);
-    }
-
-    public void deleteOptionGroup(Integer id) {
-        optionGroupService.deleteOptionGroup(id);
-    }
 }
