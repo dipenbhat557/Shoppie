@@ -24,8 +24,6 @@ public class Product {
     private String name;
 
     private String description;
-    private Integer stock;
-    private Integer price;
 
     @ManyToOne
     @JoinColumn(name = "sale_id")

@@ -9,18 +9,21 @@ import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.Address;
 import com.kinumna.model.Category;
 import com.kinumna.model.Payment;
+import com.kinumna.model.ProductOption;
+import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.Store;
 import com.kinumna.model.User;
 import com.kinumna.payload.requests.AddressInput;
 import com.kinumna.payload.requests.CategoryInput;
 import com.kinumna.payload.requests.PaymentInput;
+import com.kinumna.payload.requests.ProductOptionInput;
 import com.kinumna.payload.requests.StoreInput;
 import com.kinumna.payload.requests.UserInput;
 import com.kinumna.repo.CategoryRepo;
+import com.kinumna.repo.ProductOptionGroupRepo;
 import com.kinumna.service.UserService;
 import java.io.IOException;
 import java.time.LocalDateTime;
-
 
 @Component
 public class ObjectFromInput {
@@ -31,6 +34,9 @@ public class ObjectFromInput {
 
     @Autowired
     private CategoryRepo categoryRepo;
+
+    @Autowired
+    private ProductOptionGroupRepo productOptionGroupRepo;
    
     public Address getAddress(Address address, AddressInput input){
         
@@ -92,6 +98,19 @@ public class ObjectFromInput {
         payment.setMethod(input.getMethod());
 
         return payment;
+    }
+
+    public ProductOption getProductOption(ProductOption productOption, ProductOptionInput input){
+        productOption.setName(input.getName());
+
+        ProductOptionGroup productOptionGroup = this.productOptionGroupRepo.findById(input.getProductOptionGroupId())
+        .orElseThrow(() -> new ResourceNotFoundException("Product option group not found"));
+
+        // Add product option to group (managed bidirectionally)
+        productOption.setProductOptionGroup(productOptionGroup);
+        productOptionGroup.getProductOptions().add(productOption);
+        
+        return productOption;
     }
 
     public Store getStore(Store store, StoreInput input){

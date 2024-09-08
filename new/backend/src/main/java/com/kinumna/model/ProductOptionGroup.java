@@ -23,6 +23,7 @@ public class ProductOptionGroup {
 
     private String name;
 
-    @OneToMany(mappedBy = "productOptionGroup", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productOptionGroup", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductOption> productOptions = new ArrayList<>();
+
 }
