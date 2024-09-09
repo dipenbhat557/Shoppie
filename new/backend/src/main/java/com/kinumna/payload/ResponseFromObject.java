@@ -12,6 +12,7 @@ import com.kinumna.model.Image;
 import com.kinumna.model.Product;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
+import com.kinumna.model.Review;
 import com.kinumna.payload.responses.AddressResponse;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.payload.responses.CategoryResponse;
@@ -20,6 +21,7 @@ import com.kinumna.payload.responses.ProductDTO;
 import com.kinumna.payload.responses.ProductOptionDTO;
 import com.kinumna.payload.responses.ProductOptionGroupResponse;
 import com.kinumna.payload.responses.ProductVariantDTO;
+import com.kinumna.payload.responses.ReviewResponse;
 
 @Component
 public class ResponseFromObject {
@@ -132,5 +134,18 @@ public class ResponseFromObject {
         variantDTO.setImages(imageDTOs);
 
         return variantDTO;
+    }
+
+    public ReviewResponse getReviewResponse(Review review){
+        ReviewResponse response = new ReviewResponse();
+
+        response.setId(review.getId());
+        response.setComment(review.getComment());
+        response.setRating(review.getRating());
+        response.setCreatedAt(review.getCreatedAt());
+        response.setUserId(review.getUser().getUserId());
+        response.setProductId(review.getProduct().getProductId());
+
+        return response;
     }
 }
