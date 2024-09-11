@@ -13,6 +13,7 @@ import com.kinumna.model.Product;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
 import com.kinumna.model.Review;
+import com.kinumna.model.Sale;
 import com.kinumna.payload.responses.AddressResponse;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.payload.responses.CategoryResponse;
@@ -22,6 +23,7 @@ import com.kinumna.payload.responses.ProductOptionDTO;
 import com.kinumna.payload.responses.ProductOptionGroupResponse;
 import com.kinumna.payload.responses.ProductVariantDTO;
 import com.kinumna.payload.responses.ReviewResponse;
+import com.kinumna.payload.responses.SaleResponse;
 
 @Component
 public class ResponseFromObject {
@@ -145,6 +147,22 @@ public class ResponseFromObject {
         response.setCreatedAt(review.getCreatedAt());
         response.setUserId(review.getUser().getUserId());
         response.setProductId(review.getProduct().getProductId());
+
+        return response;
+    }
+
+    public SaleResponse getSaleResponse(Sale sale){
+
+        SaleResponse response = new SaleResponse();
+
+        response.setSaleId(sale.getSaleId());
+        response.setDescription(sale.getDescription());
+        response.setStartDate(sale.getStartDate());
+        response.setEndDate(sale.getEndDate());
+        response.setDiscount(sale.getDiscount());
+        response.setPercentage(sale.getIsPercentage());
+        response.setProductIds(sale.getProducts().stream().map(product -> product.getProductId()).collect(Collectors.toList()));
+        response.setImage(sale.getImage());
 
         return response;
     }
