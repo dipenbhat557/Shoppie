@@ -11,19 +11,24 @@ import com.kinumna.model.Category;
 import com.kinumna.model.Payment;
 import com.kinumna.model.ProductOption;
 import com.kinumna.model.ProductOptionGroup;
+import com.kinumna.model.Sale;
 import com.kinumna.model.Store;
 import com.kinumna.model.User;
 import com.kinumna.payload.requests.AddressInput;
 import com.kinumna.payload.requests.CategoryInput;
 import com.kinumna.payload.requests.PaymentInput;
 import com.kinumna.payload.requests.ProductOptionInput;
+import com.kinumna.payload.requests.SaleInput;
 import com.kinumna.payload.requests.StoreInput;
 import com.kinumna.payload.requests.UserInput;
 import com.kinumna.repo.CategoryRepo;
 import com.kinumna.repo.ProductOptionGroupRepo;
+import com.kinumna.repo.ProductRepo;
+import com.kinumna.repo.SaleRepo;
 import com.kinumna.service.UserService;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Component
 public class ObjectFromInput {
@@ -37,6 +42,12 @@ public class ObjectFromInput {
 
     @Autowired
     private ProductOptionGroupRepo productOptionGroupRepo;
+
+    @Autowired
+    private SaleRepo saleRepo;
+
+    @Autowired
+    private ProductRepo productRepo;
    
     public Address getAddress(Address address, AddressInput input){
         
@@ -113,6 +124,25 @@ public class ObjectFromInput {
         return productOption;
     }
 
+    
+    public Sale getSale(Sale sale, SaleInput input, MultipartFile file){
+        sale.setDescription(input.getDescription());
+        sale.setStartDate(input.getStartDate());
+        sale.setEndDate(input.getEndDate());
+        sale.setDiscount(input.getDiscount());
+        sale.setIsPercentage(input.isPercentage());
+        sale.setProducts(input.getProductIds().stream().map(pId -> this.productRepo.findById(pId).orElseThrow(()->new ResourceNotFoundException("Product not found"))).collect(Collectors.toList()));
+        if(file != null){
+            try {
+                sale.setImage(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sale;
+    }
+
     public Store getStore(Store store, StoreInput input){
         store.setName(input.getName());
         store.setLocation(input.getLocation());
@@ -121,4 +151,5 @@ public class ObjectFromInput {
         return store;
 
     }
+
 }
