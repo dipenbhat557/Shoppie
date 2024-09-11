@@ -13,6 +13,7 @@ public interface ProductService {
     public List<Product> getAll();
     public Product getById(int id);
     public List<Product> getByCategory(int categoryId);
+    public List<Product> getBySale(int saleId);
     public ProductDTO update( CreateProductRequestDTO request, List<MultipartFile> images);
     public void delete(int id);
 }

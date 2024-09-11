@@ -29,6 +29,7 @@ import com.kinumna.repo.ProductOptionGroupRepo;
 import com.kinumna.repo.ProductOptionRepo;
 import com.kinumna.repo.ProductRepo;
 import com.kinumna.repo.ProductVariantRepo;
+import com.kinumna.repo.SaleRepo;
 import com.kinumna.repo.StoreRepo;
 import com.kinumna.service.ProductService;
 
@@ -65,6 +66,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ResponseFromObject responseFromObject;
+
+    @Autowired
+    private SaleRepo saleRepo;
 
     @Override
     @Transactional
@@ -165,6 +169,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getByCategory(int categoryId){
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category not found"));
         return this.productRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> getBySale(int saleId){
+        return this.saleRepo.findById(saleId).orElseThrow(()->new ResourceNotFoundException("sale not found")).getProducts();
     }
 
 	@Override

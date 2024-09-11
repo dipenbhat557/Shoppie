@@ -24,7 +24,6 @@ import com.kinumna.payload.requests.UserInput;
 import com.kinumna.repo.CategoryRepo;
 import com.kinumna.repo.ProductOptionGroupRepo;
 import com.kinumna.repo.ProductRepo;
-import com.kinumna.repo.SaleRepo;
 import com.kinumna.service.UserService;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -42,9 +41,6 @@ public class ObjectFromInput {
 
     @Autowired
     private ProductOptionGroupRepo productOptionGroupRepo;
-
-    @Autowired
-    private SaleRepo saleRepo;
 
     @Autowired
     private ProductRepo productRepo;
