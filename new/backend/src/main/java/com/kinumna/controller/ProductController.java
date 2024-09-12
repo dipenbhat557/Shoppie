@@ -58,6 +58,16 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.getById(id));
     }
 
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getByCategory(@PathVariable int categoryId){
+        return ResponseEntity.ok(this.productService.getByCategory(categoryId));
+    }
+
+    @GetMapping("/sale/{saleId}")
+    public ResponseEntity<List<Product>> getBySale(@PathVariable int saleId){
+        return ResponseEntity.ok(this.productService.getBySale(saleId));
+    }
+
     @PutMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDTO> update(@PathVariable int id, @RequestParam("product") String productRequest,
         @RequestParam(value = "images", required = false) List<MultipartFile> images) {
