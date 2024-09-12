@@ -13,6 +13,7 @@ import com.kinumna.model.Image;
 import com.kinumna.model.Product;
 import com.kinumna.model.ProductOption;
 import com.kinumna.model.ProductVariant;
+import com.kinumna.model.Sale;
 import com.kinumna.model.Store;
 import com.kinumna.payload.ProductVariantSpecification;
 import com.kinumna.payload.ResponseFromObject;
@@ -23,6 +24,7 @@ import com.kinumna.repo.ProductRepo;
 import com.kinumna.repo.ImageRepo;
 import com.kinumna.repo.ProductOptionRepo;
 import com.kinumna.repo.ProductVariantRepo;
+import com.kinumna.repo.SaleRepo;
 import com.kinumna.repo.StoreRepo;
 import com.kinumna.service.ProductService;
 import com.kinumna.service.ProductVariantService;
@@ -50,6 +52,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private SaleRepo saleRepo;
 
     @Override
     public ProductVariantDTO create(ProductVariantInput input, List<MultipartFile> images) {
@@ -133,6 +138,19 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         return variants.stream()
             .map(responseFromObject::mapToVariantDTO)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariantDTO> getBySale(int saleId){
+        Sale sale = this.saleRepo.findById(saleId).orElseThrow(()->new ResourceNotFoundException("sale not found"));
+
+        List<Product> products = sale.getProducts();
+
+        List<ProductVariant> variants = products.stream().flatMap(product -> this.productVariantRepo.findByProduct(product).stream()).collect(Collectors.toList());
+        
+        List<ProductVariantDTO> res = variants.stream().map(variant -> this.responseFromObject.mapToVariantDTO(variant)).collect(Collectors.toList());
+
+        return res;
     }
 
     @Override

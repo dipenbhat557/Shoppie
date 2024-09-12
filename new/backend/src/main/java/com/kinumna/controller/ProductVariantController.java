@@ -63,8 +63,13 @@ public class ProductVariantController {
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ProductVariantDTO>> getByProduct(@PathVariable("productId") int productId){
+    public ResponseEntity<List<ProductVariantDTO>> getByProduct(@PathVariable int productId){
         return ResponseEntity.ok(this.productVariantService.getByProduct(productId));
+    }
+
+    @GetMapping("/sale/{saleId}")
+    public ResponseEntity<List<ProductVariantDTO>> getBySale(@PathVariable int saleId){
+        return ResponseEntity.ok(this.productVariantService.getBySale(saleId));
     }
 
     @PutMapping("/{id}")

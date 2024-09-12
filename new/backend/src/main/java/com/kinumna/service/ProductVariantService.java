@@ -15,6 +15,7 @@ public interface ProductVariantService {
     List<ProductVariantDTO> getByCategory(int categoryId);
     List<ProductVariantDTO> getByStore(int storeId);
     List<ProductVariantDTO> getByProduct(int productId);
+    List<ProductVariantDTO> getBySale(int saleId);
     ProductVariantDTO update(int id, ProductVariantInput input, List<MultipartFile> images);
     void delete(int id);
     List<ProductVariantDTO> filter(ProductVariantFilter filter);
