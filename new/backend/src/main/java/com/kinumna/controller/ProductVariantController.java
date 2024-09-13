@@ -72,7 +72,7 @@ public class ProductVariantController {
         return ResponseEntity.ok(this.productVariantService.getBySale(saleId));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductVariantDTO> update(@PathVariable int id, @RequestParam("input") String inputJson, List<MultipartFile> images){
        ObjectMapper mapper = new ObjectMapper();
        try {
