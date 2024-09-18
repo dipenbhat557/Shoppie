@@ -14,6 +14,7 @@ import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
 import com.kinumna.model.Review;
 import com.kinumna.model.Sale;
+import com.kinumna.model.Wishlist;
 import com.kinumna.payload.responses.AddressResponse;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.payload.responses.CategoryResponse;
@@ -24,6 +25,7 @@ import com.kinumna.payload.responses.ProductOptionGroupResponse;
 import com.kinumna.payload.responses.ProductVariantDTO;
 import com.kinumna.payload.responses.ReviewResponse;
 import com.kinumna.payload.responses.SaleResponse;
+import com.kinumna.payload.responses.WishlistResponse;
 
 @Component
 public class ResponseFromObject {
@@ -165,5 +167,16 @@ public class ResponseFromObject {
         response.setImage(sale.getImage());
 
         return response;
+    }
+
+    public WishlistResponse getWishlistResponse(Wishlist wishlist){
+        WishlistResponse response = new WishlistResponse();
+
+        response.setId(wishlist.getId());
+        response.setProductIds(wishlist.getProducts().stream().map(product-> product.getProductId()).collect(Collectors.toList()));
+        response.setUserId(wishlist.getUser().getUserId());
+
+        return response;
+
     }
 }

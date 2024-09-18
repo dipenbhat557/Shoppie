@@ -9,11 +9,13 @@ import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.Address;
 import com.kinumna.model.Category;
 import com.kinumna.model.Payment;
+import com.kinumna.model.Product;
 import com.kinumna.model.ProductOption;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.Sale;
 import com.kinumna.model.Store;
 import com.kinumna.model.User;
+import com.kinumna.model.Wishlist;
 import com.kinumna.payload.requests.AddressInput;
 import com.kinumna.payload.requests.CategoryInput;
 import com.kinumna.payload.requests.PaymentInput;
@@ -21,12 +23,15 @@ import com.kinumna.payload.requests.ProductOptionInput;
 import com.kinumna.payload.requests.SaleInput;
 import com.kinumna.payload.requests.StoreInput;
 import com.kinumna.payload.requests.UserInput;
+import com.kinumna.payload.requests.WishlistInput;
 import com.kinumna.repo.CategoryRepo;
 import com.kinumna.repo.ProductOptionGroupRepo;
 import com.kinumna.repo.ProductRepo;
+import com.kinumna.repo.UserRepo;
 import com.kinumna.service.UserService;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,6 +49,9 @@ public class ObjectFromInput {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private UserRepo userRepo;
    
     public Address getAddress(Address address, AddressInput input){
         
@@ -146,6 +154,18 @@ public class ObjectFromInput {
 
         return store;
 
+    }
+
+    public Wishlist getWishlist(Wishlist wishlist, WishlistInput input){
+        List<Product> products = input.getProductIds().stream()
+        .map(id -> this.productRepo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found for wishlist"))
+        ).collect(Collectors.toList());
+    
+        // Add the fetched products to the wishlist
+        wishlist.getProducts().addAll(products);
+        wishlist.setUser(this.userRepo.findById(input.getUserId()).orElseThrow(()->new ResourceNotFoundException("User not found")));
+        return wishlist;
     }
 
 }
