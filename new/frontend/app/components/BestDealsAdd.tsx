@@ -8,46 +8,46 @@ import Image from "next/image";
 
 export const BestDealsAdd = () => {
   return (
-    <div className="px-4 bg-white hover:bg-slate-100 shadow-md rounded-lg max-w-xl mx-auto">
+    <div className="md:px-4 bg-white hover:bg-slate-100 shadow-md rounded-lg md:max-w-xl mx-auto">
       <p className="lg:text-xl md:text-xs font-bold p-4 ">
         Up to 40% off | Men's and Women's Footwear
       </p>
 
-      <div className="grid grid-cols-2 gap-4 ">
+      <div className="grid grid-cols-2 md:gap-4 gap-2 ">
         <div className="flex flex-col items-center">
           <Image
             src={men}
             alt="Men's shoes"
-            className="w-full h-32 object-cover rounded-md"
+            className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Men's shoes</p>
+          <p className="font-medium">Men's shoes</p>
         </div>
 
         <div className="flex flex-col items-center">
           <Image
             src={women_shoe}
             alt="Women's shoes"
-            className="w-full h-32 object-cover rounded-md"
+            className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Women's shoes</p>
+          <p className="font-medium">Women's shoes</p>
         </div>
 
         <div className="flex flex-col items-center">
           <Image
             src={men_sport}
             alt="Men's Casual"
-            className="w-full h-32 object-cover rounded-md"
+            className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Men's Casual</p>
+          <p className="font-medium">Men's Casual</p>
         </div>
 
         <div className="flex flex-col items-center">
           <Image
             src={women}
             alt="Women's Footwear"
-            className="w-full h-32 object-cover rounded-md"
+            className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
-          <p className="mt-2 font-medium">Women's Footwear</p>
+          <p className="font-medium">Women's Footwear</p>
         </div>
       </div>
     </div>

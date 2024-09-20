@@ -1,26 +1,21 @@
 "use strict";
 exports.__esModule = true;
-exports.Support = void 0;
 var react_1 = require("react");
-var service_png_1 = require("../../public/images/service.png");
-var delivery_png_1 = require("../../public/images/delivery.png");
-var support_png_1 = require("../../public/images/support.png");
 var image_1 = require("next/image");
-exports.Support = function () {
-    return (react_1["default"].createElement("div", { className: "support-bar flex justify-evenly sm:py-10 md:py-16  px-5 w-[90] mx-auto" },
-        react_1["default"].createElement("div", { className: "support-icon flex flex-col gap-8 items-center" },
-            react_1["default"].createElement(image_1["default"], { src: delivery_png_1["default"], alt: "Fast Delivery" }),
-            react_1["default"].createElement("div", { className: "flex flex-col gap-3 items-center" },
-                react_1["default"].createElement("p", { className: "support-text  text-2xl font-semibold " }, "FREE AND FAST DELIVERY"),
-                react_1["default"].createElement("p", { className: "support-text" }, "Free Delivery All Over Kathmandu"))),
-        react_1["default"].createElement("div", { className: "support-icon flex flex-col gap-8 items-center " },
-            react_1["default"].createElement(image_1["default"], { src: service_png_1["default"], alt: "Cheap Prices" }),
-            react_1["default"].createElement("div", { className: "flex flex-col gap-3 items-center" },
-                react_1["default"].createElement("p", { className: "support-text text-2xl font-semibold" }, "24/7 CUSTOMER SERVICE"),
-                react_1["default"].createElement("p", { className: "support-text" }, "Friendly 24/7 customer support"))),
-        react_1["default"].createElement("div", { className: "support-icon flex flex-col gap-8 items-center " },
-            react_1["default"].createElement(image_1["default"], { src: support_png_1["default"], alt: "Easy Returns" }),
-            react_1["default"].createElement("div", { className: "flex flex-col gap-3 items-center" },
-                react_1["default"].createElement("p", { className: "support-text text-2xl font-semibold" }, "MONEY BACK GUARANTEE"),
-                react_1["default"].createElement("p", { className: "support-text" }, "We reurn money within 30 days")))));
+var SupportBar = function (_a) {
+    var deliver = _a.deliver, service = _a.service, support = _a.support;
+    return (react_1["default"].createElement("div", { className: "support-bar  max-w-screen-sm md:max-w-full flex justify-evenly py-6 sm:py-8 md:py-12 lg:py-16 px-4 sm:px-5 w-full sm:w-[95%] md:w-[90%] mx-auto" },
+        react_1["default"].createElement(SupportItem, { image: deliver, alt: "Fast Delivery", title: "FREE AND FAST DELIVERY", description: "Free Delivery All Over Kathmandu" }),
+        react_1["default"].createElement(SupportItem, { image: service, alt: "Customer Service", title: "24/7 CUSTOMER SERVICE", description: "Friendly 24/7 customer support" }),
+        react_1["default"].createElement(SupportItem, { image: support, alt: "Money Back Guarantee", title: "MONEY BACK GUARANTEE", description: "We return money within 30 days" })));
 };
+var SupportItem = function (_a) {
+    var image = _a.image, alt = _a.alt, title = _a.title, description = _a.description;
+    return (react_1["default"].createElement("div", { className: "support-icon flex flex-col items-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-0" },
+        react_1["default"].createElement("div", { className: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 relative" },
+            react_1["default"].createElement(image_1["default"], { src: image, alt: alt, layout: "fill", objectFit: "contain" })),
+        react_1["default"].createElement("div", { className: "flex flex-col gap-1 sm:gap-2 md:gap-3 items-center " },
+            react_1["default"].createElement("p", { className: "support-text text-[8px] sm:text-sm md:text-xl lg:text-2xl font-semibold text-left sm:text-center" }, title),
+            react_1["default"].createElement("p", { className: "support-text  text-[6px] sm:text-sm md:text-base text-left sm:text-center" }, description))));
+};
+exports["default"] = SupportBar;

@@ -19,7 +19,7 @@ function RootLayout(_a) {
     var children = _a.children;
     return (React.createElement("html", { lang: "en" },
         React.createElement("body", { className: inter.className },
-            React.createElement("div", { className: "flex flex-col min-h-screen w-full  justify-between items-center " },
+            React.createElement("div", { className: "flex flex-col min-h-screen  w-full  justify-between items-center " },
                 React.createElement("div", { className: "w-full flex flex-col gap-5  " },
                     React.createElement(Topbar_1.Topbar, null),
                     React.createElement(Navbar_1["default"], null),

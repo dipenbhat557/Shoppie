@@ -67,40 +67,61 @@ export const featuredProducts = [
 ];
 
 export const BestDeals = () => {
-  const scrollref = useRef<HTMLDivElement>(null);
+
+  const scrollRef = useRef(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
+  const [showRightButton, setShowRightButton] = useState(true);
+
   useEffect(() => {
     const handleScroll = () => {
-      if (scrollref.current) {
-        setShowLeftButton(scrollref.current.scrollLeft > 0);
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setShowLeftButton(scrollLeft > 0);
+        setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
       }
     };
 
-    if (scrollref.current) {
-      scrollref.current.addEventListener("scroll", handleScroll);
+    if (scrollRef.current) {
+      (scrollRef.current as HTMLElement).addEventListener("scroll", handleScroll);
     }
 
     return () => {
-      if (scrollref.current) {
-        scrollref.current.removeEventListener("scroll", handleScroll);
+      if (scrollRef.current) {
+        (scrollRef.current as HTMLElement).removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
 
+  const scroll = (direction: string) => {
+    if (scrollRef.current) {
+      const scrollAmount = (scrollRef.current as HTMLElement).clientWidth * 0.8;
+      (scrollRef.current as HTMLElement).scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <div className="flex max-w-[90%] mx-auto py-4">
-      <div className="w-1/4  bg-gray-100  flex justify-center items-center">
+    <>
+    <div className="hidden sm:flex  mx-auto py-8 px-4 lg:px-8  w-[90%]">
+      <div className="w-1/4 bg-gray-100 flex justify-center items-center rounded-lg mr-4">
         <BestDealsAdd />
       </div>
-      {/* Products Section */}
       <div className="flex-1">
-        <h2 className="text-4xl font-bold pb-2 pl-4 ">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold pb-4 pl-4">
           Best Deals on Appliances
         </h2>
         <div className="relative">
-          <div ref={scrollref} className="flex overflow-x-auto scrollbar-hide space-x-2">
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto scrollbar-hide space-x-4"
+          >
             {featuredProducts.map((product, index) => (
-              <div key={index} className="lg:max-w-[50%] md:max-w-[60%] sm:max-w-[90%]  md:min-w-[22%] sm:min-w-[20%] lg:min-w-[24%] ">
+              <div
+                key={index}
+                className="flex-shrink-0 sm:w-[45%] md:w-[30%] lg:w-[23%]"
+              >
                 <BestDealsProductCard
                   imageSrc={product.imageSrc}
                   name={product.name}
@@ -112,35 +133,73 @@ export const BestDeals = () => {
           </div>
           {showLeftButton && (
             <button
-              className="absolute md:-left-2 lg:-left-5 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => {
-                if (scrollref.current) {
-                  scrollref.current.scrollBy({
-                    left: -400,
-                    behavior: "smooth",
-                  });
-                }
-              }}
+              className="absolute -left-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => scroll('left')}
+              aria-label="Scroll left"
             >
-              <SlArrowLeft size={22}/>
+              <SlArrowLeft size={24} />
             </button>
           )}
-          <button
-            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-            onClick={() => {
-              if (scrollref.current) {
-                scrollref.current.scrollBy({
-                  left: 400,
-                  behavior: "smooth",
-                });
-              }
-            }}
-          >
-         <SlArrowRight size={22}/>
-         
-          </button>
+          {showRightButton && (
+            <button
+              className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => scroll('right')}
+              aria-label="Scroll right"
+            >
+              <SlArrowRight size={24} />
+            </button>
+          )}
         </div>
       </div>
     </div>
+    
+    
+
+      <div className="sm:hidden max-w-screen-sm py-4">
+      <div className="flex-1">
+        <h2 className="text-xl font-bold pb-4">
+          Best Deals on Appliances
+        </h2>
+        <div className="relative">
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto scrollbar-hide space-x-2 pb-4"
+          >
+            {featuredProducts.map((product, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-[25%]"
+              >
+                <BestDealsProductCard
+                  imageSrc={product.imageSrc}
+                  name={product.name}
+                  price={product.price}
+                  altText={product.altText}
+                />
+              </div>
+            ))}
+          </div>
+          {showLeftButton && (
+            <button
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => scroll('left')}
+              aria-label="Scroll left"
+            >
+              <SlArrowLeft size={18} />
+            </button>
+          )}
+          {showRightButton && (
+            <button
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => scroll('right')}
+              aria-label="Scroll right"
+            >
+              <SlArrowRight size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+    </>
   );
 };

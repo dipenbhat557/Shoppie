@@ -1,18 +1,15 @@
-import { HomeDecorComponent } from "./HomeDecorComponent";
 
 import of1 from "../../public/images/hom1.png";
 import of2 from "../../public/images/hom2.png";
 import DressStyle from "./DressStyle";
+import { HomeDecorComponent } from "./HomeDecorComponent";
 
-export const HomeDecor = () => {
-  return (
-    <div className="w-full">
-      {/* This wrapper div will be hidden on screens smaller than md */}
-      <div className="hidden md:block w-full">
-        <div className="w-[90%] mx-auto py-4">
-          <h1 className="pt-2 text-3xl font-bold">Home & Decor</h1>
-          <div className="flex">
-            <div className="flex w-[60%] gap-2 pt-8">
+
+export const HomeDecorMobileComponent = () => {
+    return (
+        <div className=" max-w-sm w-full sm:hidden   mx-auto">
+          <h1 className="pt-2 text-2xl w-full  font-bold">Home & Decor</h1>
+            <div className=" flex w-full gap-1 pt-2">
               <HomeDecorComponent
                 offer="1 For 1 Free"
                 offerImage={of1}
@@ -29,12 +26,7 @@ export const HomeDecor = () => {
                 companyName="XXX"
               />
             </div>
-            <div className="w-[40%] px-5 pb-4">
-              <DressStyle />
-            </div>
+         
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+      );
+}

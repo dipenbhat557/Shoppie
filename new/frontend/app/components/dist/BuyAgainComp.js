@@ -62,44 +62,35 @@ exports.featuredProducts = [
 exports.BuyAgainComp = function () {
     var scrollref = react_1.useRef(null);
     var _a = react_1.useState(false), showLeftButton = _a[0], setShowLeftButton = _a[1];
+    var _b = react_1.useState(true), showRightButton = _b[0], setShowRightButton = _b[1];
     react_1.useEffect(function () {
+        var _a;
         var handleScroll = function () {
             if (scrollref.current) {
                 setShowLeftButton(scrollref.current.scrollLeft > 0);
+                setShowRightButton(scrollref.current.scrollLeft <
+                    scrollref.current.scrollWidth - scrollref.current.clientWidth);
             }
         };
-        if (scrollref.current) {
-            scrollref.current.addEventListener("scroll", handleScroll);
-        }
-        return function () {
-            if (scrollref.current) {
-                scrollref.current.removeEventListener("scroll", handleScroll);
-            }
-        };
+        (_a = scrollref.current) === null || _a === void 0 ? void 0 : _a.addEventListener('scroll', handleScroll);
+        return function () { var _a; return (_a = scrollref.current) === null || _a === void 0 ? void 0 : _a.removeEventListener('scroll', handleScroll); };
     }, []);
-    return (React.createElement("div", { className: " flex flex-col max-w-[90%] mx-auto py-8 px-2" },
-        React.createElement("h1", { className: "text-3xl font-bold py-2" }, "Buy Again"),
+    var scroll = function (direction) {
+        if (scrollref.current) {
+            var scrollAmount = direction === 'left' ? -200 : 200;
+            scrollref.current.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
+    return (React.createElement("div", { className: "max-w-screen-sm sm:max-w-[95%] md:max-w-[90%] mx-auto py-2 sm:py-4 md:py-8 px-1 sm:px-2" },
+        React.createElement("h1", { className: "text-xl sm:text-2xl md:text-3xl font-bold py-2" }, "Buy Again"),
         React.createElement("div", { className: "relative" },
-            React.createElement("div", { ref: scrollref, className: "flex overflow-x-auto scrollbar-hide space-x-4" }, exports.featuredProducts.map(function (item, index) {
-                return (React.createElement("div", { key: index, className: " md:min-w-[19%] sm:min-w-[18%]" },
-                    React.createElement(BuyAgainCard_1.BuyAgainCard, { key: index, name: item.name, imageSrc: item.imageSrc, altText: item.altText, rating: item.rating, price: item.price, discount: item.discount })));
-            })),
-            showLeftButton && (React.createElement("button", { className: "absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md", onClick: function () {
-                    if (scrollref.current) {
-                        scrollref.current.scrollBy({
-                            left: -400,
-                            behavior: "smooth"
-                        });
-                    }
-                } },
-                React.createElement(sl_1.SlArrowLeft, { size: 22 }))),
-            React.createElement("button", { className: "absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md", onClick: function () {
-                    if (scrollref.current) {
-                        scrollref.current.scrollBy({
-                            left: 400,
-                            behavior: "smooth"
-                        });
-                    }
-                } },
-                React.createElement(sl_1.SlArrowRight, { size: 22 })))));
+            React.createElement("div", { ref: scrollref, className: "flex overflow-x-auto scrollbar-hide space-x-2 sm:space-x-3 md:space-x-4 pb-4" }, exports.featuredProducts.map(function (item, index) { return (React.createElement("div", { key: index, className: "min-w-[20%] xs:min-w-[20%] sm:min-w-[25%] md:min-w-[22%] lg:min-w-[18%]" },
+                React.createElement(BuyAgainCard_1.BuyAgainCard, { name: item.name, imageSrc: item.imageSrc, altText: item.altText, rating: item.rating, price: item.price, discount: item.discount }))); })),
+            showLeftButton && (React.createElement("button", { className: "absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-1 sm:p-2 shadow-md", onClick: function () { return scroll('left'); } },
+                React.createElement(sl_1.SlArrowLeft, { className: "w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" }))),
+            showRightButton && (React.createElement("button", { className: "absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-1 sm:p-2 shadow-md", onClick: function () { return scroll('right'); } },
+                React.createElement(sl_1.SlArrowRight, { className: "w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" }))))));
 };
