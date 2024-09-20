@@ -16,8 +16,6 @@ import com.kinumna.repo.UserRepo;
 import com.kinumna.repo.WishlistRepo;
 import com.kinumna.service.WishlistService;
 
-import jakarta.annotation.Resource;
-
 import java.util.stream.Collectors;
 
 @Service

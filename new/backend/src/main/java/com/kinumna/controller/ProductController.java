@@ -68,6 +68,11 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.getBySale(saleId));
     }
 
+    @GetMapping("/wishlist/{wishlistId}")
+    public ResponseEntity<List<Product>> getByWishlist(@PathVariable int wishlistId){
+        return ResponseEntity.ok(this.productService.getByWishlist(wishlistId));
+    }
+
     @PutMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDTO> update(@PathVariable int id, @RequestParam("product") String productRequest,
         @RequestParam(value = "images", required = false) List<MultipartFile> images) {
