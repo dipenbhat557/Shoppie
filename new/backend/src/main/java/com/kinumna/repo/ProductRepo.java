@@ -8,5 +8,5 @@ import com.kinumna.model.Category;
 import com.kinumna.model.Product;
 
 public interface ProductRepo  extends JpaRepository<Product,Integer>{
-   List<Product> findByCategory(Category category); 
+   List<Product> findByCategory(Category category);
 }

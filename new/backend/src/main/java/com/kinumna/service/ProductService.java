@@ -14,6 +14,7 @@ public interface ProductService {
     public Product getById(int id);
     public List<Product> getByCategory(int categoryId);
     public List<Product> getBySale(int saleId);
+    public List<Product> getByWishlist(int wishlistId);
     public ProductDTO update( CreateProductRequestDTO request, List<MultipartFile> images);
     public void delete(int id);
 }

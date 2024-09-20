@@ -18,6 +18,7 @@ import com.kinumna.model.ProductOption;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
 import com.kinumna.model.Store;
+import com.kinumna.model.Wishlist;
 import com.kinumna.payload.ResponseFromObject;
 import com.kinumna.payload.requests.CreateProductRequestDTO;
 import com.kinumna.payload.requests.OptionGroupDTO;
@@ -31,6 +32,7 @@ import com.kinumna.repo.ProductRepo;
 import com.kinumna.repo.ProductVariantRepo;
 import com.kinumna.repo.SaleRepo;
 import com.kinumna.repo.StoreRepo;
+import com.kinumna.repo.WishlistRepo;
 import com.kinumna.service.ProductService;
 
 import jakarta.transaction.Transactional;
@@ -69,6 +71,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private SaleRepo saleRepo;
+
+    @Autowired
+    private WishlistRepo wishlistRepo;
 
     @Override
     @Transactional
@@ -174,6 +179,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getBySale(int saleId){
         return this.saleRepo.findById(saleId).orElseThrow(()->new ResourceNotFoundException("sale not found")).getProducts();
+    }
+
+    @Override
+    public List<Product> getByWishlist(int wishlistId){
+        Wishlist wishlist = this.wishlistRepo.findById(wishlistId).orElseThrow(()->new ResourceNotFoundException("wishlist not found"));
+        return wishlist.getProducts();
     }
 
 	@Override
