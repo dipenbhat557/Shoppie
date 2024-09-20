@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import airpods from "../../public/images/topDeals/airpods.png";
@@ -70,7 +71,8 @@ export const TopDeals = () => {
     };
   }, []);
   return (
-    <div className={`flex py-8 ${styles.maxScreenWidth} ${styles.screenMarginAuto}`}>
+    <>
+    <div className={`sm:flex hidden py-8 ${styles.maxScreenWidth} ${styles.screenMarginAuto}`}>
       {/* Products Section */}
       <div className="flex-1">
         <h2 className="text-2xl font-bold pb-2">Top Deals</h2>
@@ -84,8 +86,6 @@ export const TopDeals = () => {
               <div key={index} className="max-w-[50%] min-w-[19%]">
                 <ProductCard
                   imageSrc={product.imageSrc}
-                  name={product.name}
-                  price={product.price}
                   altText={product.altText}
                 />
               </div>
@@ -132,6 +132,62 @@ export const TopDeals = () => {
         </div>
       </div>
     </div>
+    
+    <div className={`flex max-w-screen-sm   sm:hidden py-8  `}>
+      {/* Products Section */}
+      <div className=" ">
+        <h2 className="text-xl font-bold text-black  ">Top Deals</h2>
+        <div className="relative">
+          <div
+            ref={scrollContainerRef}
+            
+            className="flex overflow-x-auto scrollbar-hide space-x-2"
+          >
+            {featuredProducts.map((product, index) => (
+              <div key={index} className="max-w-full min-w-[19%]">
+                <ProductCard
+                  imageSrc={product.imageSrc}
+                  altText={product.altText}
+                />
+              </div>
+            ))}
+          </div>
+          {showLeftButton && (
+            <button
+              className="absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+              onClick={() => {
+                if (scrollContainerRef.current) {
+                  scrollContainerRef.current.scrollBy({
+                    left: -400,
+                    behavior: "smooth",
+                  });
+                }
+              }}
+            >
+              <SlArrowLeft size={22}/>
+            </button>
+          )}
+          <button
+            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
+            onClick={() => {
+              if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollBy({
+                  left: 400,
+                  behavior: "smooth",
+                });
+              }
+            }}
+          >
+         <SlArrowRight size={22}/>
+         
+          </button>
+        </div>
+      </div>
+    
+    </div>
+
+    </>
+
   );
 };
 

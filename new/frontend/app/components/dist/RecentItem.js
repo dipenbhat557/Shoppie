@@ -63,10 +63,13 @@ exports.featuredProducts = [
 exports.RecentItem = function () {
     var scrollContainerRef = react_1.useRef(null);
     var _a = react_1.useState(false), showLeftButton = _a[0], setShowLeftButton = _a[1];
+    var _b = react_1.useState(true), showRightButton = _b[0], setShowRightButton = _b[1];
     react_1.useEffect(function () {
         var handleScroll = function () {
             if (scrollContainerRef.current) {
-                setShowLeftButton(scrollContainerRef.current.scrollLeft > 0);
+                var _a = scrollContainerRef.current, scrollLeft = _a.scrollLeft, scrollWidth = _a.scrollWidth, clientWidth = _a.clientWidth;
+                setShowLeftButton(scrollLeft > 0);
+                setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
             }
         };
         if (scrollContainerRef.current) {
@@ -78,33 +81,30 @@ exports.RecentItem = function () {
             }
         };
     }, []);
-    return (react_1["default"].createElement("div", { className: "py-8 " + styles_1.styles.maxScreenWidth + " mx-auto" },
+    var scroll = function (direction) {
+        if (scrollContainerRef.current) {
+            var scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
+            scrollContainerRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: "smooth"
+            });
+        }
+    };
+    return (react_1["default"].createElement("div", { className: "py-4 sm:py-8 " + styles_1.styles.maxScreenWidth + " mx-auto px-4 sm:px-6 lg:px-8" },
         react_1["default"].createElement("div", { className: "flex-1" },
-            react_1["default"].createElement("h2", { className: "text-3xl font-bold font-sans pb-2" }, "Recently Viewed Items"),
+            react_1["default"].createElement("h2", { className: "text-2xl sm:text-3xl font-bold font-sans pb-2 sm:pb-4" }, "Recently Viewed Items"),
             react_1["default"].createElement("div", { className: "relative" },
-                react_1["default"].createElement("div", { ref: scrollContainerRef, className: "flex overflow-x-auto scrollbar-hide", onScroll: function () {
+                react_1["default"].createElement("div", { ref: scrollContainerRef, className: "flex overflow-x-auto scrollbar-hide -mx-2 sm:mx-0", onScroll: function () {
                         if (scrollContainerRef.current) {
-                            setShowLeftButton(scrollContainerRef.current.scrollLeft > 0);
+                            var _a = scrollContainerRef.current, scrollLeft = _a.scrollLeft, scrollWidth = _a.scrollWidth, clientWidth = _a.clientWidth;
+                            setShowLeftButton(scrollLeft > 0);
+                            setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
                         }
-                    } }, exports.featuredProducts.map(function (product, index) { return (react_1["default"].createElement("div", { key: index, className: "max-w-[80%] sm:max-w-[60%] md:max-w-[50%] lg:max-w-[25%] min-w-[60%] sm:min-w-[40%] md:min-w-[25%] lg:min-w-[20%] px-2" },
+                    } }, exports.featuredProducts.map(function (product, index) { return (react_1["default"].createElement("div", { key: index, className: "w-1/3 sm:w-1/4 md:w-1/4 lg:w-1/5 flex-shrink-0 px-2" },
                     react_1["default"].createElement(ProductCard_1["default"], { imageSrc: product.imageSrc, altText: product.altText }))); })),
-                showLeftButton && (react_1["default"].createElement("button", { className: "absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md", onClick: function () {
-                        if (scrollContainerRef.current) {
-                            scrollContainerRef.current.scrollBy({
-                                left: -400,
-                                behavior: "smooth"
-                            });
-                        }
-                    } },
+                showLeftButton && (react_1["default"].createElement("button", { className: "absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block", onClick: function () { return scroll('left'); } },
                     react_1["default"].createElement(sl_1.SlArrowLeft, { size: 22 }))),
-                react_1["default"].createElement("button", { className: "absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md", onClick: function () {
-                        if (scrollContainerRef.current) {
-                            scrollContainerRef.current.scrollBy({
-                                left: 400,
-                                behavior: "smooth"
-                            });
-                        }
-                    } },
-                    react_1["default"].createElement(sl_1.SlArrowRight, { size: 22 }))))));
+                showRightButton && (react_1["default"].createElement("button", { className: "absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block", onClick: function () { return scroll('right'); } },
+                    react_1["default"].createElement(sl_1.SlArrowRight, { size: 22 })))))));
 };
 exports["default"] = exports.RecentItem;

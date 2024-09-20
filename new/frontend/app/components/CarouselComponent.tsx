@@ -11,7 +11,7 @@ import { styles } from "../utils/styles";
 
 export const CarouselComponent = () => {
   return (
-    <div className={`relative w-[90%] overflow-hidden ${styles.screenMarginAuto} flex items-center justify-center pt-10`}>
+    <div className={`  w-[90%]  overflow-hidden ${styles.screenMarginAuto} flex items-center justify-center pt-10`}>
       <Carousel
         plugins={[
           Autoplay({
@@ -19,7 +19,7 @@ export const CarouselComponent = () => {
           }),
         ]}
       >
-        <CarouselContent className="relative w-full h-full">
+        <CarouselContent className="relative  w-screen h-full">
           <CarouselItem className="relative w-full h-full flex items-center justify-center">
             <Image 
               src={c1} 
