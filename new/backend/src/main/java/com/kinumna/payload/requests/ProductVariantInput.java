@@ -1,5 +1,8 @@
 package com.kinumna.payload.requests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductVariantInput {
-    private String sku;
     private int price;
     private int stock;
     private int productId;
-    private int productOptionGroupId;
-    private int productOptionId;
+    private List<Integer> productOptionId = new ArrayList<>();
     private int storeId; 
 }

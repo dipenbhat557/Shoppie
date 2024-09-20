@@ -2,12 +2,14 @@ package com.kinumna.service;
 
 import java.util.List;
 
-import com.kinumna.model.ProductOptionGroup;
+import com.kinumna.payload.responses.ProductOptionGroupResponse;
+
 
 public interface ProductOptionGroupService {
-    ProductOptionGroup createOptionGroup(ProductOptionGroup optionGroup);
-    ProductOptionGroup getOptionGroupById(Integer id);
-    List<ProductOptionGroup> getAllOptionGroups();
-    ProductOptionGroup updateOptionGroup(Integer id, ProductOptionGroup optionGroup);
+    ProductOptionGroupResponse createOptionGroup(String optionGroupName);
+    ProductOptionGroupResponse getOptionGroupById(Integer id);
+    List<ProductOptionGroupResponse> getAllOptionGroups();
+    List<ProductOptionGroupResponse> getByCategory(Integer categoryId);
+    ProductOptionGroupResponse updateOptionGroup(Integer id, String optionGroupName);
     void deleteOptionGroup(Integer id);
 }

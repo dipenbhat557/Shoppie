@@ -24,7 +24,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private double rating;
+    private int rating;
 
     private String comment;
 
