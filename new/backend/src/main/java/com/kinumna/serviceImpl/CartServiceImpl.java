@@ -1,6 +1,7 @@
 package com.kinumna.serviceImpl;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,15 @@ import org.springframework.stereotype.Service;
 
 import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.Cart;
+import com.kinumna.model.CartItem;
+import com.kinumna.model.ProductVariant;
 import com.kinumna.model.User;
 import com.kinumna.payload.ResponseFromObject;
+import com.kinumna.payload.requests.CartItemRequestInput;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.repo.CartRepo;
+import com.kinumna.repo.ProductVariantRepo;
+import com.kinumna.repo.UserRepo;
 import com.kinumna.service.CartService;
 import com.kinumna.service.UserService;
 
@@ -22,23 +28,56 @@ public class CartServiceImpl implements CartService{
     private CartRepo cartRepo;
 
     @Autowired
-    private UserService userService;
+    private UserRepo userRepo;
 
     @Autowired
     private ResponseFromObject responseFromObject;
 
-    @Override
-    public CartResponse create(int userId) {
+    @Autowired
+    private ProductVariantRepo productVariantRepo;
 
-        Cart cart = new Cart();
 
-        User user = this.userService.findById(userId);
-        cart.setUser(user);
+    public CartResponse addCartItem(CartItemRequestInput request, Integer userId) {
+        // Fetch user
+        User user = userRepo.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        cart = this.cartRepo.save(cart);
+        // Fetch product variant
+        ProductVariant productVariant = productVariantRepo.findById(request.getProductVariantId())
+            .orElseThrow(() -> new ResourceNotFoundException("Product variant not found"));
 
-        return responseFromObject.getCartResponse(cart);
+        // Fetch or create cart
+        Cart cart = this.cartRepo.findByUser(user);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(user);
+        }
 
+        List<CartItem> cartItems = cart.getItems();
+        AtomicBoolean itemExists = new AtomicBoolean(false);
+
+        // Update existing item or add new one
+        cartItems.forEach(cartItem -> {
+            if (cartItem.getProductVariant().getVariantId().equals(productVariant.getVariantId())) {
+                cartItem.setQuantity(request.getQuantity());
+                cartItem.setTotalPrice(productVariant.getPrice() * request.getQuantity());
+                itemExists.set(true);
+            }
+        });
+
+        if (!itemExists.get()) {
+            CartItem newItem = new CartItem();
+            newItem.setCart(cart);
+            newItem.setProductVariant(productVariant);
+            newItem.setQuantity(request.getQuantity());
+            newItem.setTotalPrice(productVariant.getPrice() * request.getQuantity());
+            cartItems.add(newItem);
+        }
+
+        cartRepo.save(cart);
+
+        // Build response DTO
+        return this.responseFromObject.getCartResponse(cart);
     }
 
     @Override
@@ -47,10 +86,20 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
+    public CartResponse getCartByUserId(Integer userId) {
+        User user = userRepo.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        
+        Cart cart = cartRepo.findByUser(user);
+
+        return this.responseFromObject.getCartResponse(cart);
+    }
+
+    @Override
     public CartResponse update(int id, int userId) {
         Cart cart = this.cartRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("cart not found"));
 
-        cart.setUser(this.userService.findById(userId));
+        cart.setUser(this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException( "user not found for cart")));
 
         return this.responseFromObject.getCartResponse(cart);
     }
