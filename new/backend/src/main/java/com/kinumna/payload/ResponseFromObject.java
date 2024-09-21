@@ -9,6 +9,7 @@ import com.kinumna.model.Address;
 import com.kinumna.model.Cart;
 import com.kinumna.model.Category;
 import com.kinumna.model.Image;
+import com.kinumna.model.Order;
 import com.kinumna.model.Product;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
@@ -20,6 +21,8 @@ import com.kinumna.payload.responses.CartItemResponse;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.payload.responses.CategoryResponse;
 import com.kinumna.payload.responses.ImageResponse;
+import com.kinumna.payload.responses.OrderItemResponse;
+import com.kinumna.payload.responses.OrderResponse;
 import com.kinumna.payload.responses.ProductDTO;
 import com.kinumna.payload.responses.ProductOptionDTO;
 import com.kinumna.payload.responses.ProductOptionGroupResponse;
@@ -83,6 +86,27 @@ public class ResponseFromObject {
 
         response.setId(image.getId());
         response.setImg(image.getImage());
+
+        return response;
+    }
+
+    public OrderResponse getOrderResponse(Order order){
+        List<OrderItemResponse> items = order.getItems().stream()
+            .map(item -> {
+                OrderItemResponse dto = new OrderItemResponse();
+                dto.setOrderItemId(item.getOrderItemId());
+                dto.setProductVariantId(item.getProductVariant().getVariantId());
+                dto.setQuantity(item.getQuantity());
+                dto.setTotalPrice((int)item.getPrice());
+                return dto;
+            }).collect(Collectors.toList());
+
+        OrderResponse response = new OrderResponse();
+        response.setOrderId(order.getOrderId());
+        response.setStatus(order.getStatus().toString());
+        response.setOrderDate(order.getOrderDate());
+        response.setDeliveryDate(order.getDeliveryDate());
+        response.setItems(items);
 
         return response;
     }

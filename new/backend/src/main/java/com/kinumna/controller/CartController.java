@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kinumna.payload.requests.CartItemRequestInput;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.service.CartService;
 
@@ -23,10 +25,11 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-   @PostMapping
-   public ResponseEntity<CartResponse> create(@RequestParam("userId") int userId){
-    return ResponseEntity.ok(this.cartService.create(userId));
-   }
+    @PostMapping("/{userId}/items")
+    public ResponseEntity<CartResponse> addCartItem(@RequestBody CartItemRequestInput request, @PathVariable Integer userId) {
+        return ResponseEntity.ok(cartService.addCartItem(request, userId));
+    }
+
 
    @GetMapping("/{id}")
    public ResponseEntity<CartResponse> getById(@PathVariable int id){
@@ -37,6 +40,11 @@ public class CartController {
    public ResponseEntity<List<CartResponse>> getAll(){
     return ResponseEntity.ok(this.cartService.getAll());
    }
+
+   @GetMapping("/{userId}")
+    public ResponseEntity<CartResponse> getCart(@PathVariable Integer userId) {
+        return ResponseEntity.ok( cartService.getCartByUserId(userId));
+    }
 
    @PutMapping("/{id}")
    public ResponseEntity<CartResponse> update(@PathVariable int id, @RequestParam("userId") int userId ){
