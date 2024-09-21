@@ -1,4 +1,4 @@
-package com.kinumna.payload.responses;
+package com.kinumna.payload.requests;
 
 import java.util.List;
 
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartResponse {
-    private Integer cartId;
-    private Integer totalItems;
+public class OrderInput {
     private Integer userId;
-    private List<CartItemResponse> items;
+    private String vendor;
+    private List<OrderItemInput> items; 
 }
