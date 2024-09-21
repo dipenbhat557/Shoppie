@@ -16,6 +16,7 @@ import com.kinumna.model.Review;
 import com.kinumna.model.Sale;
 import com.kinumna.model.Wishlist;
 import com.kinumna.payload.responses.AddressResponse;
+import com.kinumna.payload.responses.CartItemResponse;
 import com.kinumna.payload.responses.CartResponse;
 import com.kinumna.payload.responses.CategoryResponse;
 import com.kinumna.payload.responses.ImageResponse;
@@ -48,10 +49,20 @@ public class ResponseFromObject {
     }
 
     public CartResponse getCartResponse(Cart cart){
-        CartResponse response = new CartResponse();
+        List<CartItemResponse> cartItems = cart.getItems().stream()
+            .map(item -> {
+                CartItemResponse dto = new CartItemResponse();
+                dto.setCartItemId(item.getCartItemId());
+                dto.setProductVariantId(item.getProductVariant().getVariantId());
+                dto.setQuantity(item.getQuantity());
+                dto.setTotalPrice(item.getTotalPrice());
+                return dto;
+            }).collect(Collectors.toList());
 
-        response.setId(cart.getCartId());
-        response.setUserId(cart.getUser().getUserId());
+        CartResponse response = new CartResponse();
+        response.setCartId(cart.getCartId());
+        response.setTotalItems(cartItems.size());
+        response.setItems(cartItems);
 
         return response;
     }
