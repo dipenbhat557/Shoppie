@@ -19,7 +19,6 @@ import com.kinumna.repo.CartRepo;
 import com.kinumna.repo.ProductVariantRepo;
 import com.kinumna.repo.UserRepo;
 import com.kinumna.service.CartService;
-import com.kinumna.service.UserService;
 
 @Service
 public class CartServiceImpl implements CartService{

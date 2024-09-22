@@ -67,5 +67,25 @@ public class OrderServiceImpl implements OrderService {
     
             return this.responseFromObject.getOrderResponse(order);
     }
+
+    @Override
+    public List<OrderResponse> getByUser(int userId) {
+
+        User user = this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("user not found"));
+
+        List<Order> orders = this.orderRepo.findByUser(user);
+
+        return orders.stream().map(order->this.responseFromObject.getOrderResponse(order)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> getAll() {
+        return this.orderRepo.findAll().stream().map(order -> this.responseFromObject.getOrderResponse(order)).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse getById(int orderId) {
+        return this.responseFromObject.getOrderResponse(this.orderRepo.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found")));
+    }
     
 }

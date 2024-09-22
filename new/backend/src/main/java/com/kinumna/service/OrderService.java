@@ -7,7 +7,7 @@ import com.kinumna.payload.responses.OrderResponse;
 
 public interface OrderService {
    public OrderResponse createOrder(OrderInput request);
-   public OrderResponse getByUser(int userId);
+   public List<OrderResponse> getByUser(int userId);
    public List<OrderResponse> getAll();
    public OrderResponse getById(int orderId); 
 }
