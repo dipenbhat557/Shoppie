@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class OrderItemInput {
     private Integer productVariantId;
     private Integer quantity;
+    private int orderId;
 }
