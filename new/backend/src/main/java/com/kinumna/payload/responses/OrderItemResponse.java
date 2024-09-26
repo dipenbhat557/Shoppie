@@ -11,5 +11,6 @@ public class OrderItemResponse {
     private Integer orderItemId;
     private Integer productVariantId;
     private Integer quantity;
-    private Integer totalPrice; 
+    private Integer totalPrice;
+    private Integer orderId; 
 }
