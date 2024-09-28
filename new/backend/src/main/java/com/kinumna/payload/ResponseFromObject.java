@@ -10,6 +10,7 @@ import com.kinumna.model.Cart;
 import com.kinumna.model.Category;
 import com.kinumna.model.Image;
 import com.kinumna.model.Order;
+import com.kinumna.model.OrderItem;
 import com.kinumna.model.Product;
 import com.kinumna.model.ProductOptionGroup;
 import com.kinumna.model.ProductVariant;
@@ -107,6 +108,17 @@ public class ResponseFromObject {
         response.setOrderDate(order.getOrderDate());
         response.setDeliveryDate(order.getDeliveryDate());
         response.setItems(items);
+
+        return response;
+    }
+
+    public OrderItemResponse getOrderItemResponse(OrderItem item){
+        OrderItemResponse response = new OrderItemResponse();
+        response.setOrderItemId(item.getOrderItemId());
+        response.setQuantity(item.getQuantity());
+        response.setTotalPrice(item.getPrice());
+        response.setOrderId(item.getOrder().getOrderId());
+        response.setProductVariantId(item.getProductVariant().getVariantId());
 
         return response;
     }
