@@ -1,9 +1,11 @@
 package com.kinumna.serviceImpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.kinumna.model.OrderItem;
 import com.kinumna.payload.ObjectFromInput;
@@ -37,14 +39,12 @@ public class OrderItemServiceImpl implements OrderItemService{
 
     @Override
     public OrderItemResponse getById(int orderItemId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+        return this.responseFromObject.getOrderItemResponse(this.orderItemRepo.findById(orderItemId).orElseThrow(()->new ResourceAccessException("order item not found")));
     }
 
     @Override
     public List<OrderItemResponse> getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+        return this.orderItemRepo.findAll().stream().map(item -> this.responseFromObject.getOrderItemResponse(item)).collect(Collectors.toList());
     }
 
     @Override
