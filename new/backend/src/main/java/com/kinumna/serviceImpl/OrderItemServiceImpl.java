@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kinumna.model.OrderItem;
 import com.kinumna.payload.ObjectFromInput;
 import com.kinumna.payload.ResponseFromObject;
 import com.kinumna.payload.requests.OrderItemInput;
@@ -26,8 +27,12 @@ public class OrderItemServiceImpl implements OrderItemService{
 
     @Override
     public OrderItemResponse create(OrderItemInput input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        OrderItem orderItem = new OrderItem();
+
+        orderItem = this.objectFromInput.getOrderItem(orderItem, input);
+        orderItem = this.orderItemRepo.save(orderItem);
+
+        return this.responseFromObject.getOrderItemResponse(orderItem);
     }
 
     @Override
