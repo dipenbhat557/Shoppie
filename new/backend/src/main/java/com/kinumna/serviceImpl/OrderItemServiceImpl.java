@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.kinumna.exception.ResourceNotFoundException;
 import com.kinumna.model.OrderItem;
 import com.kinumna.payload.ObjectFromInput;
 import com.kinumna.payload.ResponseFromObject;
@@ -49,14 +50,17 @@ public class OrderItemServiceImpl implements OrderItemService{
 
     @Override
     public OrderItemResponse update(int id, OrderItemInput input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        OrderItem item = this.orderItemRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("order item not found"));
+
+        item = this.objectFromInput.getOrderItem(item, input);
+        item = this.orderItemRepo.save(item);
+
+        return this.responseFromObject.getOrderItemResponse(item);
     }
 
     @Override
     public void delete(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        this.orderItemRepo.deleteById(id);
     }
     
 }
