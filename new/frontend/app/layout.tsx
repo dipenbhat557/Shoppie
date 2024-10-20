@@ -24,16 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col min-h-screen  w-full  justify-between items-center ">
-          <div className="w-full flex flex-col gap-5  ">
-          <Topbar/>
-          <Navbar/>
-          <CategoryNav/>
-          </div>
-          {children}
-          <Footer/>
-          
-        </div>
+        {children}
       </body>
     </html>
   );

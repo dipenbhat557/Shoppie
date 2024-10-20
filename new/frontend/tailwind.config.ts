@@ -18,6 +18,7 @@ const config = {
       },
     },
     extend: {
+      
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
