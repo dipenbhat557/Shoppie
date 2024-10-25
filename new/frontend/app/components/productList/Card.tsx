@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Ratings } from "./Rating"
+import { Ratings } from "../Rating"
 import img from "../../../public/images/productList/t-shirt.png"
 
 export function Card() {
