@@ -7,8 +7,10 @@ export default function Page() {
     return (
         <div>
             <Navigate />
-            <Product />
-            <BuyItem />
+            <div className="container md:grid md:grid-cols-7 md:gap-5">
+                <Product />
+                <BuyItem />
+            </div>
         </div>
     )
 }
