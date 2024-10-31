@@ -1,4 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
+.embla {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+}
+.embla__slide {
+  flex: 0 0 100%; /* Default slide covers 100% of the viewport */
+}
