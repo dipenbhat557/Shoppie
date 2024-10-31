@@ -16,11 +16,11 @@ export function BuyDetails() {
                     </div>
                     <div 
                         onClick={() => setColor("bg-[#A0BCE0]")} 
-                        className={`w-5 h-5 rounded-full ${color === "bg-[#A0BCE0]" ? 'border-solid border-black border-2' : ''} bg-[#A0BCE0]`}
+                        className={`cursor-pointer w-5 h-5 rounded-full ${color === "bg-[#A0BCE0]" ? 'border-solid border-black border-2' : ''} bg-[#A0BCE0]`}
                     ></div>
                     <div 
                         onClick={() => setColor("bg-[#E07575]")} 
-                        className={`w-5 h-5 rounded-full ${color === "bg-[#E07575]" ? 'border-solid border-black border-2' : ''} bg-[#E07575]`}
+                        className={`cursor-pointer w-5 h-5 rounded-full ${color === "bg-[#E07575]" ? 'border-solid border-black border-2' : ''} bg-[#E07575]`}
                     ></div>
                 </div>
             </div>
@@ -38,6 +38,18 @@ export function BuyDetails() {
             <div className="flex gap-4">
                 <button className="bg-[#FFC633] font-bold py-2 px-7">Buy now</button>
                 <button className="bg-[#FB641B] font-bold py-2 px-7">Add to cart</button>
+            </div>
+            <div className="flex gap-8 pt-5">
+                <div className="font-semibold flex flex-col gap-2">
+                    <div>Brand</div>
+                    <div>Size</div>
+                    <div>Highlight 3</div>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <div>Noise</div>
+                    <div>No size</div>
+                    <div>Noise</div>
+                </div>
             </div>
             <hr className="h-px my-8 bg-black border-0"></hr>
         </div>

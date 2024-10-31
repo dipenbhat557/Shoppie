@@ -1,7 +1,9 @@
-import Image from "next/image";
 import { Navigate } from "./components/Navigate";
 import { Product } from "./components/Product";
 import { BuyItem } from "./components/BuyItem";
+import {SlideItem} from "./components/SlideItem";
+import Reviews from "./components/Reviews";
+import ReletedItems from "./components/ReletedItems";
 
 export default function Page() {
     return (
@@ -11,6 +13,9 @@ export default function Page() {
                 <Product />
                 <BuyItem />
             </div>
+            <SlideItem />
+            <Reviews />
+            <ReletedItems />
         </div>
     )
 }
