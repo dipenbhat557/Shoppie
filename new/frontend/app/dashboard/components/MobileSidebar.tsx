@@ -55,7 +55,7 @@ const lists = [{
 export function MobileSidebar() {
   const [active, setActive] = useState("/dashboard");
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-2 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">{"Menu"}</Button>
@@ -74,15 +74,15 @@ export function MobileSidebar() {
             <div className="flex flex-col gap-2 pb-2">
               {
                 lists.map((list) => (
-                  <div key={list.id} className={`${active == list.link ?'bg-[#FFC633]':''} p-4 rounded-lg flex gap-4`}>
+                  <Link href={list.link} key={list.id} className={`${active == list.link ?'bg-[#FFC633]':'hover:bg-gray-100'} p-4 rounded-lg flex gap-4`}>
                     <Image
                       src={grid}
                       height={24}
-                      width={18}
+                      width={24}
                       alt="grid"
                     />
-                    <Link className="text-2xl" href={list.link}>{list.name}</Link>
-                  </div>
+                    <div className="text-2xl">{list.name}</div>
+                  </Link>
                 ))
               }
             </div>
