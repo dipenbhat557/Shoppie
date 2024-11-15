@@ -5,7 +5,7 @@ import { MobileSidebar } from "./MobileSidebar";
 
 export const Nav=() => {
     return (
-        <div className="flex justify-between py-2">
+        <div className="flex justify-between py-2 md:order-last">
             <MobileSidebar />
             <div className="flex gap-2 items-center">
                 <Image

@@ -39,7 +39,7 @@ const chartConfig = {
 
 export function Sales() {
   return (
-    <Card>
+    <Card className="flex-1">
       <CardHeader>
         <div className="text-xl font-bold">Sales Overtime</div>
         <div className="bg-[#F7F7F7] p-2 rounded-lg">
