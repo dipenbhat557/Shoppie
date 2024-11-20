@@ -2,7 +2,7 @@ import { Mic } from 'lucide-react';
 
 export function Search() {
   return (
-    <form className="max-w-md mx-auto md:mx-0 md:flex-1">
+    <form className="max-w-md mx-auto md:mx-0 md:flex-1 md:pb-2">
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
