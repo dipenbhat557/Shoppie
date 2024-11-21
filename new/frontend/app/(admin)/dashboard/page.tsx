@@ -6,11 +6,18 @@ import avg from "@/public/images/dashboard/avg.png";
 import total from "@/public/images/dashboard/total.png";
 import { TopSelling } from "./components/TopSelling";
 import { LatestOrder } from "./components/LatestOrder";
+import { MobileSidebar } from "../components/MobileSidebar";
+import { ProfileImg } from "../components/ProfileImg";
 
 export default function Page() {
   return (
     <>
-      <Search />
+      <div className="flex justify-between py-2 ">
+        <MobileSidebar />
+        <Search isMobile={true} />
+        <ProfileImg />
+      </div>
+      <Search isMobile={false} />
       <HeaderText />
       <div className="flex flex-col gap-2 py-2 md:flex-row">
         <OrderCard logo={avg} color="#FFC633" />

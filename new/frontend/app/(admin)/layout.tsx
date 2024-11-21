@@ -1,5 +1,4 @@
-import { DesktopSidebar } from "./dashboard/components/DesktopSidebar";
-import { Nav } from "./dashboard/components/Nav";
+import { DesktopSidebar } from "./components/DesktopSidebar";
 
 export default function RootLayout({
   children,
@@ -12,9 +11,6 @@ export default function RootLayout({
         <div className="bg-[#F7F7F7] min-h-screen md:grid md:grid-cols-4">
               <DesktopSidebar />
               <div className="md:col-span-3 md:p-4 p-2">
-                  <div className="md:flex md:items-center md:justify-end">
-                      <Nav />
-                  </div>
                   {children}
               </div>
           </div>

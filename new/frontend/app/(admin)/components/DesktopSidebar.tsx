@@ -25,12 +25,12 @@ const lists = [
   {
     id: 4,
     name: "Orders",
-    link: "/orders",
+    link: "/view-orders",
   },
   {
     id: 5,
     name: "Shipment",
-    link: "/shipment",
+    link: "/dispatch",
   },
   {
     id: 6,
@@ -50,12 +50,15 @@ export const DesktopSidebar = () => {
         {lists.map((list) => (
           <Link
             href={list.link}
+            onClick={() => setActive(list.link)}
             key={list.id}
             className={`${
               active == list.link ? "bg-[#FFC633]" : "hover:bg-gray-100"
-            } p-4 rounded-lg flex gap-4`}
+            } p-4 rounded-lg flex items-center gap-4`}
           >
-            <Image src={grid} height={24} width={24} alt="grid" />
+            <div>
+              <Image src={grid} height={24} width={24} alt="grid" />
+            </div>
             <div className="text-2xl">
               {list.name}
             </div>

@@ -1,8 +1,8 @@
 import { Mic } from 'lucide-react';
 
-export function Search() {
+export function Search({isMobile}: {isMobile?: boolean}) {
   return (
-    <form className="max-w-md mx-auto md:mx-0 md:flex-1 md:pb-2">
+    <form className={`max-w-md mx-auto md:mx-0 md:flex-1 md:pb-2 ${isMobile ? 'hidden md:block': 'md:hidden'}`}>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
