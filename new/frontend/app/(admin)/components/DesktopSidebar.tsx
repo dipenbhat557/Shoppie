@@ -5,6 +5,7 @@ import logo from "@/public/images/dashboard/logo.png";
 import grid from "@/public/images/dashboard/grid.png";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const lists = [
   {
@@ -40,7 +41,8 @@ const lists = [
 ];
 
 export const DesktopSidebar = () => {
-  const [active, setActive] = useState("/dashboard");
+  const pathname = usePathname();
+  const [active, setActive] = useState(pathname );
   return (
     <div className="hidden md:flex md:flex-col bg-white">
         <div className="flex justify-center">

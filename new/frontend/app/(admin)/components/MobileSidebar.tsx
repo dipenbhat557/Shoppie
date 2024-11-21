@@ -19,6 +19,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { list } from "postcss"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 
 const lists = [{
   id: 1,
@@ -53,7 +54,8 @@ const lists = [{
 
 
 export function MobileSidebar() {
-  const [active, setActive] = useState("/dashboard");
+  const pathname = usePathname();
+  const [active, setActive] = useState(pathname ? pathname : "/dashboard");
   return (
     <div className="gap-2 md:hidden w-40">
         <Sheet>
