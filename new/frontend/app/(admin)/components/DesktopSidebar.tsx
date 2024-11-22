@@ -5,6 +5,7 @@ import logo from "@/public/images/dashboard/logo.png";
 import grid from "@/public/images/dashboard/grid.png";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const lists = [
   {
@@ -25,12 +26,12 @@ const lists = [
   {
     id: 4,
     name: "Orders",
-    link: "/orders",
+    link: "/view-orders",
   },
   {
     id: 5,
     name: "Shipment",
-    link: "/shipment",
+    link: "/dispatch",
   },
   {
     id: 6,
@@ -40,7 +41,8 @@ const lists = [
 ];
 
 export const DesktopSidebar = () => {
-  const [active, setActive] = useState("/dashboard");
+  const pathname = usePathname();
+  const [active, setActive] = useState(pathname );
   return (
     <div className="hidden md:flex md:flex-col bg-white">
         <div className="flex justify-center">
@@ -50,12 +52,15 @@ export const DesktopSidebar = () => {
         {lists.map((list) => (
           <Link
             href={list.link}
+            onClick={() => setActive(list.link)}
             key={list.id}
             className={`${
               active == list.link ? "bg-[#FFC633]" : "hover:bg-gray-100"
-            } p-4 rounded-lg flex gap-4`}
+            } p-4 rounded-lg flex items-center gap-4`}
           >
-            <Image src={grid} height={24} width={24} alt="grid" />
+            <div>
+              <Image src={grid} height={24} width={24} alt="grid" />
+            </div>
             <div className="text-2xl">
               {list.name}
             </div>

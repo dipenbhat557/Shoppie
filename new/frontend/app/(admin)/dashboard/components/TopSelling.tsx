@@ -18,7 +18,9 @@ export function TopSelling() {
     return (
       <div className="flex items-center gap-4 justify-between">
         <div className="flex gap-2">
-          <Image src={shoe} alt="Average" width={67} height={67} />
+          <div>
+            <Image src={shoe} alt="Average" width={67} height={67} />
+          </div>
           <div className="flex flex-col gap-2">
             <div>Red Tape Sports Shoes for Men</div>
             <div className="text-sm">12,429 Sales</div>

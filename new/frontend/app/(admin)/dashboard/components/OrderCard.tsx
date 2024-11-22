@@ -3,7 +3,7 @@ import Image, { StaticImageData } from "next/image";
 
 export const OrderCard = ({color, logo}: {color: string, logo: StaticImageData }) => {
   return (
-    <div className={`flex-1 flex flex-col gap-4 bg-[${color}] p-4 rounded-xl`}>
+    <div className={`flex-1 flex flex-col gap-4 ${color == "" ? 'bg-white' : 'bg-[#FFC633]'} p-4 rounded-xl`}>
       <div className="flex justify-between">
         <div>AVG . Order Value</div>
         <div>

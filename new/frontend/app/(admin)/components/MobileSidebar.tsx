@@ -19,6 +19,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { list } from "postcss"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 
 const lists = [{
   id: 1,
@@ -38,12 +39,12 @@ const lists = [{
 {
   id: 4,
   name: "Orders",
-  link: "/orders",
+  link: "/view-orders",
 },
 {
   id: 5,
   name: "Shipment",
-  link: "/shipment",
+  link: "/dispatch",
 },
 {
   id: 6,
@@ -53,9 +54,10 @@ const lists = [{
 
 
 export function MobileSidebar() {
-  const [active, setActive] = useState("/dashboard");
+  const pathname = usePathname();
+  const [active, setActive] = useState(pathname ? pathname : "/dashboard");
   return (
-    <div className="grid grid-cols-2 gap-2 md:hidden">
+    <div className="gap-2 md:hidden w-40">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">{"Menu"}</Button>
@@ -74,13 +76,15 @@ export function MobileSidebar() {
             <div className="flex flex-col gap-2 pb-2">
               {
                 lists.map((list) => (
-                  <Link href={list.link} key={list.id} className={`${active == list.link ?'bg-[#FFC633]':'hover:bg-gray-100'} p-4 rounded-lg flex gap-4`}>
-                    <Image
-                      src={grid}
-                      height={24}
-                      width={24}
-                      alt="grid"
-                    />
+                  <Link onClick={() => setActive(list.link)} href={list.link} key={list.id} className={`${active == list.link ?'bg-[#FFC633]':'hover:bg-gray-100'} p-4 rounded-lg flex items-center gap-4`}>
+                    <div>
+                      <Image
+                        src={grid}
+                        height={24}
+                        width={24}
+                        alt="grid"
+                      />
+                    </div>
                     <div className="text-2xl">{list.name}</div>
                   </Link>
                 ))
