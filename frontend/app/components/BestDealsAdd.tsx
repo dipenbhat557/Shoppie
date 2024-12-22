@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export const BestDealsAdd = () => {
   return (
-    <div className="md:px-4 bg-white hover:bg-slate-100 shadow-md rounded-lg md:max-w-xl mx-auto">
+    <div className="w-[30%] bg-white hover:bg-slate-100 shadow-md rounded-lg  ">
       <p className="lg:text-xl md:text-xs font-bold p-4 ">
         Up to 40% off | Mens and Womens Footwear
       </p>

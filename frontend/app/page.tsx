@@ -5,7 +5,6 @@ import CarouselComponent from "./components/CarouselComponent";
 import { DressStyleMobileComponent } from "./components/DressStyleMobileComponent";
 import HomeDecor from "./components/HomeDecor";
 import { HomeDecorMobileComponent } from "./components/HomeDecorMobileComponent";
-import { MobileAddSection } from "./components/MobileAddSection";
 import RecentItem from "./components/RecentItem";
 import TopDeals from "./components/TopDeals";
 
@@ -17,6 +16,8 @@ import Topbar from "./components/Topbar";
 import Navbar from "./components/Navbar";
 import CategoryNav from "./components/CategoryNav";
 import { Footer } from "./components/Footer";
+import { BestDealsAdd } from "./components/BestDealsAdd";
+
 // watch for MobileAddSection
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
         <CarouselComponent />
         <TopDeals />
 
-        <MobileAddSection />
+        <BestDealsAdd />
 
         <BestDeals />
         <HomeDecor />

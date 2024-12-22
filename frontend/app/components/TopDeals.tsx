@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Ads from "./Ads";
 // yesma product ko price ani name  fetch garney yo real mah kunai pani specific
 const DEAL_PRODUCTS = [
   {
@@ -67,20 +68,22 @@ const ProductCard = ({
 
 export default function TopDeals() {
   return (
-    <section className="px-4 py-6 w-full">
+    <section className="px-4 py-6 w-full ">
       <h1 className="text-2xl font-medium mb-6">Top Deals on Gadgets</h1>
-
-      <div className="w-[80%]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {DEAL_PRODUCTS.map((product) => (
-            <ProductCard
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.image}
-            />
-          ))}
+      <div className="flex gap-7">
+        <div className="w-[80%]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {DEAL_PRODUCTS.map((product) => (
+              <ProductCard
+                key={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.image}
+              />
+            ))}
+          </div>
         </div>
+        <Ads />
       </div>
     </section>
   );
