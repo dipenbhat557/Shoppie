@@ -1,8 +1,11 @@
-import React from 'react';
-import Image, { StaticImageData } from 'next/image';
+import React from "react";
+import Image, { StaticImageData } from "next/image";
 
-
-const SupportBar = ({ deliver, service, support }:{
+const SupportBar = ({
+  deliver,
+  service,
+  support,
+}: {
   deliver: StaticImageData;
   service: StaticImageData;
   support: StaticImageData;
@@ -31,7 +34,12 @@ const SupportBar = ({ deliver, service, support }:{
   );
 };
 
-const SupportItem = ({ image, alt, title, description }:{
+const SupportItem = ({
+  image,
+  alt,
+  title,
+  description,
+}: {
   image: StaticImageData;
   alt: string;
   title: string;

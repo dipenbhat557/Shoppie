@@ -1,18 +1,35 @@
-import { styles } from "../utils/styles";
+import React from "react";
 
-export const Topbar = () => {
+const NAV_ITEMS = [
+  { id: "signin", label: "Signin", href: "/signin" },
+  { id: "register", label: "Register", href: "/register" },
+  { id: "contact", label: "Contact Us", href: "/contact" },
+  { id: "seller", label: "Become a seller", href: "/seller" },
+] as const;
+
+const NavButton = ({ label, href }: { label: string; href: string }) => (
+  <a
+    href={href}
+    className="hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/20 rounded px-2 py-1"
+  >
+    {label}
+  </a>
+);
+
+export default function Topbar() {
   return (
-    <div className="bg-black text-white w-full p-3  text-[8px] md:text-xs lg:text-sm  ">
-      <div className={`flex ${styles.maxScreenWidth}  ${styles.screenMarginAuto}  justify-between`}>
-        <div className="pl-2">Delivery All over Nepal</div>
+    <header className="bg-black text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium">Free Delivery all over Nepal!</p>
 
-        <div className="flex justify-evenly sm:w-[60%] md:w-3/5 lg:w-2/5">
-          <p>Signin</p>
-          <p>Register</p>
-          <p>Contact Us</p>
-          <p>Become a Seller</p>
+          <nav className="flex items-center space-x-6">
+            {NAV_ITEMS.map(({ id, label, href }) => (
+              <NavButton key={id} label={label} href={href} />
+            ))}
+          </nav>
         </div>
       </div>
-    </div>
+    </header>
   );
-};
+}
