@@ -2,9 +2,9 @@ import AdBanner1 from "./components/AdBanner1";
 import BestDeals from "./components/BestDeals";
 import BuyAgainComp from "./components/BuyAgainComp";
 import CarouselComponent from "./components/CarouselComponent";
-import { DressStyleMobileComponent } from "./components/DressStyleMobileComponent";
+
 import HomeDecor from "./components/HomeDecor";
-import { HomeDecorMobileComponent } from "./components/HomeDecorMobileComponent";
+
 import RecentItem from "./components/RecentItem";
 import TopDeals from "./components/TopDeals";
 
@@ -30,13 +30,14 @@ export default function Home() {
         </div>
         <CarouselComponent />
         <TopDeals />
+        <div className=" w-full px-3 flex gap-10">
+          {" "}
+          <BestDealsAdd />
+          <BestDeals />
+        </div>
 
-        <BestDealsAdd />
-
-        <BestDeals />
         <HomeDecor />
-        <HomeDecorMobileComponent />
-        <DressStyleMobileComponent />
+
         <RecentItem />
         <AdBanner1 />
         <BuyAgainComp />

@@ -8,11 +8,10 @@ import Image from "next/image";
 
 export const BestDealsAdd = () => {
   return (
-    <div className="w-[30%] bg-white hover:bg-slate-100 shadow-md rounded-lg  ">
+    <div className="w-[30%] bg-white  shadow-md rounded-lg  ">
       <p className="lg:text-xl md:text-xs font-bold p-4 ">
         Up to 40% off | Mens and Womens Footwear
       </p>
-
       <div className="grid grid-cols-2 md:gap-4 gap-2 ">
         <div className="flex flex-col items-center">
           <Image
