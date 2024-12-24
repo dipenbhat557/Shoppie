@@ -18,7 +18,6 @@ import CategoryNav from "./components/CategoryNav";
 import { Footer } from "./components/Footer";
 import { BestDealsAdd } from "./components/BestDealsAdd";
 
-// watch for MobileAddSection
 export default function Home() {
   return (
     <>
@@ -30,8 +29,7 @@ export default function Home() {
         </div>
         <CarouselComponent />
         <TopDeals />
-        <div className=" w-full px-3 flex gap-10">
-          {" "}
+        <div className="flex lg:flex-row flex-col gap-4 w-full">
           <BestDealsAdd />
           <BestDeals />
         </div>

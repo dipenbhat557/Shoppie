@@ -3,9 +3,7 @@ import airpods from "../../public/images/topDeals/airpods.png";
 import boat from "../../public/images/topDeals/boat.png";
 import headphone from "../../public/images/topDeals/headphone.png";
 import phone from "../../public/images/topDeals/phone.png";
-
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-
 import { useEffect, useRef, useState } from "react";
 import { BuyAgainCard } from "./BuyAgainCard";
 export const featuredProducts = [
@@ -73,7 +71,6 @@ export const BuyAgainComp = () => {
         );
       }
     };
-
     const element = scrollref.current;
     element?.addEventListener("scroll", handleScroll);
     return () => element?.removeEventListener("scroll", handleScroll);
@@ -90,37 +87,34 @@ export const BuyAgainComp = () => {
   };
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 py-8">
+    <div className="w-full max-w-[1400px] mx-auto px-4 py-8 overflow-hidden">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6">Buy Again</h1>
-
       <div className="relative">
         <div
           ref={scrollref}
-          className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
+          className="flex gap-4 overflow-x-scroll scrollbar-hide pb-4 -mx-4 px-4"
         >
           {featuredProducts.map((item: any, index: any) => (
             <div
               key={index}
-              className="min-w-[200px] sm:min-w-[250px] md:min-w-[280px]"
+              className="flex-none w-[180px] sm:w-[250px] md:w-[280px]"
             >
               <BuyAgainCard {...item} />
             </div>
           ))}
         </div>
-
         {showLeftButton && (
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 hidden md:block"
           >
             <SlArrowLeft className="w-5 h-5" />
           </button>
         )}
-
         {showRightButton && (
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 hidden md:block"
           >
             <SlArrowRight className="w-5 h-5" />
           </button>
