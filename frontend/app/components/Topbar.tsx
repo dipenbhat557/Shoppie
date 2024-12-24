@@ -18,7 +18,7 @@ const NavButton = ({ label, href }: { label: string; href: string }) => (
   </a>
 );
 
-export default function Topbar() {
+export function Topbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
