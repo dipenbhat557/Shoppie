@@ -122,6 +122,19 @@ export default function CategoryNav() {
       setTimeout(checkScroll, 300);
     }
   };
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style); // Cleanup on unmount
+    };
+  }, []);
 
   return (
     <div className="w-[98%] mx-auto">
@@ -153,10 +166,3 @@ export default function CategoryNav() {
     </div>
   );
 }
-const style = document.createElement("style");
-style.textContent = `
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-`;
-document.head.appendChild(style);
