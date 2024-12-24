@@ -96,7 +96,7 @@ const ScrollButton = ({
   </button>
 );
 
-export default function CategoryNav() {
+export function CategoryNav() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(false);
