@@ -1,73 +1,162 @@
-import Image from "next/image";
-import phome from "../../public/images/catagoryNav/phone.png";
-import fashion from "../../public/images/catagoryNav/fashion.png";
-import home from "../../public/images/catagoryNav/home.png";
-import elec from "../../public/images/catagoryNav/electonics.png";
+"use client";
+import React, { useRef, useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { styles } from "../utils/styles";
+const CATEGORIES = [
+  {
+    id: "fashion",
+    name: "Fashion",
+    image: "/images/catagoryNav/fashion.png",
+  },
+  {
+    id: "electronics",
+    name: "Electronics",
+    image: "/images/catagoryNav/electonics.png",
+  },
+  {
+    id: "home",
+    name: "Home & Living",
+    image: "/images/catagoryNav/home.png",
+  },
+  {
+    id: "phone",
+    name: "Phone",
+    image: "/images/catagoryNav/phone.png",
+  },
+  {
+    id: "sports",
+    name: "Sports",
+    image: "/images/catagoryNav/home.png",
+  },
+  {
+    id: "books",
+    name: "Books",
+    image: "/images/catagoryNav/electonics.png",
+  },
+  {
+    id: "toys",
+    name: "Toys & Games",
+    image: "/images/catagoryNav/fashion.png",
+  },
+  {
+    id: "grocery",
+    name: "Grocery",
+    image: "/images/catagoryNav/phone.png",
+  },
+] as const;
 
-interface Category {
+interface CategoryItemProps {
   name: string;
-  icon: JSX.Element;
+  image: string;
 }
 
-const categories: Category[] = [
-  {
-    name: "Fashion",
-    icon: <Image src={fashion} alt="Fashion" className="h-16 w-16" />,
-  },
-  {
-    name: "Electronics",
-    icon: <Image src={elec} alt="Electronics" className="h-16 w-16" />,
-  },
-  {
-    name: "Mobiles",
-    icon: <Image src={phome} alt="Mobiles" className="h-16 w-16" />,
-  },
-  {
-    name: "Grocery",
-    icon: <Image src={phome} alt="Grocery" className="h-16 w-16" />,
-  },
-  {
-    name: "Furniture",
-    icon: <Image src={home} alt="Furniture" className="h-16 w-16" />,
-  },
-  {
-    name: "Appliances",
-    icon: <Image src={elec} alt="Appliances" className="h-16 w-16" />,
-  },
-  {
-    name: "Mobiles",
-    icon: <Image src={phome} alt="Mobiles" className="h-16 w-16" />,
-  },
-  {
-    name: "Appliances",
-    icon: <Image src={elec} alt="Appliances" className="h-16 w-16" />,
-  },
-];
-export const CategoryNav = () => {
+const CategoryItem = ({ name, image }: CategoryItemProps) => (
+  <button
+    className="flex flex-col items-center p-3 rounded-lg transition-all duration-200
+               hover:bg-gray-50 hover:scale-105 focus:outline-none focus:ring-2 
+               focus:ring-gray-200 group min-w-[100px] mx-8"
+  >
+    <div className="w-14 h-14 mb-2 relative">
+      <img
+        src={image}
+        alt={`${name} category`}
+        className="object-contain w-full h-full"
+      />
+    </div>
+    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 whitespace-nowrap">
+      {name}
+    </span>
+  </button>
+);
+
+const ScrollButton = ({
+  direction,
+  onClick,
+  disabled,
+}: {
+  direction: "left" | "right";
+  onClick: () => void;
+  disabled: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={`absolute top-1/2 -translate-y-1/2 z-10 
+                ${direction === "left" ? "left-2" : "right-2"}
+                p-2 bg-white shadow-lg rounded-full
+                hover:bg-gray-50 disabled:opacity-0
+                transition-all duration-200
+                focus:outline-none focus:ring-2 focus:ring-gray-200`}
+  >
+    {direction === "left" ? (
+      <ChevronLeft className="w-5 h-5" />
+    ) : (
+      <ChevronRight className="w-5 h-5" />
+    )}
+  </button>
+);
+
+export default function CategoryNav() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftScroll(scrollLeft > 0);
+      setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === "left" ? -300 : 300;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      setTimeout(checkScroll, 300);
+    }
+  };
+
   return (
-    <div
-      className={`bg-white   w-screen md:w-full lg:rounded-xl border border-slate-100 shadow-lg lg:w-[90%] lg:${styles.maxScreenWidth} ${styles.screenMarginAuto} ${styles.paddingY}`}
-    >
-      {/* Restrict the visible items to 5 and make the rest scrollable */}
-      <div className="flex overflow-x-auto sm:overflow-x-scroll scrollbar-hide">
-        <div className="flex   justify-evenly  sm:w-[100%] gap-4">
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-2 items-center sm:inline-block"
-            >
-              <div className="lg:w-16 lg:h-16 md:w-12 md:h-12 sm:h-8 sm:w-8 p-2">
-                {category.icon}
-              </div>
-              <span className="text-center lg:text-xl md:text-sm text-xs sm:p-2 font-medium text-gray-700">
-                {category.name}
-              </span>
-            </div>
-          ))}
+    <div className="w-[98%] mx-auto">
+      <nav className="bg-white shadow-lg rounded-xl relative top-1 border border-gray-100">
+        <div className="relative px-8">
+          <ScrollButton
+            direction="left"
+            onClick={() => scroll("left")}
+            disabled={!showLeftScroll}
+          />
+          <ScrollButton
+            direction="right"
+            onClick={() => scroll("right")}
+            disabled={!showRightScroll}
+          />
+
+          <div
+            ref={scrollRef}
+            className="flex items-center overflow-x-auto py-4 scrollbar-hide"
+            onScroll={checkScroll}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {CATEGORIES.map(({ id, name, image }) => (
+              <CategoryItem key={id} name={name} image={image} />
+            ))}
+          </div>
         </div>
-      </div>
+      </nav>
     </div>
   );
-};
+}
+const style = document.createElement("style");
+style.textContent = `
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+`;
+document.head.appendChild(style);

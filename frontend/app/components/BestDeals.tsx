@@ -1,205 +1,80 @@
-"use client";
+import React from "react";
 
-import fridge from "../../public/images/appliance/fridge.png";
-import wash from "../../public/images/appliance/wash.png";
-import tv from "../../public/images/appliance/tv.png";
-
-import { BestDealsProductCard } from "./BestDealsProductCard";
-import { BestDealsAdd } from "./BestDealsAdd";
-import { useEffect, useRef, useState } from "react";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-
-export const featuredProducts = [
+const DEAL_PRODUCTS = [
   {
-    imageSrc: fridge,
-    name: "Fridges",
-    price: "From Rs 90,000",
-    altText: "Apple Mobiles",
-  },
-  {
-    imageSrc: tv,
-    name: "Televisions",
+    id: 1,
+    name: "Boats Airpods",
     price: "From Rs 899",
-    altText: "Boats Airpods",
+    image: "/images/appliance/wash.png",
   },
   {
-    imageSrc: wash,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
+    id: 2,
+    name: "Smart Watch",
+    price: "From Rs 1,499",
+    image: "/images/appliance/tv.png",
   },
   {
-    imageSrc: wash,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
+    id: 3,
+    name: "Wireless Mouse",
+    price: "From Rs 599",
+    image: "/images/appliance/fridge.png",
   },
   {
-    imageSrc: wash,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
+    id: 4,
+    name: "Bluetooth Speaker",
+    price: "From Rs 1,299",
+    image: "/images/topDeals/phone.webp",
   },
   {
-    imageSrc: tv,
-    name: "Televisions",
-    price: "From Rs 899",
-    altText: "Boats Airpods",
+    id: 5,
+    name: "Power Bank",
+    price: "From Rs 999",
+    image: "/images/appliance/fridge.png",
   },
-  {
-    imageSrc: fridge,
-    name: "Fridges",
-    price: "From Rs 90,000",
-    altText: "Apple Mobiles",
-  },
-  {
-    imageSrc: tv,
-    name: "Televisions",
-    price: "From Rs 899",
-    altText: "Boats Airpods",
-  },
-  {
-    imageSrc: fridge,
-    name: "Fridges",
-    price: "From Rs 90,000",
-    altText: "Apple Mobiles",
-  },
-];
+] as const;
 
-export const BestDeals = () => {
+const ProductCard = ({
+  name,
+  price,
+  image,
+}: {
+  name: string;
+  price: string;
+  image: string;
+}) => (
+  <div className="flex flex-col gap-3">
+    <div className="rounded-xl h-48 w-44 hover:shadow-lg transition-shadow duration-300 flex items-center justify-center">
+      <div className="relative w-40 h-40">
+        <img src={image} alt={name} className="object-contain w-full h-full" />
+      </div>
+    </div>
+    <div className="relative left-6">
+      <h2 className="text-gray-800 text-base  font-medium">{name}</h2>
+      <p className="font-semibold text-gray-900 text-xl">{price}</p>
+    </div>
+  </div>
+);
 
-  const scrollRef = useRef(null);
-  const [showLeftButton, setShowLeftButton] = useState(false);
-  const [showRightButton, setShowRightButton] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        setShowLeftButton(scrollLeft > 0);
-        setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-      }
-    };
-
-    if (scrollRef.current) {
-      (scrollRef.current as HTMLElement).addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollRef.current) {
-        (scrollRef.current as HTMLElement).removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  const scroll = (direction: string) => {
-    if (scrollRef.current) {
-      const scrollAmount = (scrollRef.current as HTMLElement).clientWidth * 0.8;
-      (scrollRef.current as HTMLElement).scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
+function BestDeals() {
   return (
-    <>
-    <div className="hidden sm:flex  mx-auto py-8 px-4 lg:px-8  w-[90%]">
-      <div className="w-1/4 bg-gray-100 flex justify-center items-center rounded-lg mr-4">
-        <BestDealsAdd />
-      </div>
-      <div className="flex-1">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold pb-4 pl-4">
-          Best Deals on Appliances
-        </h2>
-        <div className="relative">
-          <div
-            ref={scrollRef}
-            className="flex overflow-x-auto scrollbar-hide space-x-4"
-          >
-            {featuredProducts.map((product, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 sm:w-[45%] md:w-[30%] lg:w-[23%]"
-              >
-                <BestDealsProductCard
-                  imageSrc={product.imageSrc}
-                  name={product.name}
-                  price={product.price}
-                  altText={product.altText}
-                />
-              </div>
-            ))}
-          </div>
-          {showLeftButton && (
-            <button
-              className="absolute -left-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => scroll('left')}
-              aria-label="Scroll left"
-            >
-              <SlArrowLeft size={24} />
-            </button>
-          )}
-          {showRightButton && (
-            <button
-              className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => scroll('right')}
-              aria-label="Scroll right"
-            >
-              <SlArrowRight size={24} />
-            </button>
-          )}
+    <div className="p-4">
+      <h1 className="text-black font-medium text-2xl mb-6">
+        Best Deals on Appliances
+      </h1>
+      <div className="w-full overflow-x-auto">
+        <div className="flex flex-nowrap gap-4 min-w-min pb-4">
+          {DEAL_PRODUCTS.map((product) => (
+            <ProductCard
+              key={product.id}
+              name={product.name}
+              price={product.price}
+              image={product.image}
+            />
+          ))}
         </div>
       </div>
     </div>
-    
-    
-
-      <div className="sm:hidden max-w-screen-sm py-4">
-      <div className="flex-1">
-        <h2 className="text-xl font-bold pb-4">
-          Best Deals on Appliances
-        </h2>
-        <div className="relative">
-          <div
-            ref={scrollRef}
-            className="flex overflow-x-auto scrollbar-hide space-x-2 pb-4"
-          >
-            {featuredProducts.map((product, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-[25%]"
-              >
-                <BestDealsProductCard
-                  imageSrc={product.imageSrc}
-                  name={product.name}
-                  price={product.price}
-                  altText={product.altText}
-                />
-              </div>
-            ))}
-          </div>
-          {showLeftButton && (
-            <button
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => scroll('left')}
-              aria-label="Scroll left"
-            >
-              <SlArrowLeft size={18} />
-            </button>
-          )}
-          {showRightButton && (
-            <button
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => scroll('right')}
-              aria-label="Scroll right"
-            >
-              <SlArrowRight size={18} />
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-    </>
   );
-};
+}
+
+export default BestDeals;

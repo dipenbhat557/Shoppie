@@ -1,144 +1,109 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import ProductCard from "./ProductCard";
-import airpods from "../../public/images/topDeals/airpods.png";
-import boat from "../../public/images/topDeals/boat.png";
-import headphone from "../../public/images/topDeals/headphone.png";
-import phone from "../../public/images/topDeals/phone.png";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { styles } from "../utils/styles";
+import React, { useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export const featuredProducts = [
+interface Product {
+  id: number;
+  name: string;
+  image: string;
+}
+
+interface ProductCardProps extends Omit<Product, "id"> {}
+
+const products: Product[] = [
   {
-    imageSrc: boat,
-    name: "Boats Airpods",
-    price: "From Rs 899",
-    altText: "Boats Airpods",
+    id: 1,
+    name: "Boat Airdopes",
+    image: "/images/topDeals/phone.png",
   },
   {
-    imageSrc: phone,
-    name: "Apple Mobiles",
-    price: "From Rs 90,000",
-    altText: "Apple Mobiles",
+    id: 2,
+    name: "iPhone 13 Pro",
+    image: "/images/topDeals/phone.webp",
   },
   {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
+    id: 3,
+    name: "Boat Rockerz",
+    image: "/images/topDeals/airpods.png",
   },
   {
-    imageSrc: headphone,
-    name: "Headset",
-    price: "From Rs 5000",
-    altText: "Headset",
+    id: 4,
+    name: "Boat Headphones",
+    image: "/images/topDeals/boat.png",
+  },
+
+  {
+    id: 2,
+    name: "iPhone 13 Pro",
+    image: "/images/topDeals/phone.webp",
   },
   {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
-  },
-  {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
-  },
-  {
-    imageSrc: headphone,
-    name: "Headset",
-    price: "From Rs 5000",
-    altText: "Headset",
-  },
-  {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-    price: "From Rs 10,000",
-    altText: "Apple Airpods",
+    id: 5,
+    name: "Wireless Earbuds",
+    image: "/images/topDeals/phone.png",
   },
 ];
 
-export const RecentItem = () => {
+const ProductCard: React.FC<ProductCardProps> = ({ image, name }) => (
+  <div className="min-w-[250px] p-4 bg-gray-50 rounded-lg hover:shadow-lg transition-shadow duration-300">
+    <div className="h-48 flex items-center justify-center">
+      <img
+        src={image}
+        alt={name}
+        className="max-h-full w-auto object-contain"
+      />
+    </div>
+  </div>
+);
+
+const RecentItem: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [showLeftButton, setShowLeftButton] = useState(false);
-  const [showRightButton, setShowRightButton] = useState(true);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollContainerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-        setShowLeftButton(scrollLeft > 0);
-        setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-      }
-    };
+  const scroll = (direction: "left" | "right"): void => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
+    const scrollAmount = 300;
+    container.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <div className={`py-4 sm:py-8 ${styles.maxScreenWidth} mx-auto px-4 sm:px-6 lg:px-8`}>
-      <div className="flex-1">
-        <h2 className="text-2xl sm:text-3xl font-bold font-sans pb-2 sm:pb-4">Recently Viewed Items</h2>
-        <div className="relative">
-          <div
-            ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-hide -mx-2 sm:mx-0"
-            onScroll={() => {
-              if (scrollContainerRef.current) {
-                const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-                setShowLeftButton(scrollLeft > 0);
-                setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-              }
-            }}
-          >
-            {featuredProducts.map((product, index) => (
-              <div
-                key={index}
-                className="w-1/3 sm:w-1/4 md:w-1/4 lg:w-1/5 flex-shrink-0 px-2"
-              >
-                <ProductCard imageSrc={product.imageSrc} altText={product.altText} />
-              </div>
-            ))}
-          </div>
-
-          {showLeftButton && (
-            <button
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block"
-              onClick={() => scroll('left')}
-            >
-              <SlArrowLeft size={22}/>
-            </button>
-          )}
-          {showRightButton && (
-            <button
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hidden sm:block"
-              onClick={() => scroll('right')}
-            >
-              <SlArrowRight size={22}/>
-            </button>
-          )}
+    <div className="w-full p-6">
+      <h1 className="text-2xl font-bold mb-6">Recently Viewed Items</h1>
+      <div className="relative">
+        <div
+          ref={scrollContainerRef}
+          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              name={product.name}
+              image={product.image}
+            />
+          ))}
         </div>
+        <button
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-50"
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-50"
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
       </div>
     </div>
   );
 };
+
 export default RecentItem;

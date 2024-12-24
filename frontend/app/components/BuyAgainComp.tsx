@@ -1,12 +1,13 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import airpods from "../../public/images/topDeals/airpods.png";
 import boat from "../../public/images/topDeals/boat.png";
 import headphone from "../../public/images/topDeals/headphone.png";
 import phone from "../../public/images/topDeals/phone.png";
-import { BuyAgainCard } from "./BuyAgainCard";
+
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
+import { useEffect, useRef, useState } from "react";
+import { BuyAgainCard } from "./BuyAgainCard";
 export const featuredProducts = [
   {
     imageSrc: boat,
@@ -57,11 +58,9 @@ export const featuredProducts = [
     altText: "Apple Airpods",
   },
 ];
-
 export const BuyAgainComp = () => {
   const scrollref = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
-
   const [showRightButton, setShowRightButton] = useState(true);
 
   useEffect(() => {
@@ -69,66 +68,64 @@ export const BuyAgainComp = () => {
       if (scrollref.current) {
         setShowLeftButton(scrollref.current.scrollLeft > 0);
         setShowRightButton(
-          scrollref.current.scrollLeft < 
-          scrollref.current.scrollWidth - scrollref.current.clientWidth
+          scrollref.current.scrollLeft <
+            scrollref.current.scrollWidth - scrollref.current.clientWidth
         );
       }
     };
 
-    scrollref.current?.addEventListener('scroll', handleScroll);
-    return () => scrollref.current?.removeEventListener('scroll', handleScroll);
+    const element = scrollref.current;
+    element?.addEventListener("scroll", handleScroll);
+    return () => element?.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scroll = (direction:string) => {
+  const scroll = (direction: string) => {
     if (scrollref.current) {
-      const scrollAmount = direction === 'left' ? -200 : 200;
+      const scrollAmount = direction === "left" ? -300 : 300;
       scrollref.current.scrollBy({
         left: scrollAmount,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
 
-
   return (
-    <div className="max-w-screen-sm sm:max-w-[95%] md:max-w-[90%] mx-auto py-2 sm:py-4 md:py-8 px-1 sm:px-2">
-    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold py-2">Buy Again</h1>
-    <div className="relative">
-      <div 
-        ref={scrollref} 
-        className="flex overflow-x-auto scrollbar-hide space-x-2 sm:space-x-3 md:space-x-4 pb-4"
-      >
-        {featuredProducts.map((item, index) => (
-          <div key={index} className="min-w-[20%] xs:min-w-[20%] sm:min-w-[25%] md:min-w-[22%] lg:min-w-[18%]">
-            <BuyAgainCard
-              name={item.name}
-              imageSrc={item.imageSrc}
-              altText={item.altText}
-              rating={item.rating}
-              price={item.price}
-              discount={item.discount}
-            />
-          </div>
-        ))}
-      </div>
-      {showLeftButton && (
-        <button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-1 sm:p-2 shadow-md"
-          onClick={() => scroll('left')}
-        >
-          <SlArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-        </button>
-      )}
-      {showRightButton && (
-        <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-1 sm:p-2 shadow-md"
-          onClick={() => scroll('right')}
-        >
-          <SlArrowRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-        </button>
-      )}
-    </div>
-  </div>
-  );
+    <div className="max-w-[1400px] mx-auto px-4 py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Buy Again</h1>
 
+      <div className="relative">
+        <div
+          ref={scrollref}
+          className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
+        >
+          {featuredProducts.map((item: any, index: any) => (
+            <div
+              key={index}
+              className="min-w-[200px] sm:min-w-[250px] md:min-w-[280px]"
+            >
+              <BuyAgainCard {...item} />
+            </div>
+          ))}
+        </div>
+
+        {showLeftButton && (
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+          >
+            <SlArrowLeft className="w-5 h-5" />
+          </button>
+        )}
+
+        {showRightButton && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+          >
+            <SlArrowRight className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
 };

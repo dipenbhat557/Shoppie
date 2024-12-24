@@ -1,194 +1,90 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import ProductCard from "./ProductCard";
-import airpods from "../../public/images/topDeals/airpods.png";
-import boat from "../../public/images/topDeals/boat.png";
-import headphone from "../../public/images/topDeals/headphone.png";
-import phone from "../../public/images/topDeals/phone.png";
+import React from "react";
 import Image from "next/image";
-import ad1 from "../../public/images/customad.png";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { styles } from "../utils/styles";
-
-export const featuredProducts = [
+import Ads from "./Ads";
+// yesma product ko price ani name  fetch garney yo real mah kunai pani specific
+const DEAL_PRODUCTS = [
   {
-    imageSrc: boat,
+    id: 1,
     name: "Boats Airpods",
-price:899,
-    altText: "Boats Airpods",
+    price: "From Rs 899",
+    image: "/images/topDeals/airpods.png",
   },
   {
-    imageSrc: phone,
-    name: "Apple Mobiles",
-price:899,
-    altText: "Apple Mobiles",
+    id: 2,
+    name: "Smart Watch",
+    price: "From Rs 1,499",
+    image: "/images/topDeals/boat.png",
   },
   {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-price:899,
-    altText: "Apple Airpods",
+    id: 3,
+    name: "Wireless Mouse",
+    price: "From Rs 599",
+    image: "/images/topDeals/headphone.png",
   },
   {
-    imageSrc: headphone,
-    name: "Headset",
-price:899,
-    altText: "Headset",
+    id: 4,
+    name: "Bluetooth Speaker",
+    price: "From Rs 1,299",
+    image: "/images/topDeals/phone.webp",
   },
   {
-    imageSrc: airpods,
-    name: "Apple Airpods",
-price:899,
-    altText: "Apple Airpods",
+    id: 5,
+    name: "Power Bank",
+    price: "From Rs 999",
+    image: "/images/topDeals/phone.png",
   },
-  {
-    imageSrc: headphone,
-    name: "Headset",
-price:899,
-    altText: "Headset",
-  },
-];
+] as const;
 
-export const TopDeals = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [showLeftButton, setShowLeftButton] = useState(false);
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollContainerRef.current) {
-        setShowLeftButton(scrollContainerRef.current.scrollLeft > 0);
-      }
-    };
+const ProductCard = ({
+  name,
+  price,
+  image,
+}: {
+  name: string;
+  price: string;
+  image: string;
+}) => (
+  <div className="flex flex-col">
+    <div
+      className="bg-[#F0EEED] rounded-xl h-56 w-52 flex items-center justify-center 
+                    hover:shadow-lg transition-shadow duration-300"
+    >
+      <div className="relative w-[210px] h-[180px]">
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className="object-contain"
+          sizes="190px"
+        />
+      </div>
+    </div>
+    <div className="mt-2 pl-10">
+      <h2 className="text-gray-800 font-medium">{name}</h2>
+      <p className="font-semibold text-gray-900">{price}</p>
+    </div>
+  </div>
+);
 
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
+export default function TopDeals() {
   return (
-    <>
-    <div className={`sm:flex hidden py-8 ${styles.maxScreenWidth} ${styles.screenMarginAuto}`}>
-      {/* Products Section */}
-      <div className="flex-1">
-        <h2 className="text-2xl font-bold pb-2">Top Deals</h2>
-        <div className="relative">
-          <div
-            ref={scrollContainerRef}
-            
-            className="flex overflow-x-auto scrollbar-hide space-x-4"
-          >
-            {featuredProducts.map((product, index) => (
-              <div key={index} className="max-w-[50%] min-w-[19%]">
-                <ProductCard
-                  imageSrc={product.imageSrc}
-                  altText={product.altText}
-                />
-              </div>
+    <section className="px-4 py-6 w-full ">
+      <h1 className="text-2xl font-medium mb-6">Top Deals on Gadgets</h1>
+      <div className="flex gap-7">
+        <div className="w-[80%]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {DEAL_PRODUCTS.map((product) => (
+              <ProductCard
+                key={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.image}
+              />
             ))}
           </div>
-          {showLeftButton && (
-            <button
-              className="absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => {
-                if (scrollContainerRef.current) {
-                  scrollContainerRef.current.scrollBy({
-                    left: -400,
-                    behavior: "smooth",
-                  });
-                }
-              }}
-            >
-              <SlArrowLeft size={22}/>
-            </button>
-          )}
-          <button
-            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-            onClick={() => {
-              if (scrollContainerRef.current) {
-                scrollContainerRef.current.scrollBy({
-                  left: 400,
-                  behavior: "smooth",
-                });
-              }
-            }}
-          >
-         <SlArrowRight size={22}/>
-         
-          </button>
         </div>
+        <Ads />
       </div>
-
-      {/* Advertisement Section */}
-      <div className="w-1/6 ml-4 bg-gray-100 pb-4 flex justify-center items-center">
-        <div className="text-center">
-          <Image src={ad1} alt="Ad" className="mb-2" />
-          <p className="font-bold text-red-500">Flat 40% off in H&M Brand</p>
-          <p>From Rs<span>5000</span> </p>
-        </div>
-      </div>
-    </div>
-    
-    <div className={`flex max-w-screen-sm   sm:hidden py-8  `}>
-      {/* Products Section */}
-      <div className=" ">
-        <h2 className="text-xl font-bold text-black  ">Top Deals</h2>
-        <div className="relative">
-          <div
-            ref={scrollContainerRef}
-            
-            className="flex overflow-x-auto scrollbar-hide space-x-2"
-          >
-            {featuredProducts.map((product, index) => (
-              <div key={index} className="max-w-full min-w-[19%]">
-                <ProductCard
-                  imageSrc={product.imageSrc}
-                  altText={product.altText}
-                />
-              </div>
-            ))}
-          </div>
-          {showLeftButton && (
-            <button
-              className="absolute md:-left-0 lg:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-              onClick={() => {
-                if (scrollContainerRef.current) {
-                  scrollContainerRef.current.scrollBy({
-                    left: -400,
-                    behavior: "smooth",
-                  });
-                }
-              }}
-            >
-              <SlArrowLeft size={22}/>
-            </button>
-          )}
-          <button
-            className="absolute md:-right-0 lg:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md"
-            onClick={() => {
-              if (scrollContainerRef.current) {
-                scrollContainerRef.current.scrollBy({
-                  left: 400,
-                  behavior: "smooth",
-                });
-              }
-            }}
-          >
-         <SlArrowRight size={22}/>
-         
-          </button>
-        </div>
-      </div>
-    
-    </div>
-
-    </>
-
+    </section>
   );
-};
-
-export default TopDeals;
+}

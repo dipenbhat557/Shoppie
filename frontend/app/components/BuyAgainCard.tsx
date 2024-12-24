@@ -1,6 +1,6 @@
+// BuyAgainCard.tsx
 import Image, { StaticImageData } from "next/image";
 import { FaStar } from "react-icons/fa";
-import { styles } from "../utils/styles";
 
 interface BuyAgainCardProps {
   name: string;
@@ -10,6 +10,7 @@ interface BuyAgainCardProps {
   rating: number;
   altText: string;
 }
+
 export const BuyAgainCard = ({
   name,
   imageSrc,
@@ -18,47 +19,58 @@ export const BuyAgainCard = ({
   altText,
   rating,
 }: BuyAgainCardProps) => {
+  const discountedPrice = price - discount;
+  const discountPercentage = Math.round((discount / price) * 100);
+
   return (
-    <div className="flex flex-col items-center">
-    <div className={`rounded-lg shadow-md ${styles.productCardColor} w-full aspect-square relative`}>
-      <Image 
-        src={imageSrc} 
-        alt={altText} 
-        layout="fill" 
-        objectFit="cover"
-        className="rounded-lg"
-      />
-    </div>
-    <div className="flex flex-col justify-between gap-1 py-1 sm:py-2 items-center w-full">
-      <p className="text-xs sm:text-sm md:text-base font-semibold text-center line-clamp-1">{name}</p>
-      <div className="w-full flex pb-1 sm:pb-2 justify-center gap-1">
-        <div className="flex gap-0.5 sm:gap-1">
-          {Array.from({ length: 5 }, (_, i) => (
-            <FaStar
-              className={`${i < rating ? "text-[#FFC633]" : "text-slate-200"} w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4`}
-              key={i}
-            />
-          ))}
-        </div>
-        <div className="text-[8px] sm:text-xs md:text-sm">{rating}/5</div>
+    <div className="w-full bg-white rounded-lg overflow-hidden">
+      <div className="aspect-square relative w-full bg-gray-50">
+        <Image
+          src={imageSrc}
+          alt={altText}
+          layout="fill"
+          objectFit="contain"
+          className="p-4"
+        />
       </div>
-      <div className="relative w-full px-1 sm:px-2">
-        <div className="flex gap-1 sm:gap-2 font-semibold justify-center">
-          <p className="line-through text-slate-400 text-[8px] sm:text-xs md:text-sm">
-            Rs. {price}
-          </p>
-          <p className="text-[10px] sm:text-sm md:text-base">Rs. {price - discount}</p>
+
+      <div className="p-3 flex flex-col gap-2">
+        <h3 className="font-medium text-sm sm:text-base line-clamp-1">
+          {name}
+        </h3>
+
+        <div className="flex items-center gap-2">
+          <div className="flex">
+            {Array.from({ length: 5 }, (_, i) => (
+              <FaStar
+                key={i}
+                className={`w-3 h-3 sm:w-4 sm:h-4 ${
+                  i < rating ? "text-yellow-400" : "text-gray-200"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="text-xs sm:text-sm text-gray-600">{rating}/5</span>
         </div>
-        <div className="text-[6px] sm:text-[8px] md:text-xs absolute -top-3 sm:-top-4 right-1 sm:right-2 py-0.5 px-1 sm:py-1 sm:px-2 bg-red-300 bg-opacity-35 border rounded-lg text-red-500">
-          -Rs {discount}
+
+        <div className="relative">
+          <div className="flex items-center gap-2">
+            <span className="text-lg sm:text-xl font-bold">
+              ₹{discountedPrice}
+            </span>
+            <span className="text-sm sm:text-base text-gray-400 line-through">
+              ₹{price}
+            </span>
+          </div>
+          <span className="absolute -top-1 right-0 bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">
+            -{discountPercentage}%
+          </span>
         </div>
-      </div>
-      <div className="flex items-center justify-center w-full mt-1 sm:mt-2">
-        <button className={`${styles.buyNowButtonColor} ${styles.buyNowButtonHoverColor} font-medium w-full text-[8px] sm:text-xs md:text-sm py-1 px-2 sm:py-1.5 sm:px-3`}>
+
+        <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-sm sm:text-base py-2 rounded-md font-medium transition-colors">
           Buy now
         </button>
       </div>
     </div>
-  </div>
   );
 };
