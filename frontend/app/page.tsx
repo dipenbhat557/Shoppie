@@ -1,6 +1,6 @@
 import AdBanner1 from "./components/AdBanner1";
 import BestDeals from "./components/BestDeals";
-import BuyAgainComp from "./components/BuyAgainComp";
+import { BuyAgainComp } from "./components/BuyAgainComp";
 import CarouselComponent from "./components/CarouselComponent";
 
 import HomeDecor from "./components/HomeDecor";
