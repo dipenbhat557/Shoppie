@@ -12,9 +12,9 @@ import service from "../public/images/service.png";
 import deliver from "../public/images/delivery.png";
 import support from "../public/images/support.png";
 import SupportBar from "./components/Support";
-import Topbar from "./components/Topbar";
+import {Topbar} from "./components/Topbar";
 import Navbar from "./components/Navbar";
-import CategoryNav from "./components/CategoryNav";
+import {CategoryNav} from "./components/CategoryNav";
 import { Footer } from "./components/Footer";
 import { BestDealsAdd } from "./components/BestDealsAdd";
 
