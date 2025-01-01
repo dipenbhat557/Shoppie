@@ -20,7 +20,7 @@ const ratingVariants = {
 
 interface RatingsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
-  totalStars?: number
+  totalstars?: number
   size?: number
   fill?: boolean
   Icon?: React.ReactElement
@@ -30,7 +30,7 @@ interface RatingsProps extends React.HTMLAttributes<HTMLDivElement> {
 const Ratings = ({ ...props }: RatingsProps) => {
   const {
     rating,
-    totalStars = 5,
+    totalstars = 5,
     size = 20,
     fill = true,
     Icon = <Star />,
@@ -61,7 +61,7 @@ const Ratings = ({ ...props }: RatingsProps) => {
         })
       )}
       {partialStar}
-      {[...Array(totalStars - fullStars - (partialStar ? 1 : 0))].map((_, i) =>
+      {[...Array(totalstars - fullStars - (partialStar ? 1 : 0))].map((_, i) =>
         React.cloneElement(Icon, {
           key: i + fullStars + 1,
           size,

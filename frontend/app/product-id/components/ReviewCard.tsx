@@ -8,7 +8,7 @@ export default function ReviewCard() {
     <div className="flex border rounded-2xl p-2">
       <div className=" flex flex-col gap-2">
         <div className="flex justify-between">
-          <Ratings rating={4} variant="yellow" totalStars={5} />
+          <Ratings rating={4} variant="yellow" totalstars={5} />
           <Ellipsis />
         </div>
         <div className="flex">

@@ -16,7 +16,7 @@ export function Item() {
 
                 <div className="text-center flex flex-col items-center">
                     <div className="text-xl font-bold">T-shirt</div>
-                    <Ratings className="flex justify-center" rating={4} variant="yellow" totalStars={5} />
+                    <Ratings className="flex justify-center" rating={4} variant="yellow" totalstars={5} />
                     <div className="text-xl font-bold">$145</div>
                     <button className="text-center text-lg p-2 font-bold bg-[#FFC633] w-36">
                         Buy now
