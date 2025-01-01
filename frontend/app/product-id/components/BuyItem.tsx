@@ -14,7 +14,7 @@ export function BuyItem() {
               <div className="text-[#30A35E]">Souled store</div>
             </div>
             <div className="flex flex-col gap-2">
-              <Ratings rating={4} variant="yellow" totalStars={5} />
+              <Ratings rating={4} variant="yellow" totalstars={5} />
               <div className="flex">
                 <div>(150 Reviews)</div>
                 <div> | In Stock</div>

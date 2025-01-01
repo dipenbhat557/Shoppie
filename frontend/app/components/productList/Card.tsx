@@ -15,7 +15,7 @@ export function Card() {
                 />
             </div>
             <div className="text-xl font-bold">Gradient Graphic T-shirt</div>
-            <Ratings rating={4} variant="yellow" totalStars={5} />
+            <Ratings rating={4} variant="yellow" totalstars={5} />
             <div className="text-xl font-bold">$145</div>
             <div className="text-center text-lg p-2 font-bold bg-[#FB641B]">Add to cart</div>
         </div>

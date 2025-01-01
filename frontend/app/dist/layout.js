@@ -2,11 +2,10 @@
 exports.__esModule = true;
 exports.metadata = void 0;
 var google_1 = require("next/font/google");
-require("./globals.css");
-var Navbar_1 = require("./components/Navbar");
-var Topbar_1 = require("./components/Topbar");
-var CategoryNav_1 = require("./components/CategoryNav");
-var Footer_1 = require("./components/Footer");
+var Navbar_1 = require("../components/Navbar");
+var Topbar_1 = require("../components/Topbar");
+var CategoryNav_1 = require("../components/CategoryNav");
+var Footer_1 = require("../components/Footer");
 var inter = google_1.Inter({ subsets: ["latin"] });
 exports.metadata = {
     title: "Kinam Na",

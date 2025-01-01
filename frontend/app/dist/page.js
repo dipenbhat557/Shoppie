@@ -1,19 +1,19 @@
 "use strict";
 exports.__esModule = true;
-var AdBanner1_1 = require("./components/AdBanner1");
-var BestDeals_1 = require("./components/BestDeals");
-var BuyAgainComp_1 = require("./components/BuyAgainComp");
-var CarouselComponent_1 = require("./components/CarouselComponent");
-var DressStyleMobileComponent_1 = require("./components/DressStyleMobileComponent");
-var HomeDecor_1 = require("./components/HomeDecor");
-var HomeDecorMobileComponent_1 = require("./components/HomeDecorMobileComponent");
-var MobileAddSection_1 = require("./components/MobileAddSection");
-var RecentItem_1 = require("./components/RecentItem");
-var TopDeals_1 = require("./components/TopDeals");
-var service_png_1 = require("../public/images/service.png");
-var delivery_png_1 = require("../public/images/delivery.png");
-var support_png_1 = require("../public/images/support.png");
-var Support_1 = require("./components/Support");
+var AdBanner1_1 = require("../components/AdBanner1");
+var BestDeals_1 = require("../components/BestDeals");
+var BuyAgainComp_1 = require("../components/BuyAgainComp");
+var CarouselComponent_1 = require("../components/CarouselComponent");
+var DressStyleMobileComponent_1 = require("../components/DressStyleMobileComponent");
+var HomeDecor_1 = require("../components/HomeDecor");
+var HomeDecorMobileComponent_1 = require("../components/HomeDecor");
+var MobileAddSection_1 = require("../components/MobileFooter");
+var RecentItem_1 = require("../components/RecentItem");
+var TopDeals_1 = require("../components/TopDeals");
+var service_png_1 = require("../../public/images/service.png");
+var delivery_png_1 = require("../../public/images/delivery.png");
+var support_png_1 = require("../../public/images/support.png");
+var Support_1 = require("../components/Support");
 function Home() {
     return (React.createElement("div", null,
         React.createElement(CarouselComponent_1.CarouselComponent, null),
