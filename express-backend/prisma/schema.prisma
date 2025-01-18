@@ -1,0 +1,222 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  houseNo   Int
+  street    String
+  city      String
+  district  String
+  state     String
+  pinCode   String
+  landmark  String
+  isPrimary Boolean  @map("is_primary")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String
+  logoUrl  String
+  products Product[]
+}
+
+model Cart {
+  id     Int        @id @default(autoincrement())
+  user   User       @relation(fields: [userId], references: [id])
+  userId Int        @unique @map("user_id")
+  items  CartItem[]
+}
+
+model CartItem {
+  id              Int            @id @default(autoincrement())
+  totalPrice      Int
+  quantity        Int
+  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId Int           @map("product_variant_id")
+  cart           Cart           @relation(fields: [cartId], references: [id])
+  cartId         Int            @map("cart_id")
+}
+
+model Category {
+  id                 Int                 @id @default(autoincrement())
+  name               String              @map("category_name")
+  imageUrl           String
+  parentCategory     Category?           @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
+  parentCategoryId   Int?                @map("parent_category_id")
+  subCategories      Category[]          @relation("CategoryToCategory")
+  products           Product[]
+  productOptionGroups ProductOptionGroup[] @relation("CategoryToProductOptionGroup")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  NOT_SAY
+}
+
+model Image {
+  id              Int            @id @default(autoincrement())
+  imageUrl        String
+  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId Int           @map("product_variant_id")
+}
+
+model Order {
+  id           Int          @id @default(autoincrement())
+  price        Int
+  status       OrderStatus
+  vendor       String
+  orderDate    DateTime
+  deliveryDate DateTime?
+  user         User         @relation(fields: [userId], references: [id])
+  userId       Int          @map("user_id")
+  payment      Payment?     @relation(fields: [paymentId], references: [id])
+  paymentId    Int?        @map("payment_id")
+  items        OrderItem[]
+}
+
+model OrderItem {
+  id              Int            @id @default(autoincrement())
+  price           Int
+  quantity        Int
+  order           Order          @relation(fields: [orderId], references: [id])
+  orderId         Int            @map("order_id")
+  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId Int           @map("product_variant_id")
+}
+
+enum OrderStatus {
+  PLACED
+  ACCEPTED
+  SHIPPED
+  DELIVERING
+  DELIVERED
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  paymentDate DateTime
+  amount      Int
+  status      PaymentStatus
+  referenceId String
+  method      String
+  orders      Order[]
+}
+
+enum PaymentStatus {
+  FAILED
+  PENDING
+  SUCCESS
+}
+
+model Product {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String
+  sale        Sale?           @relation(fields: [saleId], references: [id])
+  saleId      Int?           @map("sale_id")
+  brand       Brand           @relation(fields: [brandId], references: [id])
+  brandId     Int            @map("brand_id")
+  category    Category        @relation(fields: [categoryId], references: [id])
+  categoryId  Int            @map("category_id")
+  variants    ProductVariant[]
+  reviews     Review[]
+  wishlists   Wishlist[]
+}
+
+model ProductOption {
+  id                  Int                @id @default(autoincrement())
+  name                String
+  productOptionGroup  ProductOptionGroup @relation(fields: [productOptionGroupId], references: [id])
+  productOptionGroupId Int               @map("product_option_group_id")
+  productVariants     ProductVariant[]
+}
+
+model ProductOptionGroup {
+  id             Int             @id @default(autoincrement())
+  name           String
+  productOptions ProductOption[]
+  categories     Category[]      @relation("CategoryToProductOptionGroup")
+}
+
+model ProductVariant {
+  id             Int            @id @default(autoincrement())
+  sku            String
+  price          Int
+  stock          Int
+  product        Product        @relation(fields: [productId], references: [id])
+  productId      Int           @map("product_id")
+  productOptions ProductOption[]
+  store          Store?         @relation(fields: [storeId], references: [id])
+  storeId        Int?          @map("store_id")
+  images         Image[]
+  cartItems      CartItem[]
+  orderItems     OrderItem[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int      @map("product_id")
+}
+
+model Sale {
+  id           Int       @id @default(autoincrement())
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  discount     Int
+  isPercentage Boolean   @map("is_percentage")
+  imageUrl     String
+  products     Product[]
+}
+
+model Store {
+  id        Int              @id @default(autoincrement())
+  name      String
+  location  String
+  contact   String
+  variants  ProductVariant[]
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  email      String    @unique
+  password   String
+  isVerified Boolean
+  phoneNo    String
+  dob        DateTime
+  gender     Gender
+  profileUrl String
+  addresses  Address[]
+  cart       Cart?
+  orders     Order[]
+  reviews    Review[]
+  wishlist   Wishlist?
+}
+
+model Wishlist {
+  id       Int       @id @default(autoincrement())
+  products Product[]
+  user     User      @relation(fields: [userId], references: [id])
+  userId   Int       @unique @map("user_id")
+}
