@@ -6,6 +6,14 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
     const { userId } = req.params;
     const { productVariantId, quantity } = req.body;
 
+    const productVariant = await prisma.productVariant.findUnique({
+      where: { id: parseInt(productVariantId) }
+    });
+
+    if (!productVariant) {
+      return res.status(400).json({ message: "Product variant not found" });
+    }
+
     const cart = await prisma.cart.upsert({
       where: { userId: parseInt(userId) },
       create: {
@@ -13,15 +21,17 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
         items: {
           create: [{
             productVariantId: productVariantId,
-            quantity: quantity
+            quantity: quantity,
+            totalPrice: quantity * productVariant?.price || 0
           }]
         }
       },
-      update: {
+        update: {
         items: {
           create: [{
             productVariantId: productVariantId,
-            quantity: quantity
+            quantity: quantity,
+            totalPrice: quantity * productVariant?.price || 0  
           }]
         }
       },

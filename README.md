@@ -109,27 +109,9 @@ The frontend is already deployed and can be accessed at:
 
 - **Frontend**: [https://sidd.live](https://sidd.live/)
 
-## Contributing
-
-1. **Fork the Repository**: Click the "Fork" button at the top right of this page.
-2. **Clone Your Fork**: `git clone https://github.com/your-username/Shoppie.git`
-3. **Create a New Branch**: `git checkout -b feature/your-feature`
-4. **Make Your Changes**: Develop your feature or fix a bug.
-5. **Commit Your Changes**: `git commit -am 'Add new feature'`
-6. **Push to the Branch**: `git push origin feature/your-feature`
-7. **Create a Pull Request**: Go to the GitHub repository and create a new pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Contact
 
 For any questions or inquiries, please contact:
 
 - **Dipendra Bhatt**: [dipenbhat557@gmail.com](mailto:dipenbhat557@gmail.com)
 ```
-
-### Notes:
-- Replace `your-username` and `your-vps-ip` with your actual VPS username and IP address.
-- Make sure to adjust the domain or IP in the API base URL section to match your VPS setup.

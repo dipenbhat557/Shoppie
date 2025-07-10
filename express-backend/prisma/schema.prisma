@@ -12,16 +12,17 @@ datasource db {
 
 model Address {
   id        Int      @id @default(autoincrement())
-  houseNo   Int
-  street    String
+  houseNo   String?
+  street    String?
   city      String
   district  String
   state     String
   pinCode   String
-  landmark  String
+  landmark  String?
   isPrimary Boolean  @map("is_primary")
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @map("user_id")
+  store Store[]
 }
 
 model Brand {
@@ -40,7 +41,6 @@ model Cart {
 
 model CartItem {
   id              Int            @id @default(autoincrement())
-  totalPrice      Int
   quantity        Int
   productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
   productVariantId Int           @map("product_variant_id")
@@ -110,7 +110,7 @@ model Payment {
   paymentDate DateTime
   amount      Int
   status      PaymentStatus
-  referenceId String
+  referenceId String?
   method      String
   orders      Order[]
 }
@@ -169,7 +169,7 @@ model ProductVariant {
 model Review {
   id        Int      @id @default(autoincrement())
   rating    Int
-  comment   String
+  comment   String?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @map("user_id")
@@ -191,8 +191,11 @@ model Sale {
 model Store {
   id        Int              @id @default(autoincrement())
   name      String
-  location  String
+  location  Address          @relation(fields: [locationId], references: [id])
+  locationId Int            @map("location_id")
   contact   String
+  manager   User             @relation(fields: [managerId], references: [id])
+  managerId Int            @map("manager_id")
   variants  ProductVariant[]
 }
 
@@ -202,7 +205,7 @@ model User {
   lastName   String
   email      String    @unique
   password   String
-  isVerified Boolean
+  isVerified Boolean   @default(false)
   phoneNo    String
   dob        DateTime
   gender     Gender
@@ -211,6 +214,7 @@ model User {
   cart       Cart?
   orders     Order[]
   reviews    Review[]
+  store      Store[]
   wishlist   Wishlist?
 }
 
