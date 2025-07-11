@@ -11,4 +11,3 @@ orderRouter.get('/user/:userId', getOrdersByUser);
 orderRouter.put('/:orderId/status', updateOrderStatus);
 
 export default orderRouter;
-    

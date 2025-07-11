@@ -2,70 +2,145 @@
 
 import Image from "next/image";
 import logo from "@/public/images/dashboard/logo.png";
-import grid from "@/public/images/dashboard/grid.png";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Package,
+  PackagePlus,
+  ShoppingCart,
+  Truck,
+  Wallet,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 
-const lists = [
+const navigationItems = [
   {
     id: 1,
     name: "Overview",
     link: "/dashboard",
+    icon: LayoutDashboard
   },
   {
     id: 2,
     name: "Products",
     link: "/products",
+    icon: Package
   },
   {
     id: 3,
     name: "Add Product",
     link: "/add-product",
+    icon: PackagePlus
   },
   {
     id: 4,
     name: "Orders",
     link: "/view-orders",
+    icon: ShoppingCart
   },
   {
     id: 5,
     name: "Shipment",
     link: "/dispatch",
+    icon: Truck
   },
   {
     id: 6,
     name: "Payments",
     link: "/payments",
-  },
+    icon: Wallet
+  }
 ];
 
 export const DesktopSidebar = () => {
   const pathname = usePathname();
-  const [active, setActive] = useState(pathname );
+  const [active, setActive] = useState(pathname);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div className="hidden md:flex md:flex-col bg-white">
-        <div className="flex justify-center">
-            <Image src={logo} alt="logo" width={107} height={107} />
+    <div 
+      className={`hidden md:flex md:flex-col bg-white border-r border-gray-200 h-screen sticky top-0 transition-all duration-300 ease-in-out ${
+        isCollapsed ? 'w-20' : 'w-64'
+      }`}
+    >
+      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className={`flex items-center ${isCollapsed ? 'justify-center w-full' : ''}`}>
+          <Image 
+            src={logo} 
+            alt="logo" 
+            width={isCollapsed ? 40 : 60} 
+            height={isCollapsed ? 40 : 60}
+            className="transition-all duration-300"
+          />
+          {!isCollapsed && (
+            <span className="ml-2 text-xl font-semibold text-gray-800">
+              <span className="text-orange-400">Kinum</span>na
+            </span>
+          )}
         </div>
-      <div className="flex flex-col gap-2 p-4">
-        {lists.map((list) => (
-          <Link
-            href={list.link}
-            onClick={() => setActive(list.link)}
-            key={list.id}
-            className={`${
-              active == list.link ? "bg-[#FFC633]" : "hover:bg-gray-100"
-            } p-4 rounded-lg flex items-center gap-4`}
-          >
-            <div>
-              <Image src={grid} height={24} width={24} alt="grid" />
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {isCollapsed ? (
+            <ChevronRight className="w-5 h-5 text-gray-500" />
+          ) : (
+            <ChevronLeft className="w-5 h-5 text-gray-500" />
+          )}
+        </button>
+      </div>
+
+      <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+        {navigationItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = active === item.link;
+          
+          return (
+            <Link
+              href={item.link}
+              onClick={() => setActive(item.link)}
+              key={item.id}
+              className={`
+                flex items-center px-3 py-2 rounded-lg transition-all duration-200
+                ${isActive 
+                  ? 'bg-[#FFC633] text-gray-900 shadow-sm' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }
+                ${isCollapsed ? 'justify-center' : 'justify-start'}
+              `}
+            >
+              <Icon className={`w-5 h-5 ${isActive ? 'text-gray-900' : 'text-gray-500'}`} />
+              {!isCollapsed && (
+                <span className="ml-3 text-sm font-medium">
+                  {item.name}
+                </span>
+              )}
+              {isCollapsed && (
+                <span className="sr-only">{item.name}</span>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="p-4 border-t border-gray-200">
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+          <div className="w-8 h-8 rounded-full bg-[#FFC633] flex items-center justify-center">
+            <span className="text-sm font-medium text-gray-900">
+              {!isCollapsed ? 'AB' : 'A'}
+            </span>
+          </div>
+          {!isCollapsed && (
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-900">Admin User</p>
+              <p className="text-xs text-gray-500">admin@kinumna.com</p>
             </div>
-            <div className="text-2xl">
-              {list.name}
-            </div>
-          </Link>
-        ))}
+          )}
+        </div>
       </div>
     </div>
   );
