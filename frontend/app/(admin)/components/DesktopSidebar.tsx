@@ -63,20 +63,20 @@ export const DesktopSidebar = () => {
   return (
     <div 
       className={`hidden md:flex md:flex-col bg-white border-r border-gray-200 h-screen sticky top-0 transition-all duration-300 ease-in-out ${
-        isCollapsed ? 'w-20' : 'w-64'
+        isCollapsed ? 'w-20' : 'w-72'
       }`}
     >
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex items-center justify-between px-5 py-6 border-b border-gray-200">
         <div className={`flex items-center ${isCollapsed ? 'justify-center w-full' : ''}`}>
           <Image 
             src={logo} 
             alt="logo" 
-            width={isCollapsed ? 40 : 60} 
-            height={isCollapsed ? 40 : 60}
+            width={isCollapsed ? 32 : 40} 
+            height={isCollapsed ? 32 : 40}
             className="transition-all duration-300"
           />
           {!isCollapsed && (
-            <span className="ml-2 text-xl font-semibold text-gray-800">
+            <span className="ml-3 text-xl font-semibold text-gray-800">
               <span className="text-orange-400">Kinum</span>na
             </span>
           )}
@@ -94,7 +94,7 @@ export const DesktopSidebar = () => {
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+      <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = active === item.link;
@@ -105,7 +105,7 @@ export const DesktopSidebar = () => {
               onClick={() => setActive(item.link)}
               key={item.id}
               className={`
-                flex items-center px-3 py-2 rounded-lg transition-all duration-200
+                flex items-center px-4 py-3 rounded-lg transition-all duration-200
                 ${isActive 
                   ? 'bg-[#FFC633] text-gray-900 shadow-sm' 
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -127,9 +127,9 @@ export const DesktopSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-200">
+      <div className="px-5 py-6 border-t border-gray-200">
         <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
-          <div className="w-8 h-8 rounded-full bg-[#FFC633] flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-[#FFC633] flex items-center justify-center">
             <span className="text-sm font-medium text-gray-900">
               {!isCollapsed ? 'AB' : 'A'}
             </span>

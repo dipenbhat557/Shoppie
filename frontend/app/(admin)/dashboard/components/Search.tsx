@@ -1,45 +1,28 @@
-import { Mic } from 'lucide-react';
+import { Mic, Search as SearchIcon } from 'lucide-react';
+import { Input } from "@/components/ui/input";
 
 export function Search({isMobile}: {isMobile?: boolean}) {
   return (
-    <form className={`max-w-md mx-auto md:mx-0 md:flex-1 md:pb-2 ${isMobile ? 'hidden md:block': 'md:hidden'}`}>
-      <label
-        htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >
-        Search
-      </label>
+    <div className={`max-w-md mx-auto md:mx-0 md:flex-1 md:pb-2 ${isMobile ? 'hidden md:block': 'md:hidden'}`}>
       <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <SearchIcon className="h-4 w-4 text-gray-500" />
         </div>
-        <input
+        
+        <Input
           type="search"
-          id="default-search"
-          className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search ..."
-          required
+          placeholder="Search products, orders..."
+          className="pl-10 pr-12 py-2 w-full bg-white border-gray-200 focus-visible:ring-orange-400"
         />
-        <div
-          className="absolute end-2.5 bottom-2.5 text-[#7F7F7F] focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+        
+        <button
+          type="button"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          aria-label="Voice search"
         >
-          <Mic/>
-        </div>
+          <Mic className="h-4 w-4" />
+        </button>
       </div>
-    </form>
+    </div>
   );
 }
