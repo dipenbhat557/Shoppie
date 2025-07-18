@@ -1,6 +1,6 @@
 'use client'
 
-import { Slider } from "@/components/ui/slider"; // Adjust the import path accordingly
+import { Slider } from "@/components/slider"; // Adjust the import path accordingly
 import { SetStateAction, useState } from "react";
 
 export function PriceRange(){

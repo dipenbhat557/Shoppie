@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/card";
 import { ArrowUpIcon } from "lucide-react";
 
 interface OrderCardProps {

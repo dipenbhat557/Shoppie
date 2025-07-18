@@ -2,12 +2,12 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/button'
+import { Input } from '@/components/input'
 import { useState } from 'react'
-import { Topbar } from '../components/Topbar'
-import Navbar from '../components/Navbar'
-import { Footer } from '../components/Footer'
+import { Topbar } from '../../components/Topbar'
+import Navbar from '../../components/Navbar'
+import { Footer } from '../../components/Footer'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({

@@ -1,14 +1,10 @@
 "use client";
-import airpods from "../../public/images/topDeals/airpods.png";
-import boat from "../../public/images/topDeals/boat.png";
-import headphone from "../../public/images/topDeals/headphone.png";
-import phone from "../../public/images/topDeals/phone.png";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { useEffect, useRef, useState } from "react";
 import { BuyAgainCard } from "./BuyAgainCard";
 export const featuredProducts = [
   {
-    imageSrc: boat,
+    imageSrc: "/images/topDeals/boat.png",
     rating: 4,
     discount: 100,
     price: 1000,
@@ -16,7 +12,7 @@ export const featuredProducts = [
     altText: "Boats Airpods",
   },
   {
-    imageSrc: phone,
+    imageSrc: "/images/topDeals/phone.png",
     rating: 4,
     discount: 100,
     price: 1000,
@@ -24,7 +20,7 @@ export const featuredProducts = [
     altText: "Apple Mobiles",
   },
   {
-    imageSrc: airpods,
+    imageSrc: "/images/topDeals/airpods.png",
     rating: 4,
     discount: 100,
     price: 1000,
@@ -32,7 +28,7 @@ export const featuredProducts = [
     altText: "Apple Airpods",
   },
   {
-    imageSrc: headphone,
+    imageSrc: "/images/topDeals/headphone.png",
     rating: 4,
     discount: 100,
     price: 1000,
@@ -40,7 +36,7 @@ export const featuredProducts = [
     altText: "Headset",
   },
   {
-    imageSrc: airpods,
+    imageSrc: "/images/topDeals/airpods.png",
     rating: 4,
     discount: 100,
     price: 1000,
@@ -48,7 +44,7 @@ export const featuredProducts = [
     altText: "Apple Airpods",
   },
   {
-    imageSrc: airpods,
+    imageSrc: "/images/topDeals/airpods.png",
     rating: 4,
     discount: 100,
     price: 1000,

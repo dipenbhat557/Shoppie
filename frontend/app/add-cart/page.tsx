@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar";
-import { Topbar } from "../components/Topbar";
+import Navbar from "../../components/Navbar";
+import { Topbar } from "../../components/Topbar";
 import { Card } from "./components/Card";
 import { Navigate } from "./components/Navigate";
 import { DesktopTotalCart } from "./components/DesktopTotalCart";

@@ -1,7 +1,3 @@
-import men_sport from "../../public/images/DealsAdd/men_sport.png";
-import men from "../../public/images/DealsAdd/men.png";
-import women from "../../public/images/DealsAdd/women.png";
-import women_shoe from "../../public/images/DealsAdd/women_shoes.png";
 import Image from "next/image";
 
 export const BestDealsAdd = () => {
@@ -13,7 +9,9 @@ export const BestDealsAdd = () => {
       <div className="grid grid-cols-2 md:gap-4 gap-2 p-2">
         <div className="flex flex-col items-center">
           <Image
-            src={men}
+            src="/images/DealsAdd/men.png"
+            width={100}
+            height={100}
             alt="Men's shoes"
             className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
@@ -21,7 +19,9 @@ export const BestDealsAdd = () => {
         </div>
         <div className="flex flex-col items-center">
           <Image
-            src={women_shoe}
+            src="/images/DealsAdd/women_shoes.png"
+            width={100}
+            height={100}
             alt="Women's shoes"
             className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
@@ -29,7 +29,9 @@ export const BestDealsAdd = () => {
         </div>
         <div className="flex flex-col items-center">
           <Image
-            src={men_sport}
+            src="/images/DealsAdd/men_sport.png"
+            width={100}
+            height={100}
             alt="Men's Casual"
             className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />
@@ -37,7 +39,9 @@ export const BestDealsAdd = () => {
         </div>
         <div className="flex flex-col items-center">
           <Image
-            src={women}
+            src="/images/DealsAdd/women.png"
+            width={100}
+            height={100}
             alt="Women's Footwear"
             className="w-[90%] md:w-full h-32 object-cover rounded-md"
           />

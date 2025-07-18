@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Ratings } from "../../components/Rating";
+import { Ratings } from "../../../components/Rating";
 import related from "@/public/images/product-id/related.png";
 
 export function Item() {

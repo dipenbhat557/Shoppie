@@ -1,4 +1,4 @@
-import { Ratings } from "@/app/components/Rating";
+import { Ratings } from "@/components/Rating";
 import { Ellipsis } from "lucide-react";
 import Image from "next/image";
 import frame from "@/public/images/product-id/Frame.png";

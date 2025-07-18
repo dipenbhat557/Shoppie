@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Minus, Plus } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/button"
 import {
   Drawer,
   DrawerClose,
@@ -13,7 +13,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
+} from "@/components/drawer"
 import { PriceRange } from "./PriceRange"
 
 export function FilterMobile() {

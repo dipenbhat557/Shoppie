@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar";
-import { Topbar } from "../components/Topbar";
+import Navbar from "../../components/Navbar";
+import { Topbar } from "../../components/Topbar";
 import { Main } from "./components/Main";
 
 export default function Page() {

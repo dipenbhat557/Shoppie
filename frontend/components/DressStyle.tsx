@@ -1,12 +1,8 @@
 import React from "react";
-import Image, { StaticImageData } from "next/image";
-import f1 from "../../public/images/fashion/f1.png";
-import f2 from "../../public/images/fashion/f2.png";
-import f3 from "../../public/images/fashion/f3.png";
-import f4 from "../../public/images/fashion/f4.png";
+import Image from "next/image";
 
 interface Props {
-  imageUrl: StaticImageData;
+  imageUrl: string;
   style: string;
   index: number;
 }
@@ -22,6 +18,8 @@ const DressStyleItem = ({ imageUrl, style, index }: Props) => {
       <Image
         src={imageUrl}
         alt={style}
+        width={100}
+        height={100}
         className="w-full    h-24  md:h-32 object-cover"
       />
       <div className="absolute  left-6 top-6   bg-opacity-50flex items-center justify-center">
@@ -36,19 +34,19 @@ export const DressStyle = () => {
   const dressStyles = [
     {
       style: "Casual",
-      imageUrl: f1,
+      imageUrl: "/images/fashion/f1.png",
     },
     {
       style: "Formal",
-      imageUrl: f2,
+      imageUrl: "/images/fashion/f2.png",
     },
     {
       style: "Party",
-      imageUrl: f4,
+      imageUrl: "/images/fashion/f4.png",
     },
     {
       style: "Gym",
-      imageUrl: f3,
+      imageUrl: "/images/fashion/f3.png",
     },
   ];
 

@@ -1,10 +1,10 @@
 // BuyAgainCard.tsx
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 
 interface BuyAgainCardProps {
   name: string;
-  imageSrc: StaticImageData;
+  imageSrc: string;
   price: number;
   discount: number;
   rating: number;

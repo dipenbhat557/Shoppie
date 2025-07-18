@@ -1,10 +1,6 @@
 import Image from "next/image";
 import React from "react";
 
-import foot from "../../public/images/foot/foot.png";
-import visa from "../../public/images/foot/visa.png";
-import apay from "../../public/images/foot/apay.png";
-import gpay from "../../public/images/foot/gpay.png";
 import { BsFacebook, BsPinterest, BsTwitter } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 
@@ -165,10 +161,10 @@ export const DesktopFooter = () => {
               Shop.co © 2000-2023, All Rights Reserved
             </p>
             <div className="flex space-x-4">
-              <Image src={visa} alt="Visa" />
-              <Image src={foot} alt="PayPal" />
-              <Image src={apay} alt="Apple Pay" />
-              <Image src={gpay} alt="Google Pay" />
+              <Image src="/images/foot/visa.png" alt="Visa" width={40} height={25} />
+              <Image src="/images/foot/foot.png" alt="PayPal" width={40} height={25} />
+              <Image src="/images/foot/apay.png" alt="Apple Pay" width={40} height={25} />
+              <Image src="/images/foot/gpay.png" alt="Google Pay" width={40} height={25} />
             </div>
           </div>
         </div>

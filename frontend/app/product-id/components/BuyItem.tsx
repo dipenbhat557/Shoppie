@@ -1,4 +1,4 @@
-import { Ratings } from "@/app/components/Rating";
+import { Ratings } from "@/components/Rating";
 import { BuyDetails } from "./BuyDetails";
 import ProductDescription from "./ProductDescription";
 

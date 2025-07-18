@@ -1,8 +1,8 @@
-import { Card } from "../components/productList/Card";
-import Cards from "../components/productList/Cards";
-import FilterDesktop from "../components/productList/FilterDesktop";
-import { FilterMobile } from "../components/productList/FilterMobile";
-import { NavigateProduct } from "../components/productList/NavigateProduct";
+import { Card } from "../../components/productList/Card";
+import Cards from "../../components/productList/Cards";
+import FilterDesktop from "../../components/productList/FilterDesktop";
+import { FilterMobile } from "../../components/productList/FilterMobile";
+import { NavigateProduct } from "../../components/productList/NavigateProduct";
 
 export default function Page() {
     return (

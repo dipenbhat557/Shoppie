@@ -1,7 +1,7 @@
-import ContactCard from "../components/contact/ContactCard";
-import { Navigate } from "../components/contact/Navigate";
-import { UserDetail } from "../components/contact/UserDetail";
-import SupportBar from "../components/Support";
+import ContactCard from "../../components/contact/ContactCard";
+import { Navigate } from "../../components/contact/Navigate";
+import { UserDetail } from "../../components/contact/UserDetail";
+import SupportBar from "../../components/Support";
 import service from "../../public/images/service.png"
 import deliver from "../../public/images/delivery.png"
 import support from "../../public/images/support.png"
