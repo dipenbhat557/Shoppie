@@ -8,7 +8,7 @@ export const Navbar = () => {
     <nav className="w-full bg-white shadow flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-8 py-3 md:py-4">
       <div className="flex items-center justify-between w-full md:w-auto">
         {/* Logo */}
-        <div className="text-2xl font-extrabold tracking-tight text-black">Exclusive</div>
+        <div className="text-2xl font-extrabold tracking-tight text-black">Kinamna</div>
         {/* Hamburger for mobile */}
         <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(v => !v)}>
           <Menu className="w-7 h-7 text-black" />
