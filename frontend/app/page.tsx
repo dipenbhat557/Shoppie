@@ -16,10 +16,7 @@ import { ExploreProducts } from "@/components/ExploreProducts";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Topbar />
-      <div className="sticky top-0 z-30 bg-white shadow-sm">
-        <Navbar />
-      </div>
+   
       <main className="flex flex-col md:flex-row w-full max-w-7xl mx-auto mt-2 md:mt-4 gap-0 px-2 sm:px-4">
         {/* Mobile: Category bar as horizontal scroll */}
         <div className="block md:hidden w-full mb-2">
@@ -51,7 +48,7 @@ export default function Home() {
       {/* Features Section */}
       <Features />
       <ExploreProducts />
-      <Footer/>
+
     </div>
   );
 }

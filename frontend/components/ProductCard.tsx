@@ -1,19 +1,25 @@
-
-import React from 'react';
-import { Heart, Eye } from 'lucide-react';
+"use client";
+import React, { useState } from 'react';
+import { Heart } from 'lucide-react';
 
 export const ProductCard = () => {
+  const [wishlisted, setWishlisted] = useState(false);
+
   return (
     <div className="relative bg-white rounded-xl shadow border border-gray-100 p-3 flex flex-col w-[230px] min-w-[230px] max-w-[260px] transition hover:shadow-lg group">
       {/* Discount badge */}
       <span className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">-40%</span>
-      {/* Wishlist and Eye icons */}
+      {/* Wishlist icon only */}
       <div className="absolute top-4 right-4 flex flex-col gap-2">
-        <button className="p-1 rounded-full bg-white border border-gray-200 hover:bg-gray-100">
-          <Heart className="w-5 h-5 text-gray-500" />
-        </button>
-        <button className="p-1 rounded-full bg-white border border-gray-200 hover:bg-gray-100">
-          <Eye className="w-5 h-5 text-gray-500" />
+        <button
+          className="p-1 rounded-full bg-white border border-gray-200 hover:bg-gray-100"
+          onClick={() => setWishlisted((w) => !w)}
+          aria-label="Add to wishlist"
+        >
+          <Heart
+            className={`w-5 h-5 transition-colors duration-200 ${wishlisted ? 'fill-red-500 text-red-500' : 'text-gray-500'}`}
+            fill={wishlisted ? 'currentColor' : 'none'}
+          />
         </button>
       </div>
       {/* Product image area */}
