@@ -18,6 +18,7 @@ import storeRouter from "./routes/store";
 import userRouter from "./routes/user";
 import wishlistRouter from "./routes/wishlist";
 import { configDotenv } from "dotenv";
+import authRouter from "./routes/auth";
 
 const app = express();
 configDotenv();
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/v1/address', addressRouter);
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/brand', brandRouter);
 app.use('/api/v1/cart-item', cartItemRouter);
 app.use('/api/v1/cart', cartRouter);

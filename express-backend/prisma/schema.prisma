@@ -224,3 +224,19 @@ model Wishlist {
   user     User      @relation(fields: [userId], references: [id])
   userId   Int       @unique @map("user_id")
 }
+
+model Banner {
+  id Int @id @default(autoincrement())
+  description String @default("")
+  imageUrl String
+  link String
+  position Position @default(FEATURED_PRODUCT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Position {
+  FEATURED_PRODUCT
+  CATEGORY_BANNER
+  ADD_BANNER
+}
