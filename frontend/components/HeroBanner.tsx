@@ -10,7 +10,7 @@ export const HeroBanner = () => {
       alt: "Hero Banner 1"
     },
     {
-      src: "/newImages/HeroBanner2.png", 
+      src: "/newImages/HeroBanner5.avif", 
       alt: "Hero Banner 2"
     }
     // Add more hero banners here as needed
