@@ -5,15 +5,16 @@ import Navbar from "./components/Navbar";
 import { Topbar } from "./components/Topbar";
 import { CategoryNav } from "./components/CategoryNav";
 import { Footer } from "./components/Footer";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Kinam Na",
-  description: "Get all your necessities in one place", 
+  description: "Get all your necessities in one place",
   icons: {
-    icon: "/icon.svg"
-  }
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );
