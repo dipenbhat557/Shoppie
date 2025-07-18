@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { Features } from "@/components/Features";
 import { TopDeals } from "@/components/TopDeals";
+import { ExploreProducts } from "@/components/ExploreProducts";
 
 export default function Home() {
   return (
@@ -46,8 +47,10 @@ export default function Home() {
       <TopDeals />
       {/* Best Selling Section */}
       <BestSelling />
+
       {/* Features Section */}
       <Features />
+      <ExploreProducts />
       <Footer/>
     </div>
   );
