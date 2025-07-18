@@ -10,6 +10,7 @@ import { BestSelling } from "../components/BestSelling";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { Features } from "@/components/Features";
+import { TopDeals } from "@/components/TopDeals";
 
 export default function Home() {
   return (
@@ -42,6 +43,7 @@ export default function Home() {
       <NewArrival />
       {/* Ad Banner Section */}
       <AdBanner />
+      <TopDeals />
       {/* Best Selling Section */}
       <BestSelling />
       {/* Features Section */}
