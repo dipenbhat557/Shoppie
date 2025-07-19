@@ -14,36 +14,53 @@ const productSchema = z.object({
   brandId: z.number().min(1, "Brand is required"),
   categoryId: z.number().min(1, "Category is required"),
   saleId: z.number().optional(),
-  variants: z.array(z.object({
-    sku: z.string().min(1, "SKU is required"),
-    price: z.number().min(0, "Price must be positive"),
-    stock: z.number().min(0, "Stock must be non-negative"),
-    storeId: z.number().optional(),
-    images: z.array(z.object({
-      imageUrl: z.string(),  // Removed URL validation since we're handling files
-    })),
-    productOptions: z.array(z.object({
-      optionGroupId: z.number(),
-      optionId: z.number(),
-    }))
-  })).min(1, "At least one variant is required"),
+  variants: z
+    .array(
+      z.object({
+        sku: z.string().min(1, "SKU is required"),
+        price: z.number().min(0, "Price must be positive"),
+        stock: z.number().min(0, "Stock must be non-negative"),
+        storeId: z.number().optional(),
+        images: z.array(
+          z.object({
+            imageUrl: z.string(), // Removed URL validation since we're handling files
+          })
+        ),
+        productOptions: z.array(
+          z.object({
+            optionGroupId: z.number(),
+            optionId: z.number(),
+          })
+        ),
+      })
+    )
+    .min(1, "At least one variant is required"),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
 
 export function ProductInfo() {
-  const [selectedImages, setSelectedImages] = useState<{ [key: number]: File[] }>({});
+  const [selectedImages, setSelectedImages] = useState<{
+    [key: number]: File[];
+  }>({});
 
-  const { register, control, handleSubmit, formState: { errors } } = useForm<ProductFormData>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      variants: [{
-        sku: "",
-        price: 0,
-        stock: 0,
-        images: [],
-        productOptions: [],
-      }],
+      variants: [
+        {
+          sku: "",
+          price: 0,
+          stock: 0,
+          images: [],
+          productOptions: [],
+        },
+      ],
     },
   });
 
@@ -54,20 +71,25 @@ export function ProductInfo() {
 
   const onSubmit = (data: ProductFormData) => {
     // Just log the form data for now
-    console.log('Form Data:', data);
-    console.log('Selected Images:', selectedImages);
+    console.log("Form Data:", data);
+    console.log("Selected Images:", selectedImages);
   };
 
   // Rest of your component remains the same, but use mockData instead of props
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-5xl mx-auto space-y-8">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full max-w-5xl mx-auto space-y-8"
+    >
       {/* Basic Product Information */}
       <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
         <div className="flex items-center space-x-2 mb-6">
           <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
-          <h2 className="text-2xl font-semibold text-gray-800">Basic Information</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Basic Information
+          </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 gap-6">
           {/* Product Name */}
           <div className="md:col-span-2">
@@ -117,13 +139,25 @@ export function ProductInfo() {
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors appearance-none bg-white"
               >
                 <option value="">Select Brand</option>
-                {mockData.brands.map(brand => (
-                  <option key={brand.id} value={brand.id}>{brand.name}</option>
+                {mockData.brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name}
+                  </option>
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                <svg
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
             </div>
@@ -146,13 +180,25 @@ export function ProductInfo() {
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors appearance-none bg-white"
               >
                 <option value="">Select Category</option>
-                {mockData.categories.map(category => (
-                  <option key={category.id} value={category.id}>{category.name}</option>
+                {mockData.categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                <svg
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
             </div>
@@ -171,17 +217,21 @@ export function ProductInfo() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
-            <h2 className="text-2xl font-semibold text-gray-800">Product Variants</h2>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Product Variants
+            </h2>
           </div>
           <button
             type="button"
-            onClick={() => append({
-              sku: "",
-              price: 0,
-              stock: 0,
-              images: [],
-              productOptions: [],
-            })}
+            onClick={() =>
+              append({
+                sku: "",
+                price: 0,
+                stock: 0,
+                images: [],
+                productOptions: [],
+              })
+            }
             className="flex items-center px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666] transition-colors font-medium shadow-sm hover:shadow"
           >
             <Plus className="w-5 h-5 mr-2" />
@@ -227,10 +277,14 @@ export function ProductInfo() {
                     Price
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                      $
+                    </span>
                     <input
                       type="number"
-                      {...register(`variants.${index}.price`, { valueAsNumber: true })}
+                      {...register(`variants.${index}.price`, {
+                        valueAsNumber: true,
+                      })}
                       className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors"
                       placeholder="0.00"
                     />
@@ -244,7 +298,9 @@ export function ProductInfo() {
                   </label>
                   <input
                     type="number"
-                    {...register(`variants.${index}.stock`, { valueAsNumber: true })}
+                    {...register(`variants.${index}.stock`, {
+                      valueAsNumber: true,
+                    })}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors"
                     placeholder="Enter stock quantity"
                   />
@@ -257,17 +313,31 @@ export function ProductInfo() {
                   </label>
                   <div className="relative">
                     <select
-                      {...register(`variants.${index}.storeId`, { valueAsNumber: true })}
+                      {...register(`variants.${index}.storeId`, {
+                        valueAsNumber: true,
+                      })}
                       className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors appearance-none bg-white"
                     >
                       <option value="">Select Store</option>
-                      {mockData.stores.map(store => (
-                        <option key={store.id} value={store.id}>{store.name}</option>
+                      {mockData.stores.map((store) => (
+                        <option key={store.id} value={store.id}>
+                          {store.name}
+                        </option>
                       ))}
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -280,24 +350,39 @@ export function ProductInfo() {
                   Product Options
                 </label>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {mockData.productOptionGroups.map(group => (
+                  {mockData.productOptionGroups.map((group) => (
                     <div key={group.id}>
                       <label className="block text-sm text-gray-600 mb-2">
                         {group.name}
                       </label>
                       <div className="relative">
                         <select
-                          {...register(`variants.${index}.productOptions.${group.id}.optionId`, { valueAsNumber: true })}
+                          {...register(
+                            `variants.${index}.productOptions.${group.id}.optionId`,
+                            { valueAsNumber: true }
+                          )}
                           className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50 transition-colors appearance-none bg-white"
                         >
                           <option value="">Select {group.name}</option>
-                          {group.options.map(option => (
-                            <option key={option.id} value={option.id}>{option.name}</option>
+                          {group.options.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
                           ))}
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          <svg
+                            className="w-5 h-5 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 9l-7 7-7-7"
+                            />
                           </svg>
                         </div>
                       </div>
@@ -318,7 +403,7 @@ export function ProductInfo() {
                     accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || []);
-                      setSelectedImages(prev => ({
+                      setSelectedImages((prev) => ({
                         ...prev,
                         [index]: files,
                       }));
@@ -332,7 +417,7 @@ export function ProductInfo() {
                       cursor-pointer"
                   />
                 </div>
-                
+
                 {/* Image Preview */}
                 <div className="mt-4 grid grid-cols-4 gap-4">
                   {selectedImages[index]?.map((file, fileIndex) => (
@@ -347,7 +432,7 @@ export function ProductInfo() {
                         onClick={() => {
                           const newImages = [...(selectedImages[index] || [])];
                           newImages.splice(fileIndex, 1);
-                          setSelectedImages(prev => ({
+                          setSelectedImages((prev) => ({
                             ...prev,
                             [index]: newImages,
                           }));
