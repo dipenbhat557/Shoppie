@@ -13,7 +13,8 @@ import {
   Truck,
   Wallet,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Wallet2Icon,
 } from "lucide-react";
 
 const navigationItems = [
@@ -21,38 +22,44 @@ const navigationItems = [
     id: 1,
     name: "Overview",
     link: "/dashboard",
-    icon: LayoutDashboard
+    icon: LayoutDashboard,
   },
   {
     id: 2,
     name: "Products",
     link: "/products",
-    icon: Package
+    icon: Package,
   },
   {
     id: 3,
     name: "Add Product",
     link: "/add-product",
-    icon: PackagePlus
+    icon: PackagePlus,
   },
   {
     id: 4,
     name: "Orders",
     link: "/view-orders",
-    icon: ShoppingCart
+    icon: ShoppingCart,
   },
   {
     id: 5,
     name: "Shipment",
     link: "/dispatch",
-    icon: Truck
+    icon: Truck,
   },
   {
     id: 6,
     name: "Payments",
     link: "/payments",
-    icon: Wallet
-  }
+    icon: Wallet,
+  },
+  {
+    id: 7,
+    name: "Promotions",
+    link: "/promotions",
+    icon: Wallet2Icon,
+  },
 ];
 
 export const DesktopSidebar = () => {
@@ -61,17 +68,21 @@ export const DesktopSidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div 
+    <div
       className={`hidden md:flex md:flex-col bg-white border-r border-gray-200 h-screen sticky top-0 transition-all duration-300 ease-in-out ${
-        isCollapsed ? 'w-20' : 'w-72'
+        isCollapsed ? "w-20" : "w-72"
       }`}
     >
       <div className="flex items-center justify-between px-5 py-6 border-b border-gray-200">
-        <div className={`flex items-center ${isCollapsed ? 'justify-center w-full' : ''}`}>
-          <Image 
-            src={logo} 
-            alt="logo" 
-            width={isCollapsed ? 32 : 40} 
+        <div
+          className={`flex items-center ${
+            isCollapsed ? "justify-center w-full" : ""
+          }`}
+        >
+          <Image
+            src={logo}
+            alt="logo"
+            width={isCollapsed ? 32 : 40}
             height={isCollapsed ? 32 : 40}
             className="transition-all duration-300"
           />
@@ -84,7 +95,7 @@ export const DesktopSidebar = () => {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? (
             <ChevronRight className="w-5 h-5 text-gray-500" />
@@ -98,7 +109,7 @@ export const DesktopSidebar = () => {
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = active === item.link;
-          
+
           return (
             <Link
               href={item.link}
@@ -106,32 +117,37 @@ export const DesktopSidebar = () => {
               key={item.id}
               className={`
                 flex items-center px-4 py-3 rounded-lg transition-all duration-200
-                ${isActive 
-                  ? 'bg-[#FFC633] text-gray-900 shadow-sm' 
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ${
+                  isActive
+                    ? "bg-[#FFC633] text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 }
-                ${isCollapsed ? 'justify-center' : 'justify-start'}
+                ${isCollapsed ? "justify-center" : "justify-start"}
               `}
             >
-              <Icon className={`w-5 h-5 ${isActive ? 'text-gray-900' : 'text-gray-500'}`} />
+              <Icon
+                className={`w-5 h-5 ${
+                  isActive ? "text-gray-900" : "text-gray-500"
+                }`}
+              />
               {!isCollapsed && (
-                <span className="ml-3 text-sm font-medium">
-                  {item.name}
-                </span>
+                <span className="ml-3 text-sm font-medium">{item.name}</span>
               )}
-              {isCollapsed && (
-                <span className="sr-only">{item.name}</span>
-              )}
+              {isCollapsed && <span className="sr-only">{item.name}</span>}
             </Link>
           );
         })}
       </nav>
 
       <div className="px-5 py-6 border-t border-gray-200">
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+        <div
+          className={`flex items-center ${
+            isCollapsed ? "justify-center" : "space-x-3"
+          }`}
+        >
           <div className="w-9 h-9 rounded-full bg-[#FFC633] flex items-center justify-center">
             <span className="text-sm font-medium text-gray-900">
-              {!isCollapsed ? 'AB' : 'A'}
+              {!isCollapsed ? "AB" : "A"}
             </span>
           </div>
           {!isCollapsed && (

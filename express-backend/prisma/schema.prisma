@@ -57,6 +57,8 @@ model Category {
   subCategories      Category[]          @relation("CategoryToCategory")
   products           Product[]
   productOptionGroups ProductOptionGroup[] @relation("CategoryToProductOptionGroup")
+  // Optional Feature for promotions
+  promotions         Promotion[]
 }
 
 enum Gender {
@@ -85,6 +87,10 @@ model Order {
   payment      Payment?     @relation(fields: [paymentId], references: [id])
   paymentId    Int?        @map("payment_id")
   items        OrderItem[]
+  // Optional Feature for promotions
+  promotion    Promotion?  @relation(fields: [promotionId], references: [id])
+  promotionId  Int?
+  discountAmount Float?
 }
 
 model OrderItem {
@@ -134,6 +140,8 @@ model Product {
   variants    ProductVariant[]
   reviews     Review[]
   wishlists   Wishlist[]
+  // Optional Feature for promotions
+  promotions  Promotion[]
 }
 
 model ProductOption {
@@ -225,18 +233,53 @@ model Wishlist {
   userId   Int       @unique @map("user_id")
 }
 
-model Banner {
-  id Int @id @default(autoincrement())
-  description String @default("")
-  imageUrl String
-  link String
-  position Position @default(FEATURED_PRODUCT)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// Promotion Models - Optional Feature
+// These models can be safely removed without affecting core functionality
+
+enum PromotionType {
+  PERCENTAGE   // Percentage discount (e.g., 20% off)
+  FIXED_AMOUNT // Fixed amount discount (e.g., $10 off)
 }
 
-enum Position {
-  FEATURED_PRODUCT
-  CATEGORY_BANNER
-  ADD_BANNER
+enum PromotionStatus {
+  ACTIVE
+  SCHEDULED
+  EXPIRED
+  DISABLED
+}
+
+// Main promotion model
+model Promotion {
+  id          Int            @id @default(autoincrement())
+  name        String         // Promotion name (e.g., "Summer Sale 2024")
+  description String?        // Optional description
+  type        PromotionType  // Discount type (percentage or fixed amount)
+  value       Float          // Discount value (e.g., 20 for 20% off or 10 for $10 off)
+  status      PromotionStatus @default(SCHEDULED)
+  
+  // Time constraints
+  startDate   DateTime       // When promotion becomes active
+  endDate     DateTime       // When promotion expires
+  
+  // Usage limits
+  usageLimit  Int?          // Maximum number of times promotion can be used (null for unlimited)
+  usedCount   Int           @default(0) // Number of times promotion has been used
+  
+  // Coupon code (optional - if null, applies automatically to eligible items)
+  couponCode  String?       @unique
+  
+  // Minimum requirements
+  minOrderValue Float?      // Minimum order value required (optional)
+  
+  // Relationships
+  products    Product[]     // Products this promotion applies to
+  categories  Category[]    // Categories this promotion applies to
+  orders      Order[]       // Orders that used this promotion
+  
+  // Metadata
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, startDate, endDate]) // Index for quick status and date lookups
+  @@index([couponCode])                 // Index for coupon code lookups
 }
