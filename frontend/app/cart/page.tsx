@@ -56,7 +56,7 @@ export default function Cart() {
     return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-10 py-6">
         <div className="flex items-center text-sm text-gray-600 mb-8">
           <Link href="/" className="hover:text-gray-800">Home</Link>
           <span className="mx-2">/</span>
@@ -78,9 +78,9 @@ export default function Cart() {
               <tbody>
                 {cartItems.map((item) => (
                   <tr key={item.id} className="border-b border-gray-200">
-                    <td className="py-4">
+                    <td className="py-4 px-2">
                       <div className="flex items-center space-x-4">
-                        <div className="relative">
+                        <div className="relative ">
                           <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
                             <Image 
                               src={item.image} 
