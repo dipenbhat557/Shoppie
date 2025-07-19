@@ -1,47 +1,54 @@
-import AdBanner1 from "./components/AdBanner1";
-import BestDeals from "./components/BestDeals";
-import { BuyAgainComp } from "./components/BuyAgainComp";
-import CarouselComponent from "./components/CarouselComponent";
-
-import HomeDecor from "./components/HomeDecor";
-
-import RecentItem from "./components/RecentItem";
-import TopDeals from "./components/TopDeals";
-
-import service from "../public/images/service.png";
-import deliver from "../public/images/delivery.png";
-import support from "../public/images/support.png";
-import SupportBar from "./components/Support";
-import {Topbar} from "./components/Topbar";
-import Navbar from "./components/Navbar";
-import {CategoryNav} from "./components/CategoryNav";
-import { Footer } from "./components/Footer";
-import { BestDealsAdd } from "./components/BestDealsAdd";
+import { Topbar } from "../components/Topbar";
+import { Navbar } from "../components/Navbar";
+import { HeroBanner } from "../components/HeroBanner";
+import { CategorySideBar } from "../components/CategorySideBar";
+import { FlashSale } from "../components/FlashSale";
+import { Categories } from "../components/Categories";
+import { NewArrival } from "../components/NewArrival";
+import { AdBanner } from "../components/AdBanner";
+import { BestSelling } from "../components/BestSelling";
+import Image from "next/image";
+import { Footer } from "@/components/Footer";
+import { Features } from "@/components/Features";
+import { TopDeals } from "@/components/TopDeals";
+import { ExploreProducts } from "@/components/ExploreProducts";
 
 export default function Home() {
   return (
-    <>
-      <div className="flex flex-col min-h-screen  w-full   ">
-        <div className="w-full flex flex-col gap-5  ">
-          <Topbar />
-          <Navbar />
-          <CategoryNav />
+    <div className="min-h-screen bg-white flex flex-col">
+   
+      <main className="flex flex-col md:flex-row w-full max-w-7xl mx-auto mt-2 md:mt-4 gap-0 px-2 sm:px-4">
+        {/* Mobile: Category bar as horizontal scroll */}
+        <div className="block md:hidden w-full mb-2">
+          <CategorySideBar />
         </div>
-        <CarouselComponent />
-        <TopDeals />
-        <div className="flex lg:flex-row flex-col gap-4 w-full">
-          <BestDealsAdd />
-          <BestDeals />
-        </div>
+        {/* Left: Category Sidebar (hidden on mobile) */}
+        <aside className="hidden md:block w-1/4 min-w-[200px] max-w-xs border-r border-gray-200 bg-white">
+          <CategorySideBar />
+        </aside>
+        {/* Right: Hero Banner */}
+        <section className="flex-1 flex items-center justify-center bg-white p-0 md:p-6">
+          <div className="w-full h-full flex items-center justify-center">
+            <HeroBanner />
+          </div>
+        </section>
+      </main>
+      {/* Flash Sale Section */}
+      <FlashSale />
+      {/* Categories Section */}
+      <Categories />
+      {/* New Arrival Section */}
+      <NewArrival />
+      {/* Ad Banner Section */}
+      <AdBanner />
+      <TopDeals />
+      {/* Best Selling Section */}
+      <BestSelling />
 
-        <HomeDecor />
+      {/* Features Section */}
+      <Features />
+      <ExploreProducts />
 
-        <RecentItem />
-        <AdBanner1 />
-        <BuyAgainComp />
-        <SupportBar service={service} deliver={deliver} support={support} />
-        <Footer />
-      </div>
-    </>
+    </div>
   );
 }
