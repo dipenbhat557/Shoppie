@@ -8,14 +8,19 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { mockProducts } from "@/data/data";
 
 export const ProductList = () => {
+  const router = useRouter();
+  const mock1 = mockProducts;
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [mockProductsss, setmockProductsss] = useState(mock1);
 
   const toggleProductSelection = (productId: number) => {
     setSelectedProducts((prev) =>
@@ -27,8 +32,21 @@ export const ProductList = () => {
 
   const toggleAllProducts = () => {
     setSelectedProducts((prev) =>
-      prev.length === mockProducts.length ? [] : mockProducts.map((p) => p.id)
+      prev.length === mockProductsss.length
+        ? []
+        : mockProductsss.map((p) => p.id)
     );
+  };
+
+  const handleProductClick = (productId: number) => {
+    router.push(`/products/${productId}`);
+  };
+
+  const handleDeleteProduct = (productId: number) => {
+    // TODO: Implement delete functionality
+    const new_products = mockProductsss.filter((p) => p.id !== productId);
+    setmockProductsss(new_products);
+    console.log(`Deleting product with ID: ${productId}`);
   };
 
   return (
@@ -40,7 +58,7 @@ export const ProductList = () => {
             <div className="h-8 w-2 bg-[#FFC633] rounded-full mr-3" />
             Products
             <span className="ml-2 text-sm font-normal text-gray-500">
-              ({mockProducts.length} items)
+              ({mockProductsss.length} items)
             </span>
           </h2>
 
@@ -117,7 +135,7 @@ export const ProductList = () => {
               <th className="px-6 py-4">
                 <input
                   type="checkbox"
-                  checked={selectedProducts.length === mockProducts.length}
+                  checked={selectedProducts.length === mockProductsss.length}
                   onChange={toggleAllProducts}
                   className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
                 />
@@ -132,7 +150,7 @@ export const ProductList = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {mockProducts.map((product) => (
+            {mockProductsss.map((product) => (
               <tr
                 key={product.id}
                 className="hover:bg-gray-50 transition-colors"
@@ -143,9 +161,13 @@ export const ProductList = () => {
                     checked={selectedProducts.includes(product.id)}
                     onChange={() => toggleProductSelection(product.id)}
                     className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </td>
-                <td className="px-6 py-4">
+                <td
+                  className="px-6 py-4 cursor-pointer"
+                  onClick={() => handleProductClick(product.id)}
+                >
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-lg bg-gray-100 relative overflow-hidden">
                       <Image
@@ -156,8 +178,9 @@ export const ProductList = () => {
                       />
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-gray-900 flex items-center gap-2">
                         {product.name}
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
                       </div>
                       <div className="text-xs text-gray-500">
                         {product.brand}
@@ -191,10 +214,22 @@ export const ProductList = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                    <button
+                      className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProductClick(product.id);
+                      }}
+                    >
                       <Edit2 className="w-4 h-4 text-gray-600" />
                     </button>
-                    <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                    <button
+                      className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteProduct(product.id);
+                      }}
+                    >
                       <Trash2 className="w-4 h-4 text-red-500" />
                     </button>
                   </div>
@@ -218,7 +253,8 @@ export const ProductList = () => {
             <p className="text-sm text-gray-700">
               Showing <span className="font-medium">1</span> to{" "}
               <span className="font-medium">10</span> of{" "}
-              <span className="font-medium">{mockProducts.length}</span> results
+              <span className="font-medium">{mockProductsss.length}</span>{" "}
+              results
             </p>
           </div>
           <div>
