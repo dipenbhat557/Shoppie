@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { X, ChevronUp, ChevronDown } from 'lucide-react'
+import { ChevronUp, ChevronDown, Check } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([
@@ -11,14 +12,16 @@ export default function Cart() {
       name: "LCD Monitor",
       price: 650,
       quantity: 1,
-      image: "/images/cart/monitor.png"
+      image: "/newImages/products/p1.png",
+      selected: true
     },
     {
       id: 2,
       name: "H1 Gamepad",
       price: 550,
       quantity: 2,
-      image: "/images/cart/gamepad.png"
+      image: "/newImages/products/p2.png",
+      selected: true
     }
   ])
 
@@ -37,11 +40,20 @@ export default function Cart() {
     setCartItems(items => items.filter(item => item.id !== id))
   }
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const toggleSelection = (id: number) => {
+    setCartItems(items => 
+      items.map(item => 
+        item.id === id ? { ...item, selected: !item.selected } : item
+      )
+    )
+  }
+
+  const selectedItems = cartItems.filter(item => item.selected)
+  const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   const shipping = 0 // Free shipping
   const total = subtotal + shipping
 
-  return (
+    return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs */}
       <div className="container mx-auto px-4 py-6">
@@ -69,17 +81,35 @@ export default function Cart() {
                     <td className="py-4">
                       <div className="flex items-center space-x-4">
                         <div className="relative">
-                          <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
-                            <span className="text-xs text-gray-600">{item.name}</span>
+                          <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
+                            <Image 
+                              src={item.image} 
+                              alt={item.name}
+                              width={64}
+                              height={64}
+                              className="object-contain w-full h-full"
+                            />
                           </div>
                           <button
-                            onClick={() => removeItem(item.id)}
-                            className="absolute -top-2 -left-2 w-6 h-6 bg-[#E73C17] rounded-full flex items-center justify-center"
+                            onClick={() => toggleSelection(item.id)}
+                            className={`absolute -top-2 -left-2 w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                              item.selected 
+                                ? 'bg-[#E73C17] border-[#E73C17]' 
+                                : 'bg-white border-gray-300 hover:border-[#E73C17]'
+                            }`}
                           >
-                            <X className="w-3 h-3 text-white" />
+                            {item.selected && <Check className="w-3 h-3 text-white" />}
                           </button>
                         </div>
-                        <span className="font-medium text-black">{item.name}</span>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-black">{item.name}</span>
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="text-sm text-red-500 hover:text-red-700 mt-1 w-fit"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </td>
                     <td className="text-center py-4 text-black">${item.price}</td>
@@ -168,6 +198,6 @@ export default function Cart() {
           </div>
         </div>
       </div>
-    </div>
-  )
+        </div>
+    )
 }

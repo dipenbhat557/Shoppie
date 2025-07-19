@@ -6,11 +6,11 @@ export const HeroBanner = () => {
   // Array of hero banner images - easily add more banners here
   const heroBanners = [
     {
-      src: "/newImages/HeroBanner4.jpg",
+      src: "/newImages/Banners/HeroBanner4.jpg",
       alt: "Hero Banner 1"
     },
     {
-      src: "/newImages/HeroBanner5.avif", 
+      src: "/newImages/Banners/HeroBanner5.avif", 
       alt: "Hero Banner 2"
     }
     // Add more hero banners here as needed
@@ -35,7 +35,7 @@ export const HeroBanner = () => {
 
   // Manual navigation function
 
-  const goToSlide = (index) => {
+  const goToSlide = (index: number) => {
     setCurrentBannerIndex(index);
   };
 

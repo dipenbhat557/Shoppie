@@ -3,14 +3,89 @@ import { ProductCard } from './ProductCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const products = [
-  { name: 'Breed Dry Dog Food', price: '$100', rating: 3, reviews: 35, img: '/placeholder/dogfood.png' },
-  { name: 'CANON EOS DSLR Camera', price: '$360', rating: 4, reviews: 95, img: '/placeholder/camera.png', addToCart: true },
-  { name: 'ASUS FHD Gaming Laptop', price: '$700', rating: 5, reviews: 325, img: '/placeholder/laptop.png' },
-  { name: 'Curology Product Set', price: '$500', rating: 4, reviews: 145, img: '/placeholder/curology.png' },
-  { name: 'Kids Electric Car', price: '$960', rating: 5, reviews: 65, img: '/placeholder/car.png', badge: 'NEW', colors: ['#00e676', '#ff1744'] },
-  { name: 'Jr. Zoom Soccer Cleats', price: '$1160', rating: 5, reviews: 35, img: '/placeholder/cleats.png', colors: ['#00e676', '#ffeb3b'] },
-  { name: 'GP11 Shooter USB Gamepad', price: '$660', rating: 4, reviews: 55, img: '/placeholder/gamepad.png', badge: 'NEW', colors: ['#00e676', '#ff1744'] },
-  { name: 'Quilted Satin Jacket', price: '$660', rating: 4, reviews: 55, img: '/placeholder/jacket.png', colors: ['#00e676', '#ffeb3b'] },
+  { 
+    id: 1,
+    name: 'Breed Dry Dog Food', 
+    currentPrice: '$100', 
+    originalPrice: '$120',
+    discount: 20,
+    rating: 3, 
+    reviews: 35, 
+    image: '/newImages/products/p1.png' 
+  },
+  { 
+    id: 2,
+    name: 'CANON EOS DSLR Camera', 
+    currentPrice: '$360', 
+    originalPrice: '$400',
+    discount: 10,
+    rating: 4, 
+    reviews: 95, 
+    image: '/newImages/products/p2.png', 
+    showAddToCart: true 
+  },
+  { 
+    id: 3,
+    name: 'ASUS FHD Gaming Laptop', 
+    currentPrice: '$700', 
+    originalPrice: '$800',
+    discount: 15,
+    rating: 5, 
+    reviews: 325, 
+    image: '/newImages/products/p3.png' 
+  },
+  { 
+    id: 4,
+    name: 'Curology Product Set', 
+    currentPrice: '$500', 
+    originalPrice: '$600',
+    discount: 20,
+    rating: 4, 
+    reviews: 145, 
+    image: '/newImages/products/p4.png' 
+  },
+  { 
+    id: 5,
+    name: 'Kids Electric Car', 
+    currentPrice: '$960', 
+    originalPrice: '$1000',
+    discount: 5,
+    rating: 5, 
+    reviews: 65, 
+    image: '/newImages/products/p5.png', 
+    showAddToCart: true 
+  },
+  { 
+    id: 6,
+    name: 'Jr. Zoom Soccer Cleats', 
+    currentPrice: '$1160', 
+    originalPrice: '$1300',
+    discount: 15,
+    rating: 5, 
+    reviews: 35, 
+    image: '/newImages/products/p6.png' 
+  },
+  { 
+    id: 7,
+    name: 'GP11 Shooter USB Gamepad', 
+    currentPrice: '$660', 
+    originalPrice: '$700',
+    discount: 10,
+    rating: 4, 
+    reviews: 55, 
+    image: '/newImages/products/p1.png', 
+    showAddToCart: true 
+  },
+  { 
+    id: 8,
+    name: 'Quilted Satin Jacket', 
+    currentPrice: '$660', 
+    originalPrice: '$750',
+    discount: 15,
+    rating: 4, 
+    reviews: 55, 
+    image: '/newImages/products/p2.png' 
+  },
 ];
 
 export const ExploreProducts = () => {
@@ -36,8 +111,7 @@ export const ExploreProducts = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
         {products.map((product, idx) => (
           <div key={product.name} className="flex justify-center">
-            {/* You can extend ProductCard to accept props for image, name, price, rating, etc. For now, use as is. */}
-            <ProductCard />
+            <ProductCard {...product} />
           </div>
         ))}
       </div>

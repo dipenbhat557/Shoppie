@@ -3,7 +3,68 @@ import React, { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from './ProductCard';
 
-const products = Array(6).fill(null);
+const products = [
+  {
+    id: 1,
+    name: "HAVIT HV-G92 Gamepad",
+    currentPrice: "$120",
+    originalPrice: "$160",
+    discount: 40,
+    rating: 5,
+    reviews: 88,
+    image: "/newImages/products/p1.png"
+  },
+  {
+    id: 2,
+    name: "AK-900 Wired Keyboard",
+    currentPrice: "$960",
+    originalPrice: "$1160",
+    discount: 35,
+    rating: 4,
+    reviews: 75,
+    image: "/newImages/products/p2.png"
+  },
+  {
+    id: 3,
+    name: "IPS LCD Gaming Monitor",
+    currentPrice: "$370",
+    originalPrice: "$400",
+    discount: 30,
+    rating: 5,
+    reviews: 99,
+    image: "/newImages/products/p3.png"
+  },
+  {
+    id: 4,
+    name: "RGB liquid CPU Cooler",
+    currentPrice: "$160",
+    originalPrice: "$170",
+    discount: 10,
+    rating: 4,
+    reviews: 65,
+    image: "/newImages/products/p4.png"
+  },
+  {
+    id: 5,
+    name: "GP11 Shooter USB Gamepad",
+    currentPrice: "$660",
+    originalPrice: "$700",
+    discount: 25,
+    rating: 4,
+    reviews: 55,
+    image: "/newImages/products/p5.png"
+  },
+  {
+    id: 6,
+    name: "Quilted Satin Jacket",
+    currentPrice: "$660",
+    originalPrice: "$800",
+    discount: 30,
+    rating: 4,
+    reviews: 55,
+    image: "/newImages/products/p6.png"
+  }
+];
 
 export const FlashSale = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -46,8 +107,8 @@ export const FlashSale = () => {
           className="flex gap-4 overflow-x-auto scrollbar-hide py-2 px-1 sm:px-8"
           style={{ scrollBehavior: 'smooth' }}
         >
-          {products.map((_, idx) => (
-            <ProductCard key={idx} />
+          {products.map((product, idx) => (
+            <ProductCard key={idx} {...product} />
           ))}
         </div>
         <button onClick={() => scroll('right')} className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-full p-2 shadow hover:bg-gray-100 hidden sm:block">

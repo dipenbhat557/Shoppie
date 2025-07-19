@@ -6,13 +6,10 @@ export const AdBanner = () => {
   // Array of banner images - easily add more banners here
   const banners = [
     {
-      src: "/newImages/adBanner.png",
+      src: "/newImages/Banners/adBanner.png",
       alt: "Advertisement Banner 1"
     },
-    {
-      src: "/newImages/HeroBanner2.png", 
-      alt: "Hero Banner 2"
-    }
+  
     // Add more banners here as needed
     // {
     //   src: "/newImages/banner3.png",

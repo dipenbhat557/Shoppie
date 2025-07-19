@@ -17,7 +17,7 @@ export const TopDeals = () => {
         {/* Gadget cards */}
         <div className="flex-1 flex flex-row gap-4">
           {gadgets.map((gadget, idx) => (
-            <div key={gadget.name} className="bg-white rounded-xl shadow flex flex-col items-center justify-between h-64 w-full max-w-[180px] min-w-[150px] p-4">
+            <div key={gadget.name} className="cursor-pointer bg-white rounded-xl shadow flex flex-col items-center justify-between h-64 w-full max-w-[180px] min-w-[150px] p-4">
               <Image src={gadget.img} alt={gadget.name} width={150} height={150} className="object-contain mb-4" />
               <div className="text-sm text-gray-700 text-center mb-1">{gadget.name}</div>
               <div className="font-bold text-base text-black text-center">{gadget.price}</div>
@@ -25,9 +25,9 @@ export const TopDeals = () => {
           ))}
         </div>
         {/* Right promo card */}
-        <div className="flex flex-col  bg-white  shadow overflow-hidden w-full max-w-[220px] min-w-[180px] h-96 md:h-[340px]">
+        <div className="flex flex-col  bg-white  shadow cursor-pointer overflow-hidden w-full max-w-[220px] min-w-[180px] h-96 md:h-[340px]">
           <div className="flex-1 w-full h-2/3 relative">
-            <Image src="/images/topDeals/promo.png" alt="Promo" fill className="object-cover w-full h-full" />
+            <Image src="/newImages/sideAd.png" alt="Promo" fill className="object-cover w-full h-full" />
           </div>
           <div className="w-full p-4 border-t border-gray-200 flex flex-col items-start justify-end flex-shrink-0">
             <div className="text-red-600 font-bold text-sm mb-1">Flat 40% off in HnM Brand</div>

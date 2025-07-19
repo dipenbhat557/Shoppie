@@ -2,12 +2,23 @@
 
 import React, { useState } from 'react'
 import { Heart, Truck, RotateCcw } from 'lucide-react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export const ProductDetails = () => {
+  const router = useRouter()
   const [selectedColor, setSelectedColor] = useState('blue')
   const [selectedSize, setSelectedSize] = useState('M')
   const [quantity, setQuantity] = useState(2)
   const [wishlisted, setWishlisted] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(0)
+
+  const productImages = [
+    '/newImages/productDetails/main.png',
+    '/newImages/productDetails/side1.png',
+    '/newImages/productDetails/side2.png',
+    '/newImages/productDetails/side3.png'
+  ]
 
   const colors = [
     { name: 'blue', value: 'blue', selected: selectedColor === 'blue' },
@@ -22,6 +33,17 @@ export const ProductDetails = () => {
     }
   }
 
+  const handleBuyNow = () => {
+    // You can add logic here to add the product to cart or store the selection
+    console.log('Buy Now clicked:', {
+      product: 'Havic HV G-92 Gamepad',
+      color: selectedColor,
+      size: selectedSize,
+      quantity: quantity
+    })
+    router.push('/check-out')
+  }
+
   return (
     <div className="grid lg:grid-cols-5 gap-8">
       {/* Left Section - Product Images */}
@@ -29,22 +51,35 @@ export const ProductDetails = () => {
         <div className="flex gap-4">
           {/* Thumbnail Images */}
           <div className="flex flex-col gap-4">
-            {[1, 2, 3, 4].map((index) => (
-              <div key={index} className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:border-2 hover:border-[#E73C17]">
-                <span className="text-xs text-gray-600">Image {index}</span>
+            {productImages.map((image, index) => (
+              <div 
+                key={index} 
+                className={`w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:border-2 hover:border-[#E73C17] ${
+                  selectedImage === index ? 'border-2 border-[#E73C17]' : ''
+                }`}
+                onClick={() => setSelectedImage(index)}
+              >
+                <Image 
+                  src={image} 
+                  alt={`Product image ${index + 1}`}
+                  width={64}
+                  height={64}
+                  className="object-contain w-full h-full rounded"
+                />
               </div>
             ))}
           </div>
           
           {/* Main Image */}
           <div className="flex-1">
-            <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-white rounded-lg mb-4 flex items-center justify-center">
-                  <span className="text-sm text-gray-600">Gamepad</span>
-                </div>
-                <p className="text-sm text-gray-600">Havic HV G-92 Gamepad</p>
-              </div>
+            <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+              <Image 
+                src={productImages[selectedImage]} 
+                alt="Main product image"
+                width={400}
+                height={400}
+                className="object-contain w-full h-full"
+              />
             </div>
           </div>
         </div>
@@ -143,7 +178,10 @@ export const ProductDetails = () => {
 
           {/* Action Buttons */}
           <div className="flex gap-4">
-            <button className="flex-1 bg-[#E73C17] hover:bg-[#d63615] text-white py-3 rounded-md font-semibold transition-colors">
+            <button 
+              onClick={handleBuyNow}
+              className="flex-1 bg-[#E73C17] hover:bg-[#d63615] text-white py-3 rounded-md font-semibold transition-colors"
+            >
               Buy Now
             </button>
             <button
