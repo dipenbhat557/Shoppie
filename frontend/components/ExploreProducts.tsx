@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { ProductCard } from './ProductCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -117,7 +118,7 @@ export const ExploreProducts = () => {
       </div>
       {/* View All Products Button */}
       <div className="flex justify-center mt-4">
-        <button className="bg-red-500 text-white px-8 py-3 rounded font-semibold hover:bg-red-600 transition">View All Products</button>
+        <Link href="/productslist" className="bg-red-500 text-white px-8 py-3 rounded font-semibold hover:bg-red-600 transition">View All Products</Link>
       </div>
     </section>
   );

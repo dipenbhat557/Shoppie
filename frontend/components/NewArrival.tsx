@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 
 const cards = [
@@ -42,7 +43,7 @@ export const NewArrival = () => {
           <div className="relative z-10 p-6 flex flex-col gap-2 items-start justify-end h-full">
             <h3 className="text-xl font-bold text-white mb-1">{cards[0].title}</h3>
             <p className="text-sm text-white/90 mb-3">{cards[0].desc}</p>
-            <button className="bg-white text-black px-4 py-1.5 rounded font-semibold w-max transition-transform duration-200 hover:scale-105">Shop Now</button>
+            <Link href="/productslist" className="bg-white text-black px-4 py-1.5 rounded font-semibold w-max transition-transform duration-200 hover:scale-105">Shop Now</Link>
           </div>
         </div>
         {/* Top right card: spans 2 columns */}
@@ -52,7 +53,7 @@ export const NewArrival = () => {
           <div className="relative z-10 p-6 flex flex-col gap-2 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[1].title}</h3>
             <p className="text-xs text-white/90 mb-2">{cards[1].desc}</p>
-            <button className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</button>
+            <Link href="/productslist" className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</Link>
           </div>
         </div>
         {/* Bottom right cards: Speakers - improved visibility */}
@@ -62,7 +63,7 @@ export const NewArrival = () => {
           <div className="relative z-10 p-4 flex flex-col gap-1 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[2].title}</h3>
             <p className="text-xs text-white/90 mb-2">{cards[2].desc}</p>
-            <button className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</button>
+            <Link href="/productslist" className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</Link>
           </div>
         </div>
         {/* Bottom right cards: Perfume - improved visibility */}
@@ -72,7 +73,7 @@ export const NewArrival = () => {
           <div className="relative z-10 p-4 flex flex-col gap-1 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[3].title}</h3>
             <p className="text-xs text-white/90 mb-2">{cards[3].desc}</p>
-            <button className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</button>
+            <Link href="/productslist" className="bg-white text-black px-3 py-1 rounded font-semibold w-max transition-transform duration-200 hover:scale-105 text-xs">Shop Now</Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef } from 'react';
+import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from './ProductCard';
 
@@ -117,7 +118,7 @@ export const FlashSale = () => {
       </div>
       {/* View All Button */}
       <div className="flex justify-center mt-6">
-        <button className="bg-red-500 text-white px-6 py-2 rounded font-semibold hover:bg-red-600 transition">View All Products</button>
+        <Link href="/productslist" className="bg-red-500 text-white px-6 py-2 rounded font-semibold hover:bg-red-600 transition">View All Products</Link>
       </div>
     </section>
   );
