@@ -1,7 +1,7 @@
 'use client'; 
 
 import { useState } from "react";
-import { OrdersList } from "./OrdersList";
+import { OrderList } from "./OrdersList";
 import { Delivered } from "./Delivered";
 
 export const NewDeliveredOrder = () => {
@@ -18,7 +18,7 @@ export const NewDeliveredOrder = () => {
         </div>
 
         {
-          delivered ? <Delivered /> : <OrdersList />
+          delivered ? <Delivered /> : <OrderList />
         }
       </div>
     );

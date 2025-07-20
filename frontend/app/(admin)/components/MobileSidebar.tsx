@@ -1,12 +1,12 @@
 "use client"
 
-import { Button } from "@/components/button"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTrigger,
-} from "@/components/sheet"
+} from "@/components/ui/sheet"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"

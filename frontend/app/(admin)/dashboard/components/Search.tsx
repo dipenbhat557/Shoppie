@@ -1,5 +1,5 @@
 import { Mic, Search as SearchIcon } from 'lucide-react';
-import { Input } from "@/components/input";
+import { Input } from "@/components/ui/input";
 
 export function Search({isMobile}: {isMobile?: boolean}) {
   return (

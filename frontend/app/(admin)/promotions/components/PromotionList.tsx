@@ -563,7 +563,7 @@ export function PromotionsList() {
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Delete Promotion</h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete the promotion "{selectedPromotion.name}"? This action cannot be undone.
+              Are you sure you want to delete the promotion &quot;{selectedPromotion.name}&quot;? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3">
               <button
