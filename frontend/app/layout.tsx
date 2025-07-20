@@ -7,7 +7,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { QueryProvider } from "@/providers/QueryProvider";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,14 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-
         <Topbar />
         <Navbar />
-        {children}
-        <Footer />
-
         <QueryProvider>{children}</QueryProvider>
-
+        <Footer />
       </body>
     </html>
   );
