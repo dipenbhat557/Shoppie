@@ -266,7 +266,7 @@ export default function Orders({ params }: { params: { userId: string } }) {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-12 text-center">
             <Package className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg md:text-xl font-semibold text-black mb-2">No orders found</h3>
-            <p className="text-gray-600 mb-6 text-sm md:text-base">You haven't placed any orders yet.</p>
+            <p className="text-gray-600 mb-6 text-sm md:text-base">You haven&apos;t placed any orders yet.</p>
             <Link
               href="/productslist"
               className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-[#E73C17] text-white rounded-lg hover:bg-[#d63615] transition-colors font-medium text-sm md:text-base"
