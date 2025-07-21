@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { ProductCard } from './ProductCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -90,6 +91,13 @@ const products = [
 ];
 
 export const ExploreProducts = () => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [showHint, setShowHint] = useState(true);
+
+  const handleUserInteraction = () => {
+    if (showHint) setShowHint(false);
+  };
+
   return (
     <section className="w-full max-w-7xl mx-auto mt-8 mb-12 px-2 sm:px-4">
       {/* Header */}
@@ -98,7 +106,8 @@ export const ExploreProducts = () => {
           <span className="w-2 h-6 bg-red-500 rounded mr-2" />
           <span className="text-xs text-red-500 font-semibold">Our Products</span>
         </div>
-        <div className="flex gap-2">
+        {/* Hide arrows on mobile */}
+        <div className="hidden md:flex gap-2">
           <button className="bg-white border border-gray-200 rounded-full p-2 shadow hover:bg-gray-100 transition">
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -108,13 +117,27 @@ export const ExploreProducts = () => {
         </div>
       </div>
       <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">Explore Our Products</h2>
-      {/* Product Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      {/* Product Cards: slider on mobile, grid on md+ */}
+      <div
+        ref={sliderRef}
+        className="flex gap-6 overflow-x-auto scrollbar-hide mb-8 md:grid md:grid-cols-4 md:gap-6 md:overflow-x-visible relative"
+        onScroll={handleUserInteraction}
+        onTouchStart={handleUserInteraction}
+        onMouseDown={handleUserInteraction}
+      >
         {products.map((product, idx) => (
-          <div key={product.name} className="flex justify-center">
+          <div key={product.name} className="flex-shrink-0 w-64 md:w-auto flex justify-center">
             <ProductCard {...product} />
           </div>
         ))}
+        {/* Swipe hint overlay - only on mobile, only if showHint is true */}
+        {showHint && (
+          <div className="md:hidden pointer-events-none absolute bottom-2 right-4 z-20 flex items-center gap-1 bg-black/70 text-white text-xs px-3 py-1 rounded-full animate-pulse shadow-lg select-none">
+            <span role="img" aria-label="hand">🖐️</span>
+            <span>Swipe</span>
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8m0 0l-4-4m4 4l-4 4" /></svg>
+          </div>
+        )}
       </div>
       {/* View All Products Button */}
       <div className="flex justify-center mt-4">
