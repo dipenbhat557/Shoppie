@@ -14,7 +14,7 @@ import { ExploreProducts } from "@/components/ExploreProducts";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col overflow-x-hidden">
    
       <main className="w-full">
         <HeroSection />

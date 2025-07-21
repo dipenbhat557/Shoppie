@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { ProductCard } from './ProductCard';
 
@@ -58,12 +58,17 @@ const products = [
 
 export const BestSelling = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showHint, setShowHint] = useState(true);
 
   const scroll = (dir: 'left' | 'right') => {
     if (scrollRef.current) {
       const amount = dir === 'left' ? -300 : 300;
       scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
     }
+  };
+
+  const handleUserInteraction = () => {
+    if (showHint) setShowHint(false);
   };
 
   return (
@@ -78,10 +83,24 @@ export const BestSelling = () => {
         <Link href="/productslist" className="bg-red-500 text-white px-6 py-2 rounded font-semibold hover:bg-red-600 transition">View All</Link>
       </div>
       {/* Product Cards Scroll */}
-      <div className="flex gap-6 overflow-x-auto scrollbar-hide py-2 px-1 sm:px-0">
+      <div
+        ref={scrollRef}
+        className="flex gap-6 overflow-x-auto scrollbar-hide py-2 px-1 sm:px-0 relative"
+        onScroll={handleUserInteraction}
+        onTouchStart={handleUserInteraction}
+        onMouseDown={handleUserInteraction}
+      >
         {products.map((product, idx) => (
           <ProductCard key={idx} {...product} />
         ))}
+        {/* Swipe hint overlay - only on mobile, only if showHint is true */}
+        {showHint && (
+          <div className="md:hidden pointer-events-none absolute bottom-2 right-4 z-20 flex items-center gap-1 bg-black/70 text-white text-xs px-3 py-1 rounded-full animate-pulse shadow-lg select-none">
+            <span role="img" aria-label="hand">🖐️</span>
+            <span>Swipe</span>
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8m0 0l-4-4m4 4l-4 4" /></svg>
+          </div>
+        )}
       </div>
     </section>
   );
