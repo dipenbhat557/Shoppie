@@ -4,9 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Package, Truck, CheckCircle, Clock, Star } from 'lucide-react'
+import StatusDropdown from '@/components/ui/StatusDropdown';
 
 export default function Orders({ params }: { params: { userId: string } }) {
-  const [activeTab, setActiveTab] = useState('all')
+  const [selectedStatus, setSelectedStatus] = useState('all')
 
   const orders = [
     {
@@ -121,9 +122,17 @@ export default function Orders({ params }: { params: { userId: string } }) {
     }
   }
 
-  const filteredOrders = activeTab === 'all' 
-    ? orders 
-    : orders.filter(order => order.status === activeTab)
+  const statusOptions = [
+    { value: 'all', label: 'All Orders' },
+    { value: 'processing', label: 'Processing' },
+    { value: 'shipped', label: 'Shipped' },
+    { value: 'delivered', label: 'Delivered' },
+    { value: 'cancelled', label: 'Cancelled' },
+  ]
+
+  const filteredOrders = selectedStatus === 'all'
+    ? orders
+    : orders.filter(order => order.status === selectedStatus)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -135,38 +144,21 @@ export default function Orders({ params }: { params: { userId: string } }) {
           <span className="text-black font-medium">My Orders</span>
         </div>
 
-        {/* Header */}
+        {/* Header with Filter */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-black mb-2">My Orders</h1>
-          <p className="text-gray-600 text-sm md:text-base">Track your orders and view order history</p>
-        </div>
-
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {[
-              { key: 'all', label: 'All Orders', count: orders.length },
-              { key: 'processing', label: 'Processing', count: orders.filter(o => o.status === 'processing').length },
-              { key: 'shipped', label: 'Shipped', count: orders.filter(o => o.status === 'shipped').length },
-              { key: 'delivered', label: 'Delivered', count: orders.filter(o => o.status === 'delivered').length }
-            ].map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`py-3 px-2 md:px-4 rounded-lg font-medium transition-colors text-sm md:text-base ${
-                  activeTab === tab.key
-                    ? 'bg-[#E73C17] text-white'
-                    : 'text-gray-600 hover:text-black hover:bg-gray-100'
-                }`}
-              >
-                <div className="flex flex-col md:flex-row md:items-center md:space-x-2">
-                  <span>{tab.label}</span>
-                  <span className="text-xs bg-white/20 px-2 py-1 rounded-full mt-1 md:mt-0">
-                    {tab.count}
-                  </span>
-                </div>
-              </button>
-            ))}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-black mb-2 md:mb-0">My Orders</h1>
+              <p className="text-gray-600 text-sm md:text-base">Track your orders and view order history</p>
+            </div>
+            <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto">
+              <label htmlFor="order-status" className="text-sm font-medium text-gray-700 whitespace-nowrap">Filter by status:</label>
+              <StatusDropdown
+                options={statusOptions}
+                value={selectedStatus}
+                onChange={setSelectedStatus}
+              />
+            </div>
           </div>
         </div>
 
