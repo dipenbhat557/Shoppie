@@ -2,19 +2,37 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { Topbar } from "@/components/Topbar";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Kinam Na",
-  description: "Get all your necessities in one place",
+  title: "Kinamna - Your Fashion Destination",
+  description: "Discover the latest trends in fashion and lifestyle products",
   icons: {
     icon: "/icon.svg",
   },
+  keywords: ["fashion", "clothing", "shoes", "accessories", "online shopping", "nepal"],
+  authors: [{ name: "Kinamna" }],
+  robots: "index, follow",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://kinamna.com",
+    siteName: "Kinamna",
+    title: "Kinamna - Your Fashion Destination",
+    description: "Discover the latest trends in fashion and lifestyle products",
+    images: [
+      {
+        url: "/icon.svg",
+        width: 1200,
+        height: 630,
+        alt: "Kinamna Preview"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({
@@ -23,12 +41,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Topbar />
-        <Navbar />
-        <QueryProvider>{children}</QueryProvider>
-        <Footer />
+        <AuthProvider>
+          <QueryProvider>
+            {children}
+            <Toaster />
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -2,7 +2,6 @@ import { Header } from "../components/Header";
 import { MobileHeader } from "../components/MobileHeader";
 import { MobileSidebar } from "../components/MobileSidebar";
 import { ProfileImg } from "../components/ProfileImg";
-import { ProductList } from "../products/components/ProductList";
 import { ProductInfo } from "./components/ProductInfo";
 
 export default function Page() {

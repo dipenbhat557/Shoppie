@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { ProductCard } from '../../components/ProductCard';
+import { ProductCard } from '@/components/ProductCard';
 import { Trash2 } from 'lucide-react';
 
 const initialProducts = [
