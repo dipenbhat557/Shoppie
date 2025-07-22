@@ -80,7 +80,7 @@ export const BestSelling = () => {
       </div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl md:text-3xl font-bold text-black">Best Selling Products</h2>
-        <Link href="/productslist" className="bg-red-500 text-white px-6 py-2 rounded font-semibold hover:bg-red-600 transition">View All</Link>
+        {/* Removed 'View All' button as per request */}
       </div>
       {/* Product Cards Scroll */}
       <div

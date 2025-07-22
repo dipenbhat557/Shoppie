@@ -140,9 +140,7 @@ export const ExploreProducts = () => {
         )}
       </div>
       {/* View All Products Button */}
-      <div className="flex justify-center mt-4">
-        <Link href="/productslist" className="bg-red-500 text-white px-8 py-3 rounded font-semibold hover:bg-red-600 transition">View All Products</Link>
-      </div>
+      {/* Removed as per request */}
     </section>
   );
 };
