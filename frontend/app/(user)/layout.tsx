@@ -3,6 +3,7 @@
 import { Topbar } from "@/components/Topbar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import NewsletterBanner from "@/components/NewsletterBanner";
 // import { useAuth } from "@/hooks/useAuth";
 // import { useRouter } from "next/navigation";
 // import { useEffect } from "react";
@@ -36,7 +37,12 @@ export default function UserLayout({
       <main className="flex-1">
         {children}
       </main>
-      <Footer />
+      {/* <div className="relative z-20">
+        <NewsletterBanner />
+      </div> */}
+      <div className="relative z-10 mt-1">
+        <Footer />
+      </div>
     </div>
   );
 }
