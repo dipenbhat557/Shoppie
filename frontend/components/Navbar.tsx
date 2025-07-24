@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, ShoppingCart, Search, Menu, User, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,8 +45,8 @@ export const Navbar = () => {
     <nav className="w-full bg-white shadow border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-8 py-3 md:py-4">
       <div className="flex items-center justify-between w-full md:w-auto">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-extrabold tracking-tight text-black hover:text-gray-700 transition">
-          Kinamna
+        <Link href="/" className="flex items-center h-10 w-auto">
+          <Image src="/newImages/logo.png" alt="Kinamna Logo" width={150} height={70} className="object-contain h-16 w-auto" priority />
         </Link>
         {/* Hamburger for mobile */}
         <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(v => !v)}>
