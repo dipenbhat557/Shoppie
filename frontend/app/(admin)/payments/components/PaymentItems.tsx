@@ -10,58 +10,15 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { format } from "date-fns";
-
-// Types based on schema
-type PaymentStatus = "SUCCESS" | "PENDING" | "FAILED";
-type PaymentMethod = "Credit Card" | "Debit Card" | "UPI" | "Net Banking";
-
-interface Payment {
-  id: number;
-  amount: number;
-  status: PaymentStatus;
-  paymentDate: Date;
-  method: PaymentMethod;
-  referenceId?: string;
-  orders: {
-    id: number;
-    price: number;
-    user: {
-      firstName: string;
-      lastName: string;
-      email: string;
-    };
-  }[];
-}
+import { usePayments } from "@/fetchers/payment/queries";
+import { useUpdatePayment, useDeletePayment } from "@/fetchers/payment/mutation";
+import type { Payment, PaymentStatus } from "@/fetchers/payment/queries";
 
 const statusColors = {
   SUCCESS: { bg: "bg-green-100", text: "text-green-700", icon: CheckCircle },
   PENDING: { bg: "bg-yellow-100", text: "text-yellow-700", icon: Clock },
   FAILED: { bg: "bg-red-100", text: "text-red-700", icon: AlertCircle },
 };
-
-// Mock data
-const mockPayments: Payment[] = [
-  {
-    id: 1,
-    amount: 299.99,
-    status: "SUCCESS",
-    paymentDate: new Date("2024-03-10"),
-    method: "Credit Card",
-    referenceId: "PAY-123456",
-    orders: [
-      {
-        id: 1,
-        price: 299.99,
-        user: {
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-        },
-      },
-    ],
-  },
-  // Add more mock payments...
-];
 
 export function PaymentItems() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,8 +27,14 @@ export function PaymentItems() {
     order: "asc" | "desc";
   }>({ field: "date", order: "desc" });
 
+  const { data: payments, isLoading } = usePayments();
+  const updatePayment = useUpdatePayment();
+  const deletePayment = useDeletePayment();
+
   const filteredPayments = useMemo(() => {
-    let result = [...mockPayments];
+    if (!payments) return [];
+
+    let result = [...payments];
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -93,8 +56,8 @@ export function PaymentItems() {
       switch (sortConfig.field) {
         case "date":
           return sortConfig.order === "asc"
-            ? a.paymentDate.getTime() - b.paymentDate.getTime()
-            : b.paymentDate.getTime() - a.paymentDate.getTime();
+            ? new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime()
+            : new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime();
         case "amount":
           return sortConfig.order === "asc"
             ? a.amount - b.amount
@@ -110,12 +73,16 @@ export function PaymentItems() {
     });
 
     return result;
-  }, [mockPayments, sortConfig, searchQuery]);
+  }, [payments, sortConfig, searchQuery]);
 
   const StatusIcon = ({ status }: { status: keyof typeof statusColors }) => {
     const IconComponent = statusColors[status].icon;
     return <IconComponent className="w-4 h-4" />;
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col min-h-[calc(100vh-200px)]">
@@ -130,7 +97,7 @@ export function PaymentItems() {
             </span>
           </h2>
 
-          <div className="flex items-center gap-3">
+          {payments && payments.length > 0 && <div className="flex items-center gap-3">
             <div className="relative flex-1 md:min-w-[300px]">
               <input
                 type="text"
@@ -141,12 +108,16 @@ export function PaymentItems() {
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
-          </div>
+          </div>}
         </div>
       </div>
 
+      {payments && payments.length === 0 && <div className="flex-1 overflow-x-auto min-h-[calc(100vh-200px)] flex items-center justify-center">
+        <p className="text-gray-500">No payments found</p>
+      </div>}
+
       {/* Table */}
-      <div className="flex-1 overflow-x-auto">
+      {payments && payments.length > 0 && <div className="flex-1 overflow-x-auto">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
             <tr>
@@ -261,10 +232,10 @@ export function PaymentItems() {
                 <td className="px-6 py-4">
                   <div>
                     <div className="text-gray-900">
-                      {format(payment.paymentDate, "MMM d, yyyy")}
+                      {format(new Date(payment.paymentDate), "MMM d, yyyy")}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {format(payment.paymentDate, "h:mm a")}
+                      {format(new Date(payment.paymentDate), "h:mm a")}
                     </div>
                   </div>
                 </td>
@@ -277,10 +248,10 @@ export function PaymentItems() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div>}
 
       {/* Pagination */}
-      <div className="px-6 py-4 border-t border-gray-200 bg-white">
+      {payments && payments.length > 0 && <div className="px-6 py-4 border-t border-gray-200 bg-white">
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-700">
             Showing <span className="font-medium">1</span> to{" "}
@@ -297,7 +268,7 @@ export function PaymentItems() {
             </button>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
