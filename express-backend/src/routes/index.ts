@@ -1,0 +1,43 @@
+import express from "express";
+import categoryRouter from "./category";
+import addressRouter from "./address";
+import authRouter from "./auth";
+import brandRouter from "./brand";
+import cartItemRouter from "./cart-item";
+import cartRouter from "./cart";
+import orderItemRouter from "./order-item";
+import orderRouter from "./order";
+import paymentRouter from "./payment";
+import productOptionGroupRouter from "./product-option-group";
+import productOptionRouter from "./product-option";
+import productVariantRouter from "./product-variant";
+import productRouter from "./product";
+import reviewRouter from "./review";
+import saleRouter from "./sale";
+import storeRouter from "./store";
+import userRouter from "./user";
+import wishlistRouter from "./wishlist";
+
+const router = express.Router();
+
+router.use('/category', categoryRouter);
+router.use('/address', addressRouter);
+router.use('/auth', authRouter);
+router.use('/brand', brandRouter);
+router.use('/cart-item', cartItemRouter);
+router.use('/cart', cartRouter);
+router.use('/category', categoryRouter);
+router.use('/order-item', orderItemRouter);
+router.use('/order', orderRouter);
+router.use('/payment', paymentRouter);
+router.use('/product-option-group', productOptionGroupRouter);
+router.use('/product-option', productOptionRouter);
+router.use('/product-variant', productVariantRouter);
+router.use('/product', productRouter);
+router.use('/review', reviewRouter);
+router.use('/sale', saleRouter);
+router.use('/store', storeRouter);
+router.use('/user', userRouter);
+router.use('/wishlist', wishlistRouter);
+
+export default router;

@@ -21,8 +21,7 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
         items: {
           create: [{
             productVariantId: productVariantId,
-            quantity: quantity,
-            totalPrice: quantity * productVariant?.price || 0
+            quantity: quantity
           }]
         }
       },
@@ -30,8 +29,7 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
         items: {
           create: [{
             productVariantId: productVariantId,
-            quantity: quantity,
-            totalPrice: quantity * productVariant?.price || 0  
+            quantity: quantity
           }]
         }
       },

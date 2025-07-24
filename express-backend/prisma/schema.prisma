@@ -51,13 +51,13 @@ model CartItem {
 model Category {
   id                 Int                 @id @default(autoincrement())
   name               String              @map("category_name")
-  imageUrl           String
+  imageUrl           String?             @default("")
   parentCategory     Category?           @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
   parentCategoryId   Int?                @map("parent_category_id")
   subCategories      Category[]          @relation("CategoryToCategory")
   products           Product[]
   productOptionGroups ProductOptionGroup[] @relation("CategoryToProductOptionGroup")
-  // Optional Feature for promotions
+  
   promotions         Promotion[]
 }
 

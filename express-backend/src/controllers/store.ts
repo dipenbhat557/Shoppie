@@ -3,12 +3,17 @@ import prisma from "../config/prisma";
 
 export const createStore = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const { name, location, contact } = req.body;
+		const { name, location, contact, managerId } = req.body;
 		const store = await prisma.store.create({
 			data: {
 				name,
 				location,
-				contact
+				contact,
+				manager: {
+					connect: {
+						id: parseInt(managerId)
+					}
+				}
 			}
 		});
 		return res.status(200).json(store);

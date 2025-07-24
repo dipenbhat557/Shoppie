@@ -38,24 +38,30 @@ const navigationItems = [
   },
   {
     id: 4,
+    name: "Categories",
+    link: "/categories",
+    icon: Package,
+  },
+  {
+    id: 5,
     name: "Orders",
     link: "/view-orders",
     icon: ShoppingCart,
   },
   {
-    id: 5,
+    id: 6,
     name: "Shipment",
     link: "/dispatch",
     icon: Truck,
   },
   {
-    id: 6,
+    id: 7,
     name: "Payments",
     link: "/payments",
     icon: Wallet,
   },
   {
-    id: 7,
+    id: 8,
     name: "Promotions",
     link: "/promotions",
     icon: Wallet2Icon,
