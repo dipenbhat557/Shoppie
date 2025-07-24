@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
-import { PaymentStatus } from "../types";
+import { PaymentStatus } from "@prisma/client";
 
 export const createPayment = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -34,29 +34,6 @@ export const createPayment = async (req: Request, res: Response): Promise<any> =
                 referenceId,
                 method,
                 paymentDate: new Date()
-            },
-            include: {
-                orders: {
-                    include: {
-                        items: {
-                            include: {
-                                productVariant: {
-                                    include: {
-                                        product: true
-                                    }
-                                }
-                            }
-                        },
-                        user: {
-                            select: {
-                                id: true,
-                                firstName: true,
-                                lastName: true,
-                                email: true
-                            }
-                        }
-                    }
-                }
             }
         });
 
@@ -71,8 +48,17 @@ export const getAllPayments = async (_req: Request, res: Response): Promise<any>
     try {
         const payments = await prisma.payment.findMany({
             include: {
-                orders: {
+                order: {
                     include: {
+                        items: {
+                            include: {
+                                productVariant: {
+                                    include: {
+                                        product: true
+                                    }
+                                }
+                            }
+                        },
                         user: {
                             select: {
                                 id: true,
@@ -105,7 +91,7 @@ export const getPaymentById = async (req: Request, res: Response): Promise<any> 
         const payment = await prisma.payment.findUnique({
             where: { id: parseInt(id) },
             include: {
-                orders: {
+                order: {
                     include: {
                         items: {
                             include: {
@@ -166,9 +152,17 @@ export const updatePayment = async (req: Request, res: Response): Promise<any> =
             where: { id: parseInt(id) },
             data: { status },
             include: {
-                orders: {
+                order: {
                     include: {
-                        items: true,
+                        items: {
+                            include: {
+                                productVariant: {
+                                    include: {
+                                        product: true
+                                    }
+                                }
+                            }
+                        },
                         user: {
                             select: {
                                 id: true,
@@ -197,11 +191,11 @@ export const deletePayment = async (req: Request, res: Response): Promise<any> =
             return res.status(400).json({ message: "Invalid payment ID" });
         }
 
-        // Check if payment exists and has associated orders
+        // Check if payment exists
         const payment = await prisma.payment.findUnique({
             where: { id: parseInt(id) },
             include: {
-                orders: true
+                order: true
             }
         });
 
@@ -209,11 +203,10 @@ export const deletePayment = async (req: Request, res: Response): Promise<any> =
             return res.status(404).json({ message: "Payment not found" });
         }
 
-        // Don't allow deletion if payment has associated orders
-        if (payment.orders.length > 0) {
+        // Don't allow deletion if payment has an associated order
+        if (payment.order) {
             return res.status(400).json({
-                message: "Cannot delete payment with associated orders",
-                orderCount: payment.orders.length
+                message: "Cannot delete payment associated with an order"
             });
         }
 
@@ -227,7 +220,9 @@ export const deletePayment = async (req: Request, res: Response): Promise<any> =
                 id: payment.id,
                 amount: payment.amount,
                 status: payment.status,
-                paymentDate: payment.paymentDate
+                paymentDate: payment.paymentDate,
+                referenceId: payment.referenceId,
+                method: payment.method
             }
         });
     } catch (err) {

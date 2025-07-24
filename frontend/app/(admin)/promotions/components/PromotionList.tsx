@@ -17,6 +17,9 @@ import {
   Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
+import { useCreatePromotion } from "@/fetchers/promotion/mutation";
+import { useDeletePromotion } from "@/fetchers/promotion/mutation";
+import { useUpdatePromotion } from "@/fetchers/promotion/mutation";
 
 // Types from Prisma schema
 type PromotionType = "PERCENTAGE" | "FIXED_AMOUNT";
@@ -35,6 +38,24 @@ interface Promotion {
   usedCount: number;
   couponCode?: string;
   minOrderValue?: number;
+  products: {
+    id: number;
+    name: string;
+  }[];
+  categories: {
+    id: number;
+    name: string;
+  }[];
+  orders: {
+    id: number;
+    user: {
+      firstName: string;
+      lastName: string;
+      email: string;
+    };
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface NewPromotion {
@@ -56,37 +77,6 @@ const statusColors = {
   DISABLED: { bg: "bg-red-100", text: "text-red-700", icon: XCircle },
 };
 
-// Mock data
-const mockPromotions: Promotion[] = [
-  {
-    id: 1,
-    name: "Summer Sale 2024",
-    description: "20% off on all summer collection",
-    type: "PERCENTAGE",
-    value: 20,
-    status: "ACTIVE",
-    startDate: new Date("2024-06-01"),
-    endDate: new Date("2024-08-31"),
-    usageLimit: 1000,
-    usedCount: 150,
-    minOrderValue: 50,
-  },
-  {
-    id: 2,
-    name: "Welcome10",
-    description: "$10 off on your first purchase",
-    type: "FIXED_AMOUNT",
-    value: 10,
-    status: "ACTIVE",
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-12-31"),
-    couponCode: "WELCOME10",
-    minOrderValue: 50,
-    usageLimit: 1,
-    usedCount: 0,
-  },
-];
-
 const StatusIcon = ({ status }: { status: keyof typeof statusColors }) => {
   const IconComponent = statusColors[status].icon;
   return <IconComponent className="w-3 h-3" />;
@@ -97,7 +87,10 @@ export function PromotionsList() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(null);
-  const [promotions, setPromotions] = useState(mockPromotions);
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const updatePromotion = useUpdatePromotion();
+  const deletePromotion = useDeletePromotion();
+  const createPromotion = useCreatePromotion();
   const [newPromotion, setNewPromotion] = useState<NewPromotion>({
     name: "",
     description: "",
@@ -131,54 +124,33 @@ export function PromotionsList() {
     setShowDeleteModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (selectedPromotion) {
-      // Here you would typically make an API call to delete the promotion
-      setPromotions(promotions.filter(p => p.id !== selectedPromotion.id));
-      setShowDeleteModal(false);
-      setSelectedPromotion(null);
+      try {
+        await deletePromotion.mutateAsync(selectedPromotion.id);
+        setShowDeleteModal(false);
+        setSelectedPromotion(null);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
-  const handleCreateOrUpdate = () => {
-    if (selectedPromotion) {
-      // Update existing promotion
-      setPromotions(promotions.map(p =>
-        p.id === selectedPromotion.id
-          ? {
-              ...p,
-              ...newPromotion,
-              startDate: new Date(newPromotion.startDate),
-              endDate: new Date(newPromotion.endDate),
-            }
-          : p
-      ));
-    } else {
-      // Create new promotion
-      const newId = Math.max(...promotions.map(p => p.id)) + 1;
-      setPromotions([...promotions, {
-        id: newId,
-        ...newPromotion,
-        startDate: new Date(newPromotion.startDate),
-        endDate: new Date(newPromotion.endDate),
-        status: "SCHEDULED",
-        usedCount: 0,
-      }]);
+  const handleCreateOrUpdate = async () => {
+    try {
+      if (selectedPromotion) {
+        await updatePromotion.mutateAsync({
+          id: selectedPromotion.id,
+          ...newPromotion,
+        });
+      } else {
+        await createPromotion.mutateAsync(newPromotion);
+      }
+      setShowModal(false);
+      setSelectedPromotion(null);
+    } catch (error) {
+      console.error('Error:', error);
     }
-    
-    setShowModal(false);
-    setSelectedPromotion(null);
-    setNewPromotion({
-      name: "",
-      description: "",
-      type: "PERCENTAGE",
-      value: 0,
-      startDate: format(new Date(), "yyyy-MM-dd"),
-      endDate: format(new Date(), "yyyy-MM-dd"),
-      usageLimit: undefined,
-      couponCode: "",
-      minOrderValue: undefined,
-    });
   };
 
   return (

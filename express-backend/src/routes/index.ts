@@ -17,6 +17,7 @@ import saleRouter from "./sale";
 import storeRouter from "./store";
 import userRouter from "./user";
 import wishlistRouter from "./wishlist";
+import promotionRouter from "./promotion";
 
 const router = express.Router();
 
@@ -34,6 +35,7 @@ router.use('/product-option-group', productOptionGroupRouter);
 router.use('/product-option', productOptionRouter);
 router.use('/product-variant', productVariantRouter);
 router.use('/product', productRouter);
+router.use('/promotion', promotionRouter);
 router.use('/review', reviewRouter);
 router.use('/sale', saleRouter);
 router.use('/store', storeRouter);
