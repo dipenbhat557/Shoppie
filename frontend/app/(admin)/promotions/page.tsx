@@ -6,7 +6,7 @@ import { PromotionsList } from "./components/PromotionList";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="">
       <div className="flex justify-between md:pb-5">
         <MobileSidebar />
         <Header title="Promotions" />

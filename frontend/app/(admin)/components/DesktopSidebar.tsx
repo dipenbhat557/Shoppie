@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Wallet2Icon,
+  User,
+  MessageSquare,
 } from "lucide-react";
 
 const navigationItems = [
@@ -32,14 +34,14 @@ const navigationItems = [
   },
   {
     id: 3,
-    name: "Add Product",
-    link: "/add-product",
-    icon: PackagePlus,
+    name: "Categories",
+    link: "/categories",
+    icon: Package,
   },
   {
     id: 4,
-    name: "Categories",
-    link: "/categories",
+    name: "Brands",
+    link: "/brand",
     icon: Package,
   },
   {
@@ -65,6 +67,18 @@ const navigationItems = [
     name: "Promotions",
     link: "/promotions",
     icon: Wallet2Icon,
+  },
+  {
+    id: 9,
+    name: "Reviews",
+    link: "/reviews",
+    icon: MessageSquare,
+  },
+  {
+    id: 9,
+    name: "User Management",
+    link: "/user",
+    icon: User,
   },
 ];
 

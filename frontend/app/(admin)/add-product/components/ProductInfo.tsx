@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mockData } from "@/data/data";
+import { toast } from "sonner";
 
 // Validation schema based on Prisma schema
 const productSchema = z.object({
@@ -73,6 +74,7 @@ export function ProductInfo() {
     // Just log the form data for now
     console.log("Form Data:", data);
     console.log("Selected Images:", selectedImages);
+    toast.success("Product created successfully");
   };
 
   // Rest of your component remains the same, but use mockData instead of props
