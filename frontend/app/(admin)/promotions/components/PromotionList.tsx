@@ -20,6 +20,24 @@ import { format } from "date-fns";
 import { useCreatePromotion } from "@/fetchers/promotion/mutation";
 import { useDeletePromotion } from "@/fetchers/promotion/mutation";
 import { useUpdatePromotion } from "@/fetchers/promotion/mutation";
+import { useProducts } from "@/fetchers/product/queries";
+import { useCategories } from "@/fetchers/category/queries";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Product } from "@/fetchers/product/queries";
+import { Category } from "@/fetchers/category/queries";
 
 // Types from Prisma schema
 type PromotionType = "PERCENTAGE" | "FIXED_AMOUNT";
@@ -68,6 +86,8 @@ interface NewPromotion {
   usageLimit?: number;
   couponCode?: string;
   minOrderValue?: number;
+  productIds: number[];
+  categoryIds: number[];
 }
 
 const statusColors = {
@@ -82,12 +102,120 @@ const StatusIcon = ({ status }: { status: keyof typeof statusColors }) => {
   return <IconComponent className="w-3 h-3" />;
 };
 
+// Mock data
+const mockPromotions: Promotion[] = [
+  {
+    id: 1,
+    name: "Summer Sale 2024",
+    description: "Get amazing discounts on summer collection",
+    type: "PERCENTAGE",
+    value: 20,
+    status: "ACTIVE",
+    startDate: new Date("2024-06-01"),
+    endDate: new Date("2024-08-31"),
+    usageLimit: 1000,
+    usedCount: 145,
+    minOrderValue: 50,
+    products: [
+      { id: 1, name: "Summer T-Shirt" },
+      { id: 2, name: "Beach Shorts" },
+    ],
+    categories: [
+      { id: 1, name: "Summer Wear" },
+      { id: 2, name: "Beach Collection" },
+    ],
+    orders: [],
+    createdAt: new Date("2024-05-15"),
+    updatedAt: new Date("2024-05-15"),
+  },
+  {
+    id: 2,
+    name: "First Purchase Discount",
+    description: "Special discount for new customers",
+    type: "FIXED_AMOUNT",
+    value: 10,
+    status: "ACTIVE",
+    startDate: new Date("2024-01-01"),
+    endDate: new Date("2024-12-31"),
+    usageLimit: undefined,
+    usedCount: 328,
+    couponCode: "WELCOME10",
+    minOrderValue: 50,
+    products: [],
+    categories: [],
+    orders: [],
+    createdAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
+  },
+  {
+    id: 3,
+    name: "Flash Sale - 50% Off",
+    description: "Limited time mega discount on selected items",
+    type: "PERCENTAGE",
+    value: 50,
+    status: "SCHEDULED",
+    startDate: new Date("2024-07-01"),
+    endDate: new Date("2024-07-02"),
+    usageLimit: 500,
+    usedCount: 0,
+    products: [
+      { id: 3, name: "Premium Watch" },
+      { id: 4, name: "Designer Bag" },
+    ],
+    categories: [],
+    orders: [],
+    createdAt: new Date("2024-06-15"),
+    updatedAt: new Date("2024-06-15"),
+  },
+  {
+    id: 4,
+    name: "Holiday Bundle",
+    description: "Special holiday season discounts",
+    type: "PERCENTAGE",
+    value: 30,
+    status: "EXPIRED",
+    startDate: new Date("2023-12-01"),
+    endDate: new Date("2023-12-31"),
+    usageLimit: 2000,
+    usedCount: 1876,
+    couponCode: "HOLIDAY30",
+    minOrderValue: 100,
+    products: [],
+    categories: [
+      { id: 3, name: "Winter Collection" },
+      { id: 4, name: "Accessories" },
+    ],
+    orders: [],
+    createdAt: new Date("2023-11-15"),
+    updatedAt: new Date("2024-01-01"),
+  },
+  {
+    id: 5,
+    name: "Clearance Sale",
+    description: "Up to 70% off on last season items",
+    type: "PERCENTAGE",
+    value: 70,
+    status: "DISABLED",
+    startDate: new Date("2024-03-01"),
+    endDate: new Date("2024-03-31"),
+    usageLimit: undefined,
+    usedCount: 432,
+    products: [],
+    categories: [{ id: 5, name: "Last Season" }],
+    orders: [],
+    createdAt: new Date("2024-02-15"),
+    updatedAt: new Date("2024-04-01"),
+  },
+];
+
 export function PromotionsList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(null);
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
+    null
+  );
+  const [promotions, setPromotions] = useState<Promotion[]>(mockPromotions);
   const updatePromotion = useUpdatePromotion();
   const deletePromotion = useDeletePromotion();
   const createPromotion = useCreatePromotion();
@@ -101,7 +229,12 @@ export function PromotionsList() {
     usageLimit: undefined,
     couponCode: "",
     minOrderValue: undefined,
+    productIds: [],
+    categoryIds: [],
   });
+
+  const { data: products } = useProducts();
+  const { data: categories } = useCategories();
 
   const handleEdit = (promotion: Promotion) => {
     setSelectedPromotion(promotion);
@@ -115,6 +248,8 @@ export function PromotionsList() {
       usageLimit: promotion.usageLimit,
       couponCode: promotion.couponCode,
       minOrderValue: promotion.minOrderValue,
+      productIds: promotion.products.map((p) => p.id),
+      categoryIds: promotion.categories.map((c) => c.id),
     });
     setShowModal(true);
   };
@@ -131,7 +266,7 @@ export function PromotionsList() {
         setShowDeleteModal(false);
         setSelectedPromotion(null);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     }
   };
@@ -149,7 +284,7 @@ export function PromotionsList() {
       setShowModal(false);
       setSelectedPromotion(null);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -304,9 +439,9 @@ export function PromotionsList() {
 
       {/* Create/Edit Promotion Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl mx-4">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
               <h3 className="text-xl font-semibold text-gray-900">
                 {selectedPromotion ? "Edit Promotion" : "Create New Promotion"}
               </h3>
@@ -506,9 +641,179 @@ export function PromotionsList() {
                   />
                 </div>
               </div>
+
+              {/* Product Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Products (Optional)
+                </label>
+                <div className="space-y-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add products
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[400px] p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search products..." />
+                        <CommandEmpty>No products found.</CommandEmpty>
+                        <CommandGroup className="max-h-64 overflow-auto">
+                          {products?.map((product: Product) => (
+                            <CommandItem
+                              key={product.id}
+                              onSelect={() => {
+                                setNewPromotion((prev) => ({
+                                  ...prev,
+                                  productIds: prev.productIds.includes(
+                                    product.id
+                                  )
+                                    ? prev.productIds.filter(
+                                        (id) => id !== product.id
+                                      )
+                                    : [...prev.productIds, product.id],
+                                }));
+                              }}
+                            >
+                              <div className="flex items-center">
+                                <input
+                                  type="checkbox"
+                                  className="mr-2"
+                                  checked={newPromotion.productIds.includes(
+                                    product.id
+                                  )}
+                                  readOnly
+                                />
+                                {product.name}
+                              </div>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+
+                  {/* Selected Products Display */}
+                  <div className="flex flex-wrap gap-2">
+                    {products
+                      ?.filter((p: Product) =>
+                        newPromotion.productIds.includes(p.id)
+                      )
+                      .map((product: Product) => (
+                        <Badge
+                          key={product.id}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          {product.name}
+                          <X
+                            className="h-3 w-3 cursor-pointer"
+                            onClick={() =>
+                              setNewPromotion((prev) => ({
+                                ...prev,
+                                productIds: prev.productIds.filter(
+                                  (id) => id !== product.id
+                                ),
+                              }))
+                            }
+                          />
+                        </Badge>
+                      ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Category Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Categories (Optional)
+                </label>
+                <div className="space-y-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add categories
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[400px] p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search categories..." />
+                        <CommandEmpty>No categories found.</CommandEmpty>
+                        <CommandGroup className="max-h-64 overflow-auto">
+                          {categories?.map((category: Category) => (
+                            <CommandItem
+                              key={category.id}
+                              onSelect={() => {
+                                setNewPromotion((prev) => ({
+                                  ...prev,
+                                  categoryIds: prev.categoryIds.includes(
+                                    category.id
+                                  )
+                                    ? prev.categoryIds.filter(
+                                        (id) => id !== category.id
+                                      )
+                                    : [...prev.categoryIds, category.id],
+                                }));
+                              }}
+                            >
+                              <div className="flex items-center">
+                                <input
+                                  type="checkbox"
+                                  className="mr-2"
+                                  checked={newPromotion.categoryIds.includes(
+                                    category.id
+                                  )}
+                                  readOnly
+                                />
+                                {category.name}
+                              </div>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+
+                  {/* Selected Categories Display */}
+                  <div className="flex flex-wrap gap-2">
+                    {categories
+                      ?.filter((c: Category) =>
+                        newPromotion.categoryIds.includes(c.id)
+                      )
+                      .map((category: Category) => (
+                        <Badge
+                          key={category.id}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          {category.name}
+                          <X
+                            className="h-3 w-3 cursor-pointer"
+                            onClick={() =>
+                              setNewPromotion((prev) => ({
+                                ...prev,
+                                categoryIds: prev.categoryIds.filter(
+                                  (id) => id !== category.id
+                                ),
+                              }))
+                            }
+                          />
+                        </Badge>
+                      ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 flex justify-end gap-3">
               <button
                 onClick={() => {
                   setShowModal(false);
@@ -531,11 +836,14 @@ export function PromotionsList() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && selectedPromotion && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Delete Promotion</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Delete Promotion
+            </h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete the promotion &quot;{selectedPromotion.name}&quot;? This action cannot be undone.
+              Are you sure you want to delete the promotion &quot;
+              {selectedPromotion.name}&quot;? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3">
               <button

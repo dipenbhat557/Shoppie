@@ -211,6 +211,19 @@ model Store {
   variants  ProductVariant[]
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BLACKLISTED
+  PENDING_VERIFICATION
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  SUPPORT
+}
+
 model User {
   id         Int       @id @default(autoincrement())
   firstName  String
@@ -222,12 +235,21 @@ model User {
   dob        DateTime
   gender     Gender
   profileUrl String
+  status     UserStatus @default(ACTIVE)
+  role       UserRole   @default(CUSTOMER)
+  // Optional Feature for fraud detection
+  isFraudSuspected Boolean @default(false)
+  fraudReason    String?
+  lastLoginAt    DateTime?
+  loginAttempts  Int       @default(0)
   addresses  Address[]
   cart       Cart?
   orders     Order[]
   reviews    Review[]
   store      Store[]
   wishlist   Wishlist?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Wishlist {
