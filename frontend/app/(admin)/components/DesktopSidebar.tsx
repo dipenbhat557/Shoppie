@@ -17,6 +17,7 @@ import {
   Wallet2Icon,
   User,
   MessageSquare,
+  Store,
 } from "lucide-react";
 
 const navigationItems = [
@@ -75,7 +76,13 @@ const navigationItems = [
     icon: MessageSquare,
   },
   {
-    id: 9,
+    id: 10,
+    name: "Stores",
+    link: "/store",
+    icon: Store,
+  },
+  {
+    id: 11,
     name: "User Management",
     link: "/user",
     icon: User,
