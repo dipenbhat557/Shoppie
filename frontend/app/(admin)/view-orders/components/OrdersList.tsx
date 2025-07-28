@@ -302,9 +302,9 @@ export function OrderList() {
   }, [mockOrders, sortConfig, filters, searchQuery]);
 
     return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col min-h-[calc(100vh-200px)]">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col min-h-[calc(100vh-10vh)]">
       {/* Header with Search */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 bg-gray-100 border-none">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
             <div className="h-8 w-2 bg-[#FFC633] rounded-full mr-3" />

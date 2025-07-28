@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { MobileSidebar } from "../components/MobileSidebar";
 import { ProfileImg } from "../components/ProfileImg";
@@ -10,23 +10,22 @@ import { usePayments } from "@/fetchers/payment/queries";
 export default function PaymentsPage() {
   const { isLoading, error } = usePayments();
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500">Error loading payments</p>
-      </div>
-    );
-  }
-
   return (
-    <div>
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
+      <Header title="Payments" />
+
       <div className="flex justify-between md:pb-5">
         <MobileSidebar />
-        <Header title="Payments" />
-        <ProfileImg />
       </div>
+
       <MobileHeader title="Payments" />
-      <PaymentItems />
+      {error ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-red-500">Error loading payments</p>
+        </div>
+      ) : (
+        <PaymentItems />
+      )}
     </div>
   );
 }
