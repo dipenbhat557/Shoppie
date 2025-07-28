@@ -6,11 +6,9 @@ import { OrderList } from "./components/OrdersList";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="">
       <div className="flex justify-between md:pb-5">
         <MobileSidebar />
-        <Header title="Orders" />
-        <ProfileImg />
       </div>
       <MobileHeader title="Orders" />
       <OrderList />

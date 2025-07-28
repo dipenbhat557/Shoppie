@@ -72,7 +72,7 @@ export const FilterSection = ({ filters, onFiltersChange }: FilterSectionProps) 
   };
 
   return (
-    <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+    <div className="px-6 py-4 border-b border-gray-200 bg-white">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Status Filter */}
         <div className="space-y-2">
