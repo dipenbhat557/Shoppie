@@ -5,11 +5,6 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { ProductInfo } from "./components/ProductInfo";
 import { VariantList } from "./components/VariantList";
-import { SalesInfo } from "./components/SalesInfo";
-import { ReviewsList } from "./components/ReviewsList";
-import { StockManagement } from "./components/StockManagement";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 interface TabItem {
   id: string;
@@ -20,29 +15,14 @@ interface TabItem {
 const tabs: TabItem[] = [
   {
     id: "info",
-    label: "Product Info",
+    label: "Info",
     component: ProductInfo,
   },
   {
     id: "variants",
     label: "Variants",
     component: VariantList,
-  },
-  {
-    id: "sales",
-    label: "Sales",
-    component: SalesInfo,
-  },
-  {
-    id: "reviews",
-    label: "Reviews",
-    component: ReviewsList,
-  },
-  {
-    id: "stock",
-    label: "Stock Management",
-    component: StockManagement,
-  },
+  }
 ];
 
 export default function ProductPage({ params }: { params: { id: string } }) {

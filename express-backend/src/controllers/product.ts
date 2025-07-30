@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
+import { getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createProduct = async (req: Request, res: Response): Promise<any> => {
 	try {
 		const { name, description, categoryId, brandId } = req.body;
+		const image = req.file;
 		
 		// Validate required fields
 		if (!name || !description || !categoryId || !brandId) {
@@ -12,12 +14,23 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			});
 		}
 
+		let imageUrl;
+		if (image) {
+			try {
+				imageUrl = await uploadToS3(image);
+			} catch (error) {
+				console.error('File save error:', error);
+				return res.status(500).json({ message: "Error saving image file" });
+			}
+		}
+
 		const product = await prisma.product.create({
 			data: {
 				name,
 				description,
-				categoryId,
-				brandId
+				categoryId: parseInt(categoryId),
+				brandId: parseInt(brandId),
+				imageUrl: imageUrl
 			},
 			include: {
 				category: true,
@@ -42,7 +55,13 @@ export const getAllProducts = async (req: Request, res: Response): Promise<any> 
 				reviews: true
 			}
 		});
-		return res.status(200).json(products);
+
+		const productsWithImageUrls = products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products", error: err });
 	}
@@ -70,7 +89,12 @@ export const getProductById = async (req: Request, res: Response): Promise<any> 
 			return res.status(404).json({ message: "Product not found" });
 		}
 
-		return res.status(200).json(product);
+		const productWithImageUrl = {
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		};
+
+		return res.status(200).json(productWithImageUrl);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching product", error: err });
 	}
@@ -92,7 +116,13 @@ export const getProductsByCategory = async (req: Request, res: Response): Promis
 				variants: true
 			}
 		});
-		return res.status(200).json(products);
+
+		const productsWithImageUrls = products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products by category", error: err });
 	}
@@ -114,7 +144,13 @@ export const getProductsByBrand = async (req: Request, res: Response): Promise<a
 				variants: true
 			}
 		});
-		return res.status(200).json(products);
+
+		const productsWithImageUrls = products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products by brand", error: err });
 	}
@@ -146,7 +182,13 @@ export const getProductsByStore = async (req: Request, res: Response): Promise<a
 				}
 			}
 		});
-		return res.status(200).json(products);
+
+		const productsWithImageUrls = products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products by store", error: err });
 	}
@@ -167,7 +209,13 @@ export const getProductsBySale = async (req: Request, res: Response): Promise<an
 				variants: true
 			}
 		});
-		return res.status(200).json(products);
+
+		const productsWithImageUrls = products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products by sale", error: err });
 	}
@@ -198,7 +246,12 @@ export const getProductsByWishlist = async (req: Request, res: Response): Promis
 			return res.status(404).json({ message: "Wishlist not found" });
 		}
 
-		return res.status(200).json(wishlist.products);
+		const wishlistWithImageUrls = wishlist.products.map(product => ({
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		}));
+
+		return res.status(200).json(wishlistWithImageUrls);
 	} catch (err) {
 		return res.status(500).json({ message: "Error fetching products by wishlist", error: err });
 	}
@@ -228,7 +281,12 @@ export const updateProduct = async (req: Request, res: Response): Promise<any> =
 			}
 		});
 
-		return res.status(200).json(product);
+		const productWithImageUrl = {
+			...product,
+			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+		};
+
+		return res.status(200).json(productWithImageUrl);
 	} catch (err) {
 		console.error('Update product error:', err);
 		return res.status(500).json({ message: "Error updating product", error: err });

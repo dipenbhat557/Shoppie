@@ -87,7 +87,6 @@ export const getOrderById = async (req: Request, res: Response): Promise<any> =>
                         productVariant: {
                             include: {
                                 product: true,
-                                images: true
                             }
                         }
                     }
@@ -129,8 +128,7 @@ export const getOrdersByUser = async (req: Request, res: Response): Promise<any>
                     include: {
                         productVariant: {
                             include: {
-                                product: true,
-                                images: true
+                                product: true
                             }
                         }
                     }

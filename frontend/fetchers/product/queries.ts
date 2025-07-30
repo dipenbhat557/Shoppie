@@ -5,6 +5,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
+  imageUrl?: string; // Add this field
   sale?: {
     id: number;
     description: string;

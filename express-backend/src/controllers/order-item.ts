@@ -51,8 +51,7 @@ export const createOrderItem = async (req: Request, res: Response): Promise<any>
             include: {
                 productVariant: {
                     include: {
-                        product: true,
-                        images: true
+                        product: true
                     }
                 },
                 order: {
@@ -86,8 +85,7 @@ export const getAllOrderItems = async (_req: Request, res: Response): Promise<an
             include: {
                 productVariant: {
                     include: {
-                        product: true,
-                        images: true
+                        product: true
                     }
                 },
                 order: {
@@ -125,8 +123,7 @@ export const getOrderItemById = async (req: Request, res: Response): Promise<any
             include: {
                 productVariant: {
                     include: {
-                        product: true,
-                        images: true
+                        product: true
                     }
                 },
                 order: {
@@ -209,8 +206,7 @@ export const updateOrderItem = async (req: Request, res: Response): Promise<any>
             include: {
                 productVariant: {
                     include: {
-                        product: true,
-                        images: true
+                        product: true
                     }
                 },
                 order: {

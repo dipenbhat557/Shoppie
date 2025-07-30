@@ -44,8 +44,7 @@ export const createVariant = async (req: Request, res: Response): Promise<any> =
             include: {
                 product: true,
                 productOptions: true,
-                store: true,
-                images: true
+                store: true
             }
         });
 
@@ -62,8 +61,7 @@ export const getAllVariants = async (_req: Request, res: Response): Promise<any>
             include: {
                 product: true,
                 productOptions: true,
-                store: true,
-                images: true
+                store: true
             }
         });
         return res.status(200).json(variants);
@@ -85,8 +83,7 @@ export const getVariantById = async (req: Request, res: Response): Promise<any> 
             include: {
                 product: true,
                 productOptions: true,
-                store: true,
-                images: true
+                store: true
             }
         });
 
@@ -113,8 +110,7 @@ export const getVariantsByProduct = async (req: Request, res: Response): Promise
             include: {
                 product: true,
                 productOptions: true,
-                store: true,
-                images: true
+                store: true
             }
         });
         return res.status(200).json(variants);
@@ -155,8 +151,7 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
             include: {
                 product: true,
                 productOptions: true,
-                store: true,
-                images: true
+                store: true
             }
         });
 
@@ -179,7 +174,6 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
         const variant = await prisma.productVariant.findUnique({
             where: { id: parseInt(id) },
             include: {
-                images: true,
                 cartItems: true,
                 orderItems: true
             }
@@ -195,13 +189,6 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
                 message: "Cannot delete variant with associated cart items or orders",
                 cartItemCount: variant.cartItems.length,
                 orderItemCount: variant.orderItems.length
-            });
-        }
-
-        // Delete associated images first
-        if (variant.images.length > 0) {
-            await prisma.image.deleteMany({
-                where: { productVariantId: parseInt(id) }
             });
         }
 

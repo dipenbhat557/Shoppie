@@ -10,6 +10,8 @@ import {
   ChevronRight,
   ExternalLink,
   Plus,
+  Package,
+  Star,
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,7 +26,17 @@ export const ProductList = () => {
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [mockProductsss, setmockProductsss] = useState(products || []);
+
+  const filteredProducts = products?.filter(product => {
+    if (!searchQuery) return true;
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      product.name.toLowerCase().includes(searchLower) ||
+      product.description.toLowerCase().includes(searchLower) ||
+      product.brand.name.toLowerCase().includes(searchLower) ||
+      product.category.name.toLowerCase().includes(searchLower)
+    );
+  });
 
   const toggleProductSelection = (productId: number) => {
     setSelectedProducts((prev) =>
@@ -36,9 +48,9 @@ export const ProductList = () => {
 
   const toggleAllProducts = () => {
     setSelectedProducts((prev) =>
-      prev.length === mockProductsss.length
+      prev.length === products?.length
         ? []
-        : mockProductsss.map((p) => p.id)
+        : (products?.map((p) => p.id) || [])
     );
   };
 
@@ -55,12 +67,16 @@ export const ProductList = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFC633]"></div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-8">
-      {/* Header Section - Separated from the white container */}
+      {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
@@ -109,38 +125,33 @@ export const ProductList = () => {
               <span className="text-sm text-gray-600">
                 {selectedProducts.length} items selected
               </span>
-              <button className="text-sm text-blue-600 hover:text-blue-700">
-                Edit Selected
-              </button>
               <button className="text-sm text-red-600 hover:text-red-700">
                 Delete Selected
               </button>
             </div>
           )}
 
-          {/* Filters Section */}
+          {/* Filters */}
           {showFilters && (
-            <div className="mt-4 p-4 border border-gray-200 rounded-lg grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="mt-4 p-4 border border-gray-200 rounded-lg grid grid-cols-1 md:grid-cols-3 gap-4">
               <select className="px-3 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50">
-                <option>All Categories</option>
+                <option value="">All Categories</option>
+                {/* Add categories */}
               </select>
               <select className="px-3 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50">
-                <option>All Brands</option>
+                <option value="">All Brands</option>
+                {/* Add brands */}
               </select>
               <select className="px-3 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50">
-                <option>Status</option>
-                <option>In Stock</option>
-                <option>Low Stock</option>
-                <option>Out of Stock</option>
-              </select>
-              <select className="px-3 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50">
-                <option>Price Range</option>
+                <option value="">Has Variants</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
               </select>
             </div>
           )}
         </div>
 
-        {/* Table Section */}
+        {/* Products Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -148,22 +159,21 @@ export const ProductList = () => {
                 <th className="px-6 py-4">
                   <input
                     type="checkbox"
-                    checked={selectedProducts.length === mockProductsss.length}
+                    checked={selectedProducts.length === products?.length}
                     onChange={toggleAllProducts}
                     className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
                   />
                 </th>
                 <th className="px-6 py-4">Product</th>
-                <th className="px-6 py-4">SKU</th>
                 <th className="px-6 py-4">Category</th>
-                <th className="px-6 py-4">Price</th>
-                <th className="px-6 py-4">Stock</th>
-                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Brand</th>
+                <th className="px-6 py-4">Variants</th>
+                <th className="px-6 py-4">Reviews</th>
                 <th className="px-6 py-4">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {mockProductsss.map((product) => (
+              {filteredProducts?.map((product) => (
                 <tr
                   key={product.id}
                   className="hover:bg-gray-50 transition-colors"
@@ -182,47 +192,48 @@ export const ProductList = () => {
                     onClick={() => handleProductClick(product.id)}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-lg bg-gray-100 relative overflow-hidden">
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                        />
+                      <div className="h-12 w-12 rounded-lg bg-gray-100 relative overflow-hidden">
+                        {product.imageUrl ? (
+                          <Image
+                            src={product.imageUrl}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                        )}
                       </div>
                       <div>
                         <div className="font-medium text-gray-900 flex items-center gap-2">
                           {product.name}
                           <ExternalLink className="w-4 h-4 text-gray-400" />
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {product.brand}
+                        <div className="text-xs text-gray-500 line-clamp-1">
+                          {product.description}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{product.sku}</td>
-                  <td className="px-6 py-4 text-gray-600">{product.category}</td>
-                  <td className="px-6 py-4 font-medium">${product.price}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{product.stock}</span>
-                      <span className="text-xs text-gray-500">
-                        in {product.variants} variants
-                      </span>
+                      <span className="text-gray-600">{product.category.name}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        product.stock > 10
-                          ? "bg-green-100 text-green-700"
-                          : product.stock > 0
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {product.status}
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">{product.brand.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                      {product.variants.length} variants
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs flex items-center gap-1 w-fit">
+                      <Star className="w-3 h-3" />
+                      {product.reviews.length}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -255,32 +266,20 @@ export const ProductList = () => {
 
         {/* Pagination */}
         <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button className="px-3 py-1 border rounded-md text-sm">
-              Previous
-            </button>
-            <button className="px-3 py-1 border rounded-md text-sm">Next</button>
+          <div>
+            <p className="text-sm text-gray-700">
+              Showing <span className="font-medium">1</span> to{" "}
+              <span className="font-medium">{filteredProducts?.length || 0}</span> of{" "}
+              <span className="font-medium">{products?.length || 0}</span> results
+            </p>
           </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">10</span> of{" "}
-                <span className="font-medium">{mockProductsss.length}</span>{" "}
-                results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button className="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                {/* Add page numbers */}
-                <button className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </nav>
-            </div>
+          <div className="flex items-center gap-2">
+            <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

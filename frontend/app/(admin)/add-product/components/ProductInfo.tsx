@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,8 @@ import { useBrands, useCategories } from "@/fetchers/product/queries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import { Upload, X } from "lucide-react";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -16,6 +18,7 @@ const productSchema = z.object({
   brandId: z.string().min(1, "Brand is required").transform(val => parseInt(val, 10)),
   categoryId: z.string().min(1, "Category is required").transform(val => parseInt(val, 10)),
   saleId: z.string().optional().transform(val => val ? parseInt(val, 10) : undefined),
+  image: z.any().optional(), // Add this field
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -34,15 +37,38 @@ export function ProductInfo() {
     resolver: zodResolver(productSchema),
   });
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
   const onSubmit = async (data: ProductFormData) => {
     try {
-      const product = await createProduct.mutateAsync(data);
+      await createProduct.mutateAsync({
+        ...data,
+        image: selectedImage || undefined,
+      });
       toast.success("Product created successfully");
       router.push(`/products/${product.id}`);
     } catch (error) {
       // Error is handled by the mutation
     }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  // Add this to clean up the preview URL when component unmounts
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   if (brandsLoading || categoriesLoading) {
     return (
@@ -150,6 +176,57 @@ export function ProductInfo() {
                 {errors.categoryId.message}
               </p>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Add Image Upload Section */}
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Product Image
+          </h2>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-center w-full">
+            <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+              {imagePreview ? (
+                <div className="relative w-full h-full">
+                  <Image
+                    src={imagePreview}
+                    alt="Preview"
+                    fill
+                    className="object-contain p-4"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedImage(null);
+                      setImagePreview(null);
+                    }}
+                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <Upload className="w-8 h-8 mb-4 text-gray-500" />
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-500">PNG, JPG or WebP (MAX. 800x400px)</p>
+                </div>
+              )}
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
           </div>
         </div>
       </div>

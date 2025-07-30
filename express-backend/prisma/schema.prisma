@@ -68,13 +68,6 @@ enum Gender {
   NOT_SAY
 }
 
-model Image {
-  id              Int            @id @default(autoincrement())
-  imageUrl        String
-  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
-  productVariantId Int           @map("product_variant_id")
-}
-
 model Order {
   id           Int          @id @default(autoincrement())
   price        Int
@@ -135,6 +128,7 @@ model Product {
   id          Int             @id @default(autoincrement())
   name        String
   description String
+  imageUrl    String?
   sale        Sale?           @relation(fields: [saleId], references: [id])
   saleId      Int?           @map("sale_id")
   brand       Brand           @relation(fields: [brandId], references: [id])
@@ -173,7 +167,7 @@ model ProductVariant {
   productOptions ProductOption[]
   store          Store?         @relation(fields: [storeId], references: [id])
   storeId        Int?          @map("store_id")
-  images         Image[]
+  images         String[]
   cartItems      CartItem[]
   orderItems     OrderItem[]
 }
