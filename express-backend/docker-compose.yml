@@ -1,0 +1,17 @@
+services:
+  # Express Backend Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kinumna_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
