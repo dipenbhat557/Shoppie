@@ -86,7 +86,7 @@ export default function SignInPage() {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">Log in to Kinumna</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">Log in to Kinamna</h2>
             <p className="mt-2 text-sm text-gray-600">Enter your details below</p>
           </div>
           

@@ -24,17 +24,17 @@ interface UpdatePromotionData extends Partial<CreatePromotionData> {
 
 // Mutation functions
 const createPromotion = async (data: CreatePromotionData) => {
-  const { data: response } = await axiosInstance.post<Promotion>('/promotion', data);
+  const { data: response } = await axiosInstance.post<Promotion>('/promotions', data);
   return response;
 };
 
 const updatePromotion = async ({ id, ...data }: UpdatePromotionData) => {
-  const { data: response } = await axiosInstance.put<Promotion>(`/promotion/${id}`, data);
+  const { data: response } = await axiosInstance.put<Promotion>(`/promotions/${id}`, data);
   return response;
 };
 
 const deletePromotion = async (id: number) => {
-  await axiosInstance.delete(`/promotion/${id}`);
+  await axiosInstance.delete(`/promotions/${id}`);
   return id;
 };
 

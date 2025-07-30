@@ -108,7 +108,7 @@ export const DesktopSidebar = () => {
           />
           {!isCollapsed && (
             <span className="ml-3 text-xl font-semibold text-gray-800">
-              <span className="text-orange-400">Kinum</span>na
+              <span className="text-orange-400">Kinam</span>na
             </span>
           )}
         </div>
@@ -173,7 +173,7 @@ export const DesktopSidebar = () => {
           {!isCollapsed && (
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-900">Admin User</p>
-              <p className="text-xs text-gray-500">admin@kinumna.com</p>
+              <p className="text-xs text-gray-500">admin@kinamna.com</p>
             </div>
           )}
         </div>

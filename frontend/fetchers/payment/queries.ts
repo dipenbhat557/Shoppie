@@ -43,7 +43,7 @@ export interface Payment {
 
 // Fetcher functions
 const fetchPayments = async (): Promise<Payment[]> => {
-  const { data } = await axiosInstance.get('/payment');
+  const { data } = await axiosInstance.get('/payments');
   return data.map((payment: any) => ({
     ...payment,
     paymentDate: new Date(payment.paymentDate),
@@ -56,7 +56,7 @@ const fetchPayments = async (): Promise<Payment[]> => {
 };
 
 const fetchPaymentById = async (id: number): Promise<Payment> => {
-  const { data } = await axiosInstance.get(`/payment/${id}`);
+  const { data } = await axiosInstance.get(`/payments/${id}`);
   return {
     ...data,
     paymentDate: new Date(data.paymentDate),

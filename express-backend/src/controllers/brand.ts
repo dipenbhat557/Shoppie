@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma"
-import { uploadToS3 } from "../utils/s3";
+import { getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createBrand = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -34,7 +34,13 @@ export const createBrand = async (req: Request, res: Response): Promise<any> => 
 export const getAllBrands = async (req: Request, res: Response): Promise<any> => {
   try {
     const brands = await prisma.brand.findMany();
-    return res.status(200).json(brands);
+
+    const formattedBrands = brands.map((brand: any) => ({
+      ...brand,
+      logoUrl: brand.logoUrl ? getExactFileUrl(brand.logoUrl) : null,
+    }));
+
+    return res.status(200).json(formattedBrands);
   } catch (err) {
     return res.status(500).json({ message: "Error fetching brands", error: err });
   }
@@ -51,7 +57,12 @@ export const getBrandById = async (req: Request, res: Response): Promise<any> =>
       return res.status(404).json({ message: "Brand not found" });
     }
 
-    return res.status(200).json(brand);
+    const formattedBrand = {
+      ...brand,
+      logoUrl: brand.logoUrl ? getExactFileUrl(brand.logoUrl) : null,
+    };
+
+    return res.status(200).json(formattedBrand);
   } catch (err) {
     return res.status(500).json({ message: "Error fetching brand", error: err });
   }

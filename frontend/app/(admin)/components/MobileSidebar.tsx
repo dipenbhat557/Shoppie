@@ -89,7 +89,7 @@ export function MobileSidebar() {
                 className="rounded-md"
               />
               <span className="text-xl font-semibold text-gray-800">
-                <span className="text-orange-400">Kinum</span>na
+                <span className="text-orange-400">Kinam</span>na
               </span>
             </div>
           </SheetHeader>
@@ -129,7 +129,7 @@ export function MobileSidebar() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">Admin User</p>
-                  <p className="text-xs text-gray-500">admin@kinumna.com</p>
+                  <p className="text-xs text-gray-500">admin@kinamna.com</p>
                 </div>
               </div>
             </div>

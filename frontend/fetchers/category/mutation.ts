@@ -27,7 +27,7 @@ const createCategory = async (data: CreateCategoryData) => {
   formData.append('file', data.image);
 
   console.log("formData", formData);
-  const { data: response } = await axiosInstance.post('/category', formData, {
+  const { data: response } = await axiosInstance.post('/categories', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -45,7 +45,7 @@ const updateCategory = async (data: UpdateCategoryData) => {
     formData.append('file', data.image);
   }
 
-  const { data: response } = await axiosInstance.put<Category>(`/category/${data.id}`, formData, {
+  const { data: response } = await axiosInstance.put<Category>(`/categories/${data.id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -54,7 +54,7 @@ const updateCategory = async (data: UpdateCategoryData) => {
 };
 
 const deleteCategory = async (id: number) => {
-  await axiosInstance.delete(`/category/${id}`);
+  await axiosInstance.delete(`/categories/${id}`);
   return id;
 };
 

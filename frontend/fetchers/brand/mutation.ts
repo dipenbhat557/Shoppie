@@ -1,7 +1,5 @@
+import axiosInstance from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-
-const BRANDS_API = "/api/brands";
 
 interface CreateBrandDto {
   name: string;
@@ -21,9 +19,9 @@ export const useCreateBrand = () => {
     mutationFn: async (data: CreateBrandDto) => {
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("logo", data.logo);
+      formData.append("file", data.logo);
 
-      const response = await axios.post(BRANDS_API, formData, {
+      const response = await axiosInstance.post("/brands", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -44,10 +42,10 @@ export const useUpdateBrand = () => {
       const formData = new FormData();
       formData.append("name", data.name);
       if (data.logo) {
-        formData.append("logo", data.logo);
+        formData.append("file", data.logo);
       }
 
-      const response = await axios.put(`${BRANDS_API}/${data.id}`, formData, {
+      const response = await axiosInstance.put(`/brands/${data.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -65,7 +63,7 @@ export const useDeleteBrand = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      await axios.delete(`${BRANDS_API}/${id}`);
+      await axiosInstance.delete(`/brands/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["brands"] });

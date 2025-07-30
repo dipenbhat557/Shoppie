@@ -17,19 +17,19 @@ interface UpdatePaymentData {
 
 // Mutation functions
 const createPayment = async (data: CreatePaymentData) => {
-  const { data: response } = await axiosInstance.post<Payment>('/payment', data);
+  const { data: response } = await axiosInstance.post<Payment>('/payments', data);
   return response;
 };
 
 const updatePayment = async ({ id, status }: UpdatePaymentData) => {
-  const { data: response } = await axiosInstance.put<Payment>(`/payment/${id}`, {
+  const { data: response } = await axiosInstance.put<Payment>(`/payments/${id}`, {
     status,
   });
   return response;
 };
 
 const deletePayment = async (id: number) => {
-  await axiosInstance.delete(`/payment/${id}`);
+  await axiosInstance.delete(`/payments/${id}`);
   return id;
 };
 

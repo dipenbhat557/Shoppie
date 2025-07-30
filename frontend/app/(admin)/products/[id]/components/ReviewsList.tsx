@@ -1,70 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Search, ChevronDown, Flag, ThumbsUp, MessageCircle } from "lucide-react";
+import { useProductReviews } from "@/fetchers/product/queries";
+import { Star, Search, Flag, ThumbsUp, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
-interface Review {
-  id: number;
-  rating: number;
-  comment: string;
-  date: Date;
-  helpful: number;
-  reported: boolean;
-  user: {
-    name: string;
-    avatar: string;
-  };
-  reply?: {
-    comment: string;
-    date: Date;
-  };
-}
-
-// Mock data
-const mockReviews: Review[] = [
-  {
-    id: 1,
-    rating: 5,
-    comment: "Great product! The quality is exceptional and it arrived quickly.",
-    date: new Date("2024-03-15"),
-    helpful: 12,
-    reported: false,
-    user: {
-      name: "John Doe",
-      avatar: "/avatars/john.png"
-    },
-    reply: {
-      comment: "Thank you for your feedback! We're glad you enjoyed the product.",
-      date: new Date("2024-03-16")
-    }
-  },
-  {
-    id: 2,
-    rating: 3,
-    comment: "Product is okay but the sizing runs small.",
-    date: new Date("2024-03-14"),
-    helpful: 8,
-    reported: true,
-    user: {
-      name: "Jane Smith",
-      avatar: "/avatars/jane.png"
-    }
-  },
-  // Add more mock reviews...
-];
-
-export function ReviewsList() {
+export function ReviewsList({ productId }: { productId: number }) {
+  const { data: reviews, isLoading } = useProductReviews(productId);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"recent" | "rating" | "helpful">("recent");
   const [filterRating, setFilterRating] = useState<number | null>(null);
 
-  const filteredAndSortedReviews = mockReviews
-    .filter(review => {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const filteredAndSortedReviews = reviews
+    ?.filter(review => {
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        return review.comment.toLowerCase().includes(query) ||
-               review.user.name.toLowerCase().includes(query);
+        return review.comment?.toLowerCase().includes(query) ||
+               `${review.user.firstName} ${review.user.lastName}`.toLowerCase().includes(query);
       }
       if (filterRating) {
         return review.rating === filterRating;
@@ -74,21 +30,19 @@ export function ReviewsList() {
     .sort((a, b) => {
       switch (sortBy) {
         case "recent":
-          return b.date.getTime() - a.date.getTime();
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         case "rating":
           return b.rating - a.rating;
-        case "helpful":
-          return b.helpful - a.helpful;
         default:
           return 0;
       }
     });
 
-  const averageRating = mockReviews.reduce((acc, review) => acc + review.rating, 0) / mockReviews.length;
-  const ratingCounts = mockReviews.reduce((acc, review) => {
+  const averageRating = reviews?.reduce((acc, review) => acc + review.rating, 0) || 0 / (reviews?.length || 1);
+  const ratingCounts = reviews?.reduce((acc, review) => {
     acc[review.rating] = (acc[review.rating] || 0) + 1;
     return acc;
-  }, {} as Record<number, number>);
+  }, {} as Record<number, number>) || {};
 
   return (
     <div className="space-y-6">
@@ -107,7 +61,7 @@ export function ReviewsList() {
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-500">({mockReviews.length} reviews)</span>
+              <span className="text-sm text-gray-500">({reviews?.length || 0} reviews)</span>
             </div>
           </div>
 
@@ -125,7 +79,7 @@ export function ReviewsList() {
                   <div
                     className="h-full bg-[#FFC633]"
                     style={{
-                      width: `${((ratingCounts[rating] || 0) / mockReviews.length) * 100}%`
+                      width: `${((ratingCounts[rating] || 0) / (reviews?.length || 1)) * 100}%`
                     }}
                   />
                 </div>
@@ -162,24 +116,24 @@ export function ReviewsList() {
 
       {/* Reviews List */}
       <div className="space-y-4">
-        {filteredAndSortedReviews.map((review) => (
+        {filteredAndSortedReviews?.map((review) => (
           <div key={review.id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-4">
                 <div className="relative h-10 w-10 rounded-full overflow-hidden">
                   <Image
-                    src={review.user.avatar}
-                    alt={review.user.name}
+                    src={review.user.avatarUrl}
+                    alt={`${review.user.firstName} ${review.user.lastName}`}
                     fill
                     className="object-cover"
                   />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">{review.user.name}</span>
+                    <span className="font-medium text-gray-900">{`${review.user.firstName} ${review.user.lastName}`}</span>
                     <span className="text-gray-500">•</span>
                     <span className="text-sm text-gray-500">
-                      {new Date(review.date).toLocaleDateString()}
+                      {new Date(review.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center mt-1">
@@ -198,7 +152,7 @@ export function ReviewsList() {
                         <span className="font-medium text-gray-900">Store Response</span>
                         <span className="text-gray-500">•</span>
                         <span className="text-sm text-gray-500">
-                          {new Date(review.reply.date).toLocaleDateString()}
+                          {new Date(review.reply.createdAt).toLocaleDateString()}
                         </span>
                       </div>
                       <p className="mt-1 text-gray-600">{review.reply.comment}</p>
@@ -210,7 +164,7 @@ export function ReviewsList() {
               <div className="flex items-center gap-3">
                 <button className="flex items-center gap-1 text-gray-500 hover:text-gray-700">
                   <ThumbsUp className="w-4 h-4" />
-                  <span className="text-sm">{review.helpful}</span>
+                  <span className="text-sm">{review.helpfulCount}</span>
                 </button>
                 <button className="text-gray-500 hover:text-gray-700">
                   <Flag className={`w-4 h-4 ${review.reported ? 'text-red-500' : ''}`} />

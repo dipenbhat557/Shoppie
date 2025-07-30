@@ -8,6 +8,8 @@ import { VariantList } from "./components/VariantList";
 import { SalesInfo } from "./components/SalesInfo";
 import { ReviewsList } from "./components/ReviewsList";
 import { StockManagement } from "./components/StockManagement";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 interface TabItem {
   id: string;

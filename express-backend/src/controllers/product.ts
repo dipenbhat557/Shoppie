@@ -3,12 +3,12 @@ import prisma from "../config/prisma";
 
 export const createProduct = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const { name, description, categoryId, brandId, price } = req.body;
+		const { name, description, categoryId, brandId } = req.body;
 		
 		// Validate required fields
-		if (!name || !description || !categoryId || !brandId || !price) {
+		if (!name || !description || !categoryId || !brandId) {
 			return res.status(400).json({
-				message: "Missing required fields: name, description, categoryId, brandId, and price are required"
+				message: "Missing required fields: name, description, categoryId, and brandId are required"
 			});
 		}
 
@@ -207,7 +207,7 @@ export const getProductsByWishlist = async (req: Request, res: Response): Promis
 export const updateProduct = async (req: Request, res: Response): Promise<any> => {
 	try {
 		const { id } = req.params;
-		const { name, description, categoryId, brandId, saleId } = req.body;
+		const { name, description, categoryId, brandId } = req.body;
 
 		if (!id || isNaN(parseInt(id))) {
 			return res.status(400).json({ message: "Invalid product ID" });
@@ -219,14 +219,12 @@ export const updateProduct = async (req: Request, res: Response): Promise<any> =
 				...(name && { name }),
 				...(description && { description }),
 				...(categoryId && { categoryId }),
-				...(brandId && { brandId }),
-				...(saleId !== undefined && { saleId })
+				...(brandId && { brandId })
 			},
 			include: {
 				category: true,
 				brand: true,
-				variants: true,
-				sale: true
+				variants: true
 			}
 		});
 

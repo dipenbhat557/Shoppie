@@ -40,7 +40,7 @@ export interface Promotion {
 
 // Fetcher functions
 const fetchPromotions = async (): Promise<Promotion[]> => {
-  const { data } = await axiosInstance.get('/promotion');
+  const { data } = await axiosInstance.get('/promotions');
   return data.map((promotion: any) => ({
     ...promotion,
     startDate: new Date(promotion.startDate),
@@ -51,7 +51,7 @@ const fetchPromotions = async (): Promise<Promotion[]> => {
 };
 
 const fetchPromotionById = async (id: number): Promise<Promotion> => {
-  const { data } = await axiosInstance.get(`/promotion/${id}`);
+  const { data } = await axiosInstance.get(`/promotions/${id}`);
   return {
     ...data,
     startDate: new Date(data.startDate),

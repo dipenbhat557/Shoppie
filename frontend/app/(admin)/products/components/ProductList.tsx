@@ -13,16 +13,18 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { mockProducts } from "@/data/data";
+import { useProducts } from "@/fetchers/product/queries";
+import { useDeleteProduct } from "@/fetchers/product/mutation";
 import { Button } from "@/components/ui/button";
 
 export const ProductList = () => {
   const router = useRouter();
-  const mock1 = mockProducts;
+  const { data: products, isLoading } = useProducts();
+  const deleteProduct = useDeleteProduct();
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [mockProductsss, setmockProductsss] = useState(mock1);
+  const [mockProductsss, setmockProductsss] = useState(products || []);
 
   const toggleProductSelection = (productId: number) => {
     setSelectedProducts((prev) =>
@@ -44,11 +46,17 @@ export const ProductList = () => {
     router.push(`/products/${productId}`);
   };
 
-  const handleDeleteProduct = (productId: number) => {
-    const new_products = mockProductsss.filter((p) => p.id !== productId);
-    setmockProductsss(new_products);
-    console.log(`Deleting product with ID: ${productId}`);
+  const handleDeleteProduct = async (productId: number) => {
+    try {
+      await deleteProduct.mutateAsync(productId);
+    } catch (error) {
+      // Error is handled by the mutation
+    }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-8">

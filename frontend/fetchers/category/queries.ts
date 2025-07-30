@@ -11,12 +11,12 @@ export interface Category {
 
 // Fetcher functions
 const fetchCategories = async (): Promise<Category[]> => {
-  const { data } = await axiosInstance.get('/category');
+  const { data } = await axiosInstance.get('/categories');
   return data;
 };
 
 const fetchCategoryById = async (id: number): Promise<Category> => {
-  const { data } = await axiosInstance.get(`/category/${id}`);
+  const { data } = await axiosInstance.get(`/categories/${id}`);
   return data;
 };
 
