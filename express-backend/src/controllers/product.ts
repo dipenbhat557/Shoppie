@@ -37,8 +37,8 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			data: {
 				name,
 				description,
-				categoryId: parseInt(categoryId),
-				brandId: parseInt(brandId),
+				categoryId,
+				brandId,
 				imageUrl,
 				optionGroups: {
 					create: parsedOptionGroups.map((group: any) => ({
@@ -96,12 +96,12 @@ export const getProductById = async (req: Request, res: Response): Promise<any> 
 	try {
 		const { id } = req.params;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid product ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Product ID is required" });
 		}
 
 		const product = await prisma.product.findUnique({
-			where: { id: parseInt(id) },
+			where: { id },
 			include: {
 				category: true,
 				brand: true,
@@ -129,12 +129,12 @@ export const getProductsByCategory = async (req: Request, res: Response): Promis
 	try {
 		const { categoryId } = req.params;
 
-		if (!categoryId || isNaN(parseInt(categoryId))) {
-			return res.status(400).json({ message: "Invalid category ID" });
+		if (!categoryId) {
+			return res.status(400).json({ message: "Category ID is required" });
 		}
 
 		const products = await prisma.product.findMany({
-			where: { categoryId: parseInt(categoryId) },
+			where: { categoryId },
 			include: {
 				category: true,
 				brand: true,
@@ -157,12 +157,12 @@ export const getProductsByBrand = async (req: Request, res: Response): Promise<a
 	try {
 		const { brandId } = req.params;
 
-		if (!brandId || isNaN(parseInt(brandId))) {
-			return res.status(400).json({ message: "Invalid brand ID" });
+		if (!brandId) {
+			return res.status(400).json({ message: "Brand ID is required" });
 		}
 
 		const products = await prisma.product.findMany({
-			where: { brandId: parseInt(brandId) },
+			where: { brandId },
 			include: {
 				category: true,
 				brand: true,
@@ -185,15 +185,15 @@ export const getProductsByStore = async (req: Request, res: Response): Promise<a
 	try {
 		const { storeId } = req.params;
 
-		if (!storeId || isNaN(parseInt(storeId))) {
-			return res.status(400).json({ message: "Invalid store ID" });
+		if (!storeId) {
+			return res.status(400).json({ message: "Store ID is required" });
 		}
 
 		const products = await prisma.product.findMany({
 			where: {
 				variants: {
 					some: {
-						storeId: parseInt(storeId)
+						storeId
 					}
 				}
 			},
@@ -223,12 +223,12 @@ export const getProductsBySale = async (req: Request, res: Response): Promise<an
 	try {
 		const { saleId } = req.params;
 
-		if (!saleId || isNaN(parseInt(saleId))) {
-			return res.status(400).json({ message: "Invalid sale ID" });
+		if (!saleId) {
+			return res.status(400).json({ message: "Sale ID is required" });
 		}
 
 		const products = await prisma.product.findMany({
-			where: { saleId: parseInt(saleId) },
+			where: { saleId },
 			include: {
 				sale: true,
 				variants: true
@@ -250,12 +250,12 @@ export const getProductsByWishlist = async (req: Request, res: Response): Promis
 	try {
 		const { wishlistId } = req.params;
 
-		if (!wishlistId || isNaN(parseInt(wishlistId))) {
-			return res.status(400).json({ message: "Invalid wishlist ID" });
+		if (!wishlistId) {
+			return res.status(400).json({ message: "Wishlist ID is required" });
 		}
 
 		const wishlist = await prisma.wishlist.findUnique({
-			where: { id: parseInt(wishlistId) },
+			where: { id: wishlistId },
 			include: {
 				products: {
 					include: {
@@ -287,12 +287,12 @@ export const updateProduct = async (req: Request, res: Response): Promise<any> =
 		const { id } = req.params;
 		const { name, description, categoryId, brandId } = req.body;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid product ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Product ID is required" });
 		}
 
 		const product = await prisma.product.update({
-			where: { id: parseInt(id) },
+			where: { id },
 			data: {
 				...(name && { name }),
 				...(description && { description }),
@@ -322,13 +322,13 @@ export const deleteProduct = async (req: Request, res: Response): Promise<any> =
 	try {
 		const { id } = req.params;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid product ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Product ID is required" });
 		}
 
 		// Check if product exists and get its details
 		const product = await prisma.product.findUnique({
-			where: { id: parseInt(id) },
+			where: { id },
 			include: {
 				variants: true,
 				reviews: true
@@ -350,12 +350,12 @@ export const deleteProduct = async (req: Request, res: Response): Promise<any> =
 		// Delete associated reviews first
 		if (product.reviews.length > 0) {
 			await prisma.review.deleteMany({
-				where: { productId: parseInt(id) }
+				where: { productId: id }
 			});
 		}
 
 		await prisma.product.delete({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 
 		return res.status(200).json({

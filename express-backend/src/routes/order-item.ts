@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { createOrderItem, deleteOrderItem, getAllOrderItems, getOrderItemById, updateOrderItem } from "../controllers/order-item";
 
 const orderItemRouter = Router();

@@ -7,7 +7,7 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
     const { productVariantId, quantity } = req.body;
 
     const productVariant = await prisma.productVariant.findUnique({
-      where: { id: parseInt(productVariantId) }
+      where: { id: productVariantId }
     });
 
     if (!productVariant) {
@@ -15,9 +15,9 @@ export const addCartItem = async (req: Request, res: Response): Promise<any> => 
     }
 
     const cart = await prisma.cart.upsert({
-      where: { userId: parseInt(userId) },
+      where: { userId },
       create: {
-        userId: parseInt(userId),
+        userId,
         items: {
           create: [{
             productVariantId: productVariantId,
@@ -48,7 +48,7 @@ export const getById = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const cart = await prisma.cart.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
       include: { items: true }
     });
 
@@ -77,7 +77,7 @@ export const getCartByUserId = async (req: Request, res: Response): Promise<any>
   try {
     const { userId } = req.params;
     const cart = await prisma.cart.findUnique({
-      where: { userId: parseInt(userId) },
+      where: { userId },
       include: { items: true }
     });
 
@@ -94,11 +94,11 @@ export const getCartByUserId = async (req: Request, res: Response): Promise<any>
 export const update = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
-    const { userId } = req.query;
+    const { userId } = req.query; 
 
     const cart = await prisma.cart.update({
-      where: { id: parseInt(id) },
-      data: { userId: parseInt(userId as string) },
+      where: { id },
+      data: { userId: userId as string },
       include: { items: true }
     });
 
@@ -112,7 +112,7 @@ export const deleteCart = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     await prisma.cart.delete({
-      where: { id: parseInt(id) }
+      where: { id }
     });
     return res.status(200).json({ message: "Cart deleted successfully" });
   } catch (err) {

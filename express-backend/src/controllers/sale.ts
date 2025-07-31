@@ -65,12 +65,12 @@ export const getSaleById = async (req: Request, res: Response): Promise<any> => 
 	try {
 		const { id } = req.params;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid sale ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Sale ID is required" });
 		}
 
 		const sale = await prisma.sale.findUnique({
-			where: { id: parseInt(id) },
+			where: { id },
 			include: {
 				products: {
 					include: {
@@ -145,8 +145,8 @@ export const updateSale = async (req: Request, res: Response): Promise<any> => {
 		const { description, startDate, endDate, discount, isPercentage, productIds } = JSON.parse(req.body.input);
 		const file = req.file;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid sale ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Sale ID is required" });
 		}
 
 		// Validate dates if provided
@@ -166,7 +166,7 @@ export const updateSale = async (req: Request, res: Response): Promise<any> => {
 		}
 
 		const sale = await prisma.sale.update({
-			where: { id: parseInt(id) },
+			where: { id },
 			data: {
 				...(description && { description }),
 				...(startDate && { startDate: new Date(startDate) }),
@@ -202,13 +202,13 @@ export const deleteSale = async (req: Request, res: Response): Promise<any> => {
 	try {
 		const { id } = req.params;
 
-		if (!id || isNaN(parseInt(id))) {
-			return res.status(400).json({ message: "Invalid sale ID" });
+		if (!id) {
+			return res.status(400).json({ message: "Sale ID is required" });
 		}
 
 		// Check if sale exists
 		const sale = await prisma.sale.findUnique({
-			where: { id: parseInt(id) },
+			where: { id },
 			include: {
 				products: true
 			}
@@ -220,7 +220,7 @@ export const deleteSale = async (req: Request, res: Response): Promise<any> => {
 
 		// Delete the sale
 		await prisma.sale.delete({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 
 		return res.status(200).json({

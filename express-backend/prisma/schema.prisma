@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Address {
-  id        Int      @id @default(autoincrement())
+  id        String    @id @default(cuid())
   houseNo   String?
   street    String?
   city      String
@@ -19,45 +19,44 @@ model Address {
   state     String
   pinCode   String
   landmark  String?
-  isPrimary Boolean  @map("is_primary")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @map("user_id")
-  store Store[]
+  isPrimary Boolean   @map("is_primary")
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @map("user_id")
+  store     Store[]
 }
 
 model Brand {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(cuid())
   name     String
   logoUrl  String
   products Product[]
 }
 
 model Cart {
-  id     Int        @id @default(autoincrement())
+  id     String     @id @default(cuid())
   user   User       @relation(fields: [userId], references: [id])
-  userId Int        @unique @map("user_id")
+  userId String     @unique @map("user_id")
   items  CartItem[]
 }
 
 model CartItem {
-  id              Int            @id @default(autoincrement())
+  id              String         @id @default(cuid())
   quantity        Int
   productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
-  productVariantId Int           @map("product_variant_id")
+  productVariantId String        @map("product_variant_id")
   cart           Cart           @relation(fields: [cartId], references: [id])
-  cartId         Int            @map("cart_id")
+  cartId         String         @map("cart_id")
 }
 
 model Category {
-  id                 Int                 @id @default(autoincrement())
-  name               String              @map("category_name")
-  imageUrl           String?             @default("")
-  parentCategory     Category?           @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
-  parentCategoryId   Int?                @map("parent_category_id")
-  subCategories      Category[]          @relation("CategoryToCategory")
-  products           Product[]
-  
-  promotions         Promotion[]
+  id               String      @id @default(cuid())
+  name             String      @map("category_name")
+  imageUrl         String?     @default("")
+  parentCategory   Category?   @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
+  parentCategoryId String?     @map("parent_category_id")
+  subCategories    Category[]  @relation("CategoryToCategory")
+  products         Product[]
+  promotions       Promotion[]
 }
 
 enum Gender {
@@ -68,33 +67,32 @@ enum Gender {
 }
 
 model Order {
-  id           Int          @id @default(autoincrement())
-  price        Int
-  status       OrderStatus
-  vendor       String
-  orderDate    DateTime
-  deliveryDate DateTime?
-  user         User         @relation(fields: [userId], references: [id])
-  userId       Int          @map("user_id")
-  payment      Payment?     @relation(fields: [paymentId], references: [id])
-  paymentId    Int?         @unique @map("payment_id")
-  items        OrderItem[]
-  // Optional Feature for promotions
-  promotion    Promotion?  @relation(fields: [promotionId], references: [id])
-  promotionId  Int?
+  id             String       @id @default(cuid())
+  price          Int
+  status         OrderStatus
+  vendor         String
+  orderDate      DateTime
+  deliveryDate   DateTime?
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String       @map("user_id")
+  payment        Payment?     @relation(fields: [paymentId], references: [id])
+  paymentId      String?      @unique @map("payment_id")
+  items          OrderItem[]
+  promotion      Promotion?   @relation(fields: [promotionId], references: [id])
+  promotionId    String?
   discountAmount Float?
 
   @@index([paymentId])
 }
 
 model OrderItem {
-  id              Int            @id @default(autoincrement())
+  id              String         @id @default(cuid())
   price           Int
   quantity        Int
   order           Order          @relation(fields: [orderId], references: [id])
-  orderId         Int            @map("order_id")
+  orderId         String         @map("order_id")
   productVariant  ProductVariant @relation(fields: [productVariantId], references: [id])
-  productVariantId Int           @map("product_variant_id")
+  productVariantId String        @map("product_variant_id")
 }
 
 enum OrderStatus {
@@ -106,15 +104,13 @@ enum OrderStatus {
 }
 
 model Payment {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   paymentDate DateTime
   amount      Int
   status      PaymentStatus
   referenceId String?
   method      String
-  order       Order?        // Changed to optional relation
-  // Remove these lines as they create incorrect relation
-  // orderId    Int      @unique @map("order_id")
+  order       Order?
 }
 
 enum PaymentStatus {
@@ -142,67 +138,67 @@ enum PaymentStatus {
 // Variant 2: "Size: L", "Color: Red" → price: $15, SKU: "TSH123-RED-L"
 
 model Product {
-  id          Int             @id @default(autoincrement())
-  name        String
-  description String
-  imageUrl    String?
-  sale        Sale?           @relation(fields: [saleId], references: [id])
-  saleId      Int?           @map("sale_id")
-  brand       Brand           @relation(fields: [brandId], references: [id])
-  brandId     Int            @map("brand_id")
-  category    Category        @relation(fields: [categoryId], references: [id])
-  categoryId  Int            @map("category_id")
-  variants    ProductVariant[]
-  reviews     Review[]
-  wishlists   Wishlist[]
+  id           String               @id @default(cuid())
+  name         String
+  description  String
+  imageUrl     String?
+  sale         Sale?                @relation(fields: [saleId], references: [id])
+  saleId       String?              @map("sale_id")
+  brand        Brand                @relation(fields: [brandId], references: [id])
+  brandId      String               @map("brand_id")
+  category     Category             @relation(fields: [categoryId], references: [id])
+  categoryId   String               @map("category_id")
+  variants     ProductVariant[]
+  reviews      Review[]
+  wishlists    Wishlist[]
   optionGroups ProductOptionGroup[]
-  promotions  Promotion[]
+  promotions   Promotion[]
 }
 
 model ProductOption {
-  id                  Int                @id @default(autoincrement())
+  id                  String            @id @default(cuid())
   name                String
   productOptionGroup  ProductOptionGroup @relation(fields: [productOptionGroupId], references: [id])
-  productOptionGroupId Int               @map("product_option_group_id")
+  productOptionGroupId String            @map("product_option_group_id")
   productVariants     ProductVariant[]
 }
 
 model ProductOptionGroup {
-  id             Int             @id @default(autoincrement())
+  id             String          @id @default(cuid())
   name           String
   product        Product         @relation(fields: [productId], references: [id])
-  productId      Int            @map("product_id")
+  productId      String          @map("product_id")
   productOptions ProductOption[]
 }
 
 model ProductVariant {
-  id             Int            @id @default(autoincrement())
+  id             String          @id @default(cuid())
   sku            String
   price          Int
   stock          Int
-  product        Product        @relation(fields: [productId], references: [id])
-  productId      Int           @map("product_id")
+  product        Product         @relation(fields: [productId], references: [id])
+  productId      String          @map("product_id")
   productOptions ProductOption[]
-  store          Store?         @relation(fields: [storeId], references: [id])
-  storeId        Int?          @map("store_id")
+  store          Store?          @relation(fields: [storeId], references: [id])
+  storeId        String?         @map("store_id")
   images         String[]
   cartItems      CartItem[]
   orderItems     OrderItem[]
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
+  id        String    @id @default(cuid())
   rating    Int
   comment   String?
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @map("user_id")
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int      @map("product_id")
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @map("user_id")
+  product   Product   @relation(fields: [productId], references: [id])
+  productId String    @map("product_id")
 }
 
 model Sale {
-  id           Int       @id @default(autoincrement())
+  id           String    @id @default(cuid())
   description  String
   startDate    DateTime
   endDate      DateTime
@@ -213,14 +209,14 @@ model Sale {
 }
 
 model Store {
-  id        Int              @id @default(autoincrement())
-  name      String
-  location  Address          @relation(fields: [locationId], references: [id])
-  locationId Int            @map("location_id")
-  contact   String
-  manager   User             @relation(fields: [managerId], references: [id])
-  managerId Int            @map("manager_id")
-  variants  ProductVariant[]
+    id         String          @id @default(cuid())
+  name       String
+  location   Address         @relation(fields: [locationId], references: [id])
+  locationId String          @map("location_id")
+  contact    String
+  manager    User            @relation(fields: [managerId], references: [id])
+  managerId  String          @map("manager_id")
+  variants   ProductVariant[]
 }
 
 enum UserStatus {
@@ -237,38 +233,37 @@ enum UserRole {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  firstName  String
-  lastName   String
-  email      String    @unique
-  password   String
-  isVerified Boolean   @default(false)
-  phoneNo    String
-  dob        DateTime
-  gender     Gender
-  profileUrl String
-  status     UserStatus @default(ACTIVE)
-  role       UserRole   @default(CUSTOMER)
-  // Optional Feature for fraud detection
-  isFraudSuspected Boolean @default(false)
-  fraudReason    String?
-  lastLoginAt    DateTime?
-  loginAttempts  Int       @default(0)
-  addresses  Address[]
-  cart       Cart?
-  orders     Order[]
-  reviews    Review[]
-  store      Store[]
-  wishlist   Wishlist?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id              String      @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String      @unique
+  password        String
+  isVerified      Boolean     @default(false)
+  phoneNo         String
+  dob            DateTime
+  gender         Gender
+  profileUrl      String
+  status         UserStatus   @default(ACTIVE)
+  role           UserRole     @default(CUSTOMER)
+  isFraudSuspected Boolean    @default(false)
+  fraudReason     String?
+  lastLoginAt     DateTime?
+  loginAttempts   Int         @default(0)
+  addresses       Address[]
+  cart           Cart?
+  orders         Order[]
+  reviews        Review[]
+  store          Store[]
+  wishlist       Wishlist?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Wishlist {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(cuid())
   products Product[]
   user     User      @relation(fields: [userId], references: [id])
-  userId   Int       @unique @map("user_id")
+  userId   String    @unique @map("user_id")
 }
 
 // Promotion Models - Optional Feature
@@ -288,36 +283,24 @@ enum PromotionStatus {
 
 // Main promotion model
 model Promotion {
-  id          Int            @id @default(autoincrement())
-  name        String         // Promotion name (e.g., "Summer Sale 2024")
-  description String?        // Optional description
-  type        PromotionType  // Discount type (percentage or fixed amount)
-  value       Float          // Discount value (e.g., 20 for 20% off or 10 for $10 off)
-  status      PromotionStatus @default(SCHEDULED)
-  
-  // Time constraints
-  startDate   DateTime       // When promotion becomes active
-  endDate     DateTime       // When promotion expires
-  
-  // Usage limits
-  usageLimit  Int?          // Maximum number of times promotion can be used (null for unlimited)
-  usedCount   Int           @default(0) // Number of times promotion has been used
-  
-  // Coupon code (optional - if null, applies automatically to eligible items)
-  couponCode  String?       @unique
-  
-  // Minimum requirements
-  minOrderValue Float?      // Minimum order value required (optional)
-  
-  // Relationships
-  products    Product[]     // Products this promotion applies to
-  categories  Category[]    // Categories this promotion applies to
-  orders      Order[]       // Orders that used this promotion
-  
-  // Metadata
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id            String           @id @default(cuid())
+  name          String
+  description   String?
+  type          PromotionType
+  value         Float
+  status        PromotionStatus  @default(SCHEDULED)
+  startDate     DateTime
+  endDate       DateTime
+  usageLimit    Int?
+  usedCount     Int             @default(0)
+  couponCode    String?         @unique
+  minOrderValue Float?
+  products      Product[]
+  categories    Category[]
+  orders        Order[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  @@index([status, startDate, endDate]) // Index for quick status and date lookups
-  @@index([couponCode])                 // Index for coupon code lookups
+  @@index([status, startDate, endDate])
+  @@index([couponCode])
 }

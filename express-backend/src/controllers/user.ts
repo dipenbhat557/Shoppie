@@ -6,7 +6,7 @@ import { uploadToS3 } from "../utils/s3";
 // Get user by ID
 export const getUser = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		const user = await prisma.user.findUnique({
 			where: { id }
 		});
@@ -65,7 +65,7 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
 // Update existing user
 export const updateUser = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		const { firstName, lastName, email, phoneNumber, password, dob, gender } = JSON.parse(req.body.input);
 		const file = req.file;
 
@@ -107,7 +107,7 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
 // Delete user
 export const deleteUser = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 
 		const user = await prisma.user.findUnique({
 			where: { id }
@@ -130,7 +130,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<any> => {
 // Verify user
 export const verifyUser = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		
 		const user = await prisma.user.update({
 			where: { id },

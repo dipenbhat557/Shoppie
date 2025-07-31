@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { createAddress, deleteAddress, getAddress, listAddresses, setPrimaryAddress, updateAddress } from "../controllers/address";
 
 const addressRouter = Router();

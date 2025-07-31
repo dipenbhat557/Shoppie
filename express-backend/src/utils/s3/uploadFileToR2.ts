@@ -1,8 +1,6 @@
-import { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { fromEnv } from "@aws-sdk/credential-providers";
-import { S3Client } from '@aws-sdk/client-s3';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -18,12 +16,23 @@ const acceptedFiles = [
   "text/plain"
 ];
 
-// Create S3 client with proper type-safe configuration
 const r2 = new S3Client({
   region: 'auto',
   endpoint: process.env.S3_ENDPOINT,
-  credentials: fromEnv(), // This properly handles credentials from environment variables
+  credentials: {
+    accessKeyId: process.env.CLOUDFLARE_ACCESS_KEY || '',
+    secretAccessKey: process.env.CLOUDFLARE_SECRET_KEY || ''
+  },
+  forcePathStyle: true
 });
+
+// Helper function to extract key from URL if needed
+const getKeyFromPath = (path: string): string => {
+  if (path.startsWith('http')) {
+    return path.split('/').pop() || path;
+  }
+  return path;
+};
 
 export const uploadFileToR2 = async (file: Express.Multer.File, bucketName = 'product-images'): Promise<string> => {
   try {
@@ -54,9 +63,7 @@ export const uploadFileToR2 = async (file: Express.Multer.File, bucketName = 'pr
 
     await r2.send(putObjectCommand);
 
-    // Get a signed URL for immediate access
-    const signedUrl = await getSignedUrlForR2(bucketName, fileKey);
-    return signedUrl;
+    return fileKey;
   } catch (error: any) {
     console.error('Error uploading file to R2:', {
       error: error.message,
@@ -71,9 +78,11 @@ export const uploadFileToR2 = async (file: Express.Multer.File, bucketName = 'pr
 
 export const deleteFileFromR2 = async (key: string, bucketName = 'product-images'): Promise<void> => {
   try {
+    const fileKey = getKeyFromPath(key);
+    
     const deleteCommand = new DeleteObjectCommand({
       Bucket: bucketName,
-      Key: key,
+      Key: fileKey,
     });
 
     await r2.send(deleteCommand);
@@ -87,19 +96,25 @@ export const deleteFileFromR2 = async (key: string, bucketName = 'product-images
   }
 };
 
-export const getSignedUrlForR2 = async (bucketName = 'product-images', key: string): Promise<string> => {
+export const getPublicUrl = (key: string): string => {
+  const fileKey = getKeyFromPath(key);
+  return `${process.env.S3_ENDPOINT}/${fileKey}`;
+};
+
+export const getSignedUrlForR2 = async (key: string, bucketName = 'product-images'): Promise<string> => {
   try {
-    const getCommand = new GetObjectCommand({
+    const fileKey = getKeyFromPath(key);
+    
+    const command = new GetObjectCommand({
       Bucket: bucketName,
-      Key: key,
+      Key: fileKey,
     });
 
-    // Use proper type-safe getSignedUrl
-    const signedUrl = await getSignedUrl(r2 as any, getCommand, {
-      expiresIn: 604800, // 7 days
+    const url = await getSignedUrl(r2, command, { 
+      expiresIn: 604800 
     });
 
-    return signedUrl;
+    return url;
   } catch (error: any) {
     console.error('Error generating signed URL:', {
       error: error.message,
@@ -110,5 +125,4 @@ export const getSignedUrlForR2 = async (bucketName = 'product-images', key: stri
   }
 };
 
-// Export the r2 client for use in other files
 export default r2;

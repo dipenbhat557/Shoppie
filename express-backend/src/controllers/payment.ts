@@ -84,12 +84,12 @@ export const getPaymentById = async (req: Request, res: Response): Promise<any> 
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid payment ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Payment ID is required" });
         }
 
         const payment = await prisma.payment.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 order: {
                     include: {
@@ -130,8 +130,8 @@ export const updatePayment = async (req: Request, res: Response): Promise<any> =
         const { id } = req.params;
         const { status } = req.body;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid payment ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Payment ID is required" });
         }
 
         // Only allow status updates
@@ -149,7 +149,7 @@ export const updatePayment = async (req: Request, res: Response): Promise<any> =
         }
 
         const payment = await prisma.payment.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: { status },
             include: {
                 order: {
@@ -187,13 +187,13 @@ export const deletePayment = async (req: Request, res: Response): Promise<any> =
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid payment ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Payment ID is required" });
         }
 
         // Check if payment exists
         const payment = await prisma.payment.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 order: true
             }
@@ -211,7 +211,7 @@ export const deletePayment = async (req: Request, res: Response): Promise<any> =
         }
 
         await prisma.payment.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         });
 
         return res.status(200).json({

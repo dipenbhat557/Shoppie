@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { createOption, getAllOptions, getOptionById, getOptionsByGroup, updateOption, deleteOption } from "../controllers/product-option";  
 
 const productOptionRouter = Router();

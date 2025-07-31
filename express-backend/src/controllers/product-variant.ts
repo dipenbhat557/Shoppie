@@ -24,7 +24,7 @@ export const createVariant = async (req: Request, res: Response): Promise<any> =
 
         // Check if product exists
         const product = await prisma.product.findUnique({
-            where: { id: parseInt(productId) }
+            where: { id: productId }
         });
 
         if (!product) {
@@ -44,20 +44,19 @@ export const createVariant = async (req: Request, res: Response): Promise<any> =
         // Create base data object without storeId
         const baseData = {
             sku,
-            productId: parseInt(productId),
-            price: parseInt(price),
-            stock: parseInt(stock),
+            productId,
+            price,
+            stock,
             images: imageUrls,
             ...(optionIds && {
                 productOptions: {
-                    connect: optionIds.map((id: string) => ({ id: parseInt(id) }))
+                    connect: optionIds.map((id: string) => ({ id }))
                 }
             })
         };
 
-        // Add storeId only if it exists and is valid
-        if (storeId && !isNaN(parseInt(storeId))) {
-            Object.assign(baseData, { storeId: parseInt(storeId) });
+        if (storeId) {
+            Object.assign(baseData, { storeId });
         }
 
         const variant = await prisma.productVariant.create({
@@ -99,12 +98,12 @@ export const getVariantById = async (req: Request, res: Response): Promise<any> 
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid variant ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Variant ID is required" });
         }
 
         const variant = await prisma.productVariant.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 product: true,
                 productOptions: true,
@@ -126,12 +125,12 @@ export const getVariantsByProduct = async (req: Request, res: Response): Promise
     try {
         const { productId } = req.params;
 
-        if (!productId || isNaN(parseInt(productId))) {
-            return res.status(400).json({ message: "Invalid product ID" });
+        if (!productId) {
+            return res.status(400).json({ message: "Product ID is required" });
         }
 
         const variants = await prisma.productVariant.findMany({
-            where: { productId: parseInt(productId) },
+            where: { productId },
             include: {
                 product: true,
                 productOptions: true,
@@ -157,8 +156,8 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
         const { id } = req.params;
         const { price, stock, sku, storeId, optionIds } = req.body;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid variant ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Variant ID is required" });
         }
 
         // Validate numeric values if provided
@@ -179,7 +178,7 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
         }
 
         const variant = await prisma.productVariant.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: {
                 ...(price !== undefined && { price }),
                 ...(stock !== undefined && { stock }),
@@ -210,13 +209,13 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid variant ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Variant ID is required" });
         }
 
         // Check if variant exists and get its details for the response
         const variant = await prisma.productVariant.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 cartItems: true,
                 orderItems: true
@@ -237,7 +236,7 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
         }
 
         await prisma.productVariant.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         });
 
         return res.status(200).json({

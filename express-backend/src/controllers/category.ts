@@ -3,7 +3,6 @@ import prisma from "../config/prisma";
 import {
   deleteFile,
   getExactFileUrl,
-  saveLocalFile,
   uploadToS3,
 } from "../utils/s3";
 
@@ -31,7 +30,7 @@ export const createCategory = async (req: any, res: any): Promise<any> => {
     const category = await prisma.category.create({
       data: {
         name,
-        parentCategoryId: parentCategoryId ? parseInt(parentCategoryId) : null,
+        parentCategoryId: parentCategoryId ? parentCategoryId : null,
         imageUrl,
       },
     });
@@ -76,7 +75,7 @@ export const getCategoryById = async (
   try {
     const { id } = req.params;
     const category = await prisma.category.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
       include: {
         subCategories: true,
       },
@@ -119,10 +118,10 @@ export const updateCategory = async (
     }
 
     const category = await prisma.category.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data: {
         name,
-        parentCategoryId: parentCategoryId ? parseInt(parentCategoryId) : null,
+        parentCategoryId: parentCategoryId ? parentCategoryId : null,
         ...(imageUrl && { imageUrl }),
       },
     });
@@ -143,7 +142,7 @@ export const deleteCategory = async (
   try {
     const { id } = req.params;
     const category = await prisma.category.delete({
-      where: { id: parseInt(id) },
+      where: { id },
     });
     console.log(category);
 

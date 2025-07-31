@@ -50,7 +50,7 @@ export const getBrandById = async (req: Request, res: Response): Promise<any> =>
   try {
     const { id } = req.params;
     const brand = await prisma.brand.findUnique({
-      where: { id: parseInt(id) }
+      where: { id }
     });
 
     if (!brand) {
@@ -85,7 +85,7 @@ export const updateBrand = async (req: Request, res: Response): Promise<any> => 
     }
 
     const brand = await prisma.brand.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data: {
         name,
         ...(logoUrl && { logoUrl })
@@ -103,7 +103,7 @@ export const deleteBrand = async (req: Request, res: Response): Promise<any> => 
   try {
     const { id } = req.params;
     await prisma.brand.delete({
-      where: { id: parseInt(id) }
+      where: { id }
     });
     return res.status(200).json({ message: "Deleted successfully" });
   } catch (err) {

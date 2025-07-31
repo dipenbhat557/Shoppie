@@ -31,7 +31,7 @@ export const getReviewById = async (req: Request, res: Response): Promise<any> =
 	try {
 		const { id } = req.params;
 		const review = await prisma.review.findUnique({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 		if (!review) {
 			return res.status(404).json({ message: "Review not found" });
@@ -46,7 +46,7 @@ export const getReviewsByUser = async (req: Request, res: Response): Promise<any
 	try {
 		const { userId } = req.params;
 		const reviews = await prisma.review.findMany({
-			where: { userId: parseInt(userId) }
+			where: { userId }
 		});
 		return res.status(200).json(reviews);
 	} catch (err) {
@@ -58,7 +58,7 @@ export const getReviewsByProduct = async (req: Request, res: Response): Promise<
 	try {
 		const { productId } = req.params;
 		const reviews = await prisma.review.findMany({
-			where: { productId: parseInt(productId) }
+			where: { productId }
 		});
 		return res.status(200).json(reviews);
 	} catch (err) {
@@ -71,7 +71,7 @@ export const updateReview = async (req: Request, res: Response): Promise<any> =>
 		const { id } = req.params;
 		const { rating, comment } = req.body;
 		const review = await prisma.review.update({
-			where: { id: parseInt(id) },
+			where: { id },
 			data: {
 				rating,
 				comment
@@ -87,7 +87,7 @@ export const deleteReview = async (req: Request, res: Response): Promise<any> =>
 	try {
 		const { id } = req.params;
 		await prisma.review.delete({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 		return res.status(200).json({ message: "Review deleted successfully" });
 	} catch (err) {

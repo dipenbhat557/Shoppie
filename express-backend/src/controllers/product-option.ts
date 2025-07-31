@@ -12,7 +12,7 @@ export const createOptionGroup = async (req: Request, res: Response): Promise<an
         }
 
         const product = await prisma.product.findUnique({
-            where: { id: parseInt(productId) }
+            where: { id: productId }	
         });
 
         if (!product) {
@@ -22,7 +22,7 @@ export const createOptionGroup = async (req: Request, res: Response): Promise<an
         const optionGroup = await prisma.productOptionGroup.create({
             data: {
                 name,
-                productId: parseInt(productId)
+                productId
             },
             include: {
                 productOptions: true,
@@ -53,12 +53,12 @@ export const getOptionGroupById = async (req: Request, res: Response): Promise<a
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid option group ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Option group ID is required" });
         }
 
         const optionGroup = await prisma.productOptionGroup.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productOptions: true,
                 product: true
@@ -79,13 +79,13 @@ export const getByProduct = async (req: Request, res: Response): Promise<any> =>
     try {
         const { productId } = req.params;
 
-        if (!productId || isNaN(parseInt(productId))) {
-            return res.status(400).json({ message: "Invalid product ID" });
+        if (!productId) {
+            return res.status(400).json({ message: "Product ID is required" });
         }
 
         const optionGroups = await prisma.productOptionGroup.findMany({
             where: {
-                productId: parseInt(productId)
+                productId
             },
             include: {
                 productOptions: true,
@@ -103,8 +103,8 @@ export const updateOptionGroup = async (req: Request, res: Response): Promise<an
         const { id } = req.params;
         const { name } = req.body;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid option group ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Option group ID is required" });
         }
 
         if (!name) {
@@ -112,7 +112,7 @@ export const updateOptionGroup = async (req: Request, res: Response): Promise<an
         }
 
         const optionGroup = await prisma.productOptionGroup.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: { name },
             include: {
                 productOptions: true,
@@ -130,13 +130,13 @@ export const deleteOptionGroup = async (req: Request, res: Response): Promise<an
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid option group ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Option group ID is required" });
         }
 
         // Check if option group exists and has associated options
         const optionGroup = await prisma.productOptionGroup.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productOptions: true
             }
@@ -149,12 +149,12 @@ export const deleteOptionGroup = async (req: Request, res: Response): Promise<an
         // Delete associated options first
         if (optionGroup.productOptions.length > 0) {
             await prisma.productOption.deleteMany({
-                where: { productOptionGroupId: parseInt(id) }
+                where: { productOptionGroupId: id }
             });
         }
 
         await prisma.productOptionGroup.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         });
 
         return res.status(200).json({
@@ -181,7 +181,7 @@ export const createOption = async (req: Request, res: Response): Promise<any> =>
 
         // Check if option group exists
         const optionGroup = await prisma.productOptionGroup.findUnique({
-            where: { id: parseInt(productOptionGroupId) }
+            where: { id: productOptionGroupId }
         });
 
         if (!optionGroup) {
@@ -191,7 +191,7 @@ export const createOption = async (req: Request, res: Response): Promise<any> =>
         const option = await prisma.productOption.create({
             data: {
                 name,
-                productOptionGroupId: parseInt(productOptionGroupId)
+                productOptionGroupId
             },
             include: {
                 productOptionGroup: {
@@ -230,7 +230,7 @@ export const getOptionById = async (req: Request, res: Response): Promise<any> =
     try {
         const { id } = req.params;
         const option = await prisma.productOption.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productOptionGroup: {
                     include: {
@@ -253,7 +253,7 @@ export const getOptionsByGroup = async (req: Request, res: Response): Promise<an
     try {
         const { optionGroupId } = req.params;
         const options = await prisma.productOption.findMany({
-            where: { productOptionGroupId: parseInt(optionGroupId) },
+            where: { productOptionGroupId: optionGroupId },
             include: {
                 productOptionGroup: {
                     include: {
@@ -279,7 +279,7 @@ export const updateOption = async (req: Request, res: Response): Promise<any> =>
         }
 
         const option = await prisma.productOption.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: { name },
             include: {
                 productOptionGroup: {
@@ -302,7 +302,7 @@ export const deleteOption = async (req: Request, res: Response): Promise<any> =>
 
         // Check if option exists and has variants
         const option = await prisma.productOption.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productVariants: true
             }
@@ -320,7 +320,7 @@ export const deleteOption = async (req: Request, res: Response): Promise<any> =>
         }
 
         await prisma.productOption.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         });
 
         return res.status(200).json({

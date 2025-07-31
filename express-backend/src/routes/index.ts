@@ -1,6 +1,6 @@
 import express from "express";
 import categoryRouter from "./category";
-import addressRouter from "./address";
+// import addressRouter from "./address";
 import authRouter from "./auth";
 import brandRouter from "./brand";
 import cartItemRouter from "./cart-item";

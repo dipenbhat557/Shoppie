@@ -22,7 +22,7 @@ export const createWishlist = async (req: Request, res: Response): Promise<any> 
 // Get wishlist by ID
 export const getWishlistById = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		const wishlist = await prisma.wishlist.findUnique({
 			where: { id },
 			include: { products: true }
@@ -52,7 +52,7 @@ export const getAllWishlists = async (req: Request, res: Response): Promise<any>
 // Get wishlist by user ID
 export const getWishlistByUser = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const userId = parseInt(req.params.userId);
+		const userId = req.params.userId;
 		const wishlist = await prisma.wishlist.findUnique({
 			where: { userId },
 			include: { products: true }
@@ -70,7 +70,7 @@ export const getWishlistByUser = async (req: Request, res: Response): Promise<an
 // Update wishlist
 export const updateWishlist = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		const { productIds } = req.body;
 		
 		const wishlist = await prisma.wishlist.update({
@@ -91,7 +91,7 @@ export const updateWishlist = async (req: Request, res: Response): Promise<any> 
 // Delete wishlist
 export const deleteWishlist = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
 		await prisma.wishlist.delete({
 			where: { id }
 		});

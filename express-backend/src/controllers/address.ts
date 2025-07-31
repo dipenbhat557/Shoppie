@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../config/prisma";
 
 export const getAddress = async (req: Request, res: Response): Promise<any> => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const address = await prisma.address.findUnique({
     where: { id }
   });
@@ -26,7 +26,7 @@ export const createAddress = async (req: Request, res: Response) => {
 };
 
 export const updateAddress = async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { houseNo, street, city, district, state, pinCode, landmark, isPrimary, userId } = req.body;
   
   const address = await prisma.address.update({
@@ -37,7 +37,7 @@ export const updateAddress = async (req: Request, res: Response) => {
 };
 
 export const deleteAddress = async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   await prisma.address.delete({
     where: { id }
   });
@@ -45,8 +45,8 @@ export const deleteAddress = async (req: Request, res: Response) => {
 };
 
 export const setPrimaryAddress = async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
-  const userId = parseInt(req.params.userId);
+  const id = req.params.id;
+  const userId = req.params.userId;
   await prisma.address.updateMany({
     where: { userId },
     data: { isPrimary: false }

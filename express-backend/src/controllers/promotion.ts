@@ -92,7 +92,7 @@ export const getPromotionById = async (req: Request, res: Response): Promise<any
   try {
     const { id } = req.params;
     const promotion = await prisma.promotion.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
       include: {
         products: true,
         categories: true,
@@ -133,7 +133,7 @@ export const updatePromotion = async (req: Request, res: Response): Promise<any>
     } = req.body;
 
     const promotion = await prisma.promotion.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data: {
         name,
         description,
@@ -176,7 +176,7 @@ export const deletePromotion = async (req: Request, res: Response): Promise<any>
 
     // Check if promotion exists and has associated orders
     const promotion = await prisma.promotion.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
       include: {
         orders: true
       }
@@ -195,7 +195,7 @@ export const deletePromotion = async (req: Request, res: Response): Promise<any>
     }
 
     await prisma.promotion.delete({
-      where: { id: parseInt(id) }
+      where: { id }
     });
 
     return res.status(200).json({

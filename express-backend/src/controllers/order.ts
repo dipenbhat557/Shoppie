@@ -75,12 +75,12 @@ export const getOrderById = async (req: Request, res: Response): Promise<any> =>
     try {
         const { orderId } = req.params;
         
-        if (!orderId || isNaN(parseInt(orderId))) {
-            return res.status(400).json({ message: "Invalid order ID" });
+        if (!orderId) {
+            return res.status(400).json({ message: "Order ID is required" });
         }
 
         const order = await prisma.order.findUnique({
-            where: { id: parseInt(orderId) },
+            where: { id: orderId },
             include: {
                 items: {
                     include: {
@@ -117,12 +117,12 @@ export const getOrdersByUser = async (req: Request, res: Response): Promise<any>
     try {
         const { userId } = req.params;
 
-        if (!userId || isNaN(parseInt(userId))) {
-            return res.status(400).json({ message: "Invalid user ID" });
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required" });
         }
 
         const orders = await prisma.order.findMany({
-            where: { userId: parseInt(userId) },
+            where: { userId },
             include: {
                 items: {
                     include: {
@@ -150,8 +150,8 @@ export const updateOrderStatus = async (req: Request, res: Response): Promise<an
         const { orderId } = req.params;
         const { status, deliveryDate } = req.body;
 
-        if (!orderId || isNaN(parseInt(orderId))) {
-            return res.status(400).json({ message: "Invalid order ID" });
+        if (!orderId) {
+            return res.status(400).json({ message: "Order ID is required" });
         }
 
         if (!Object.values(OrderStatus).includes(status)) {
@@ -159,7 +159,7 @@ export const updateOrderStatus = async (req: Request, res: Response): Promise<an
         }
 
         const order = await prisma.order.update({
-            where: { id: parseInt(orderId) },
+            where: { id: orderId },
             data: { 
                 status,
                 ...(deliveryDate && { deliveryDate: new Date(deliveryDate) })

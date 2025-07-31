@@ -13,9 +13,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.731.1",
-    "@aws-sdk/credential-providers": "^3.857.0",
-    "@aws-sdk/s3-request-presigner": "^3.857.0",
+    "@aws-sdk/client-s3": "3.731.1",
+    "@aws-sdk/s3-request-presigner": "3.731.1",
     "@prisma/client": "^6.2.1",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.10",

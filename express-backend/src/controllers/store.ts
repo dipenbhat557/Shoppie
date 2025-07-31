@@ -11,7 +11,7 @@ export const createStore = async (req: Request, res: Response): Promise<any> => 
 				contact,
 				manager: {
 					connect: {
-						id: parseInt(managerId)
+						id: managerId
 					}
 				}
 			}
@@ -35,7 +35,7 @@ export const getStoreById = async (req: Request, res: Response): Promise<any> =>
 	try {
 		const { id } = req.params;
 		const store = await prisma.store.findUnique({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 
 		if (!store) {
@@ -54,7 +54,7 @@ export const updateStore = async (req: Request, res: Response): Promise<any> => 
 		const { name, location, contact } = req.body;
 
 		const store = await prisma.store.update({
-			where: { id: parseInt(id) },
+			where: { id },
 			data: {
 				name,
 				location, 
@@ -72,7 +72,7 @@ export const deleteStore = async (req: Request, res: Response): Promise<any> => 
 	try {
 		const { id } = req.params;
 		await prisma.store.delete({
-			where: { id: parseInt(id) }
+			where: { id }
 		});
 		return res.status(200).json({ message: "Store deleted successfully" });
 	} catch (err) {

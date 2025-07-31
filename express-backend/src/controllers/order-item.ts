@@ -114,12 +114,12 @@ export const getOrderItemById = async (req: Request, res: Response): Promise<any
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid order item ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Order item ID is required" });
         }
 
         const orderItem = await prisma.orderItem.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productVariant: {
                     include: {
@@ -158,8 +158,8 @@ export const updateOrderItem = async (req: Request, res: Response): Promise<any>
         const { id } = req.params;
         const { quantity, price } = req.body;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid order item ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Order item ID is required" });
         }
 
         // Validate numeric values
@@ -171,7 +171,7 @@ export const updateOrderItem = async (req: Request, res: Response): Promise<any>
 
         // Get current order item to check stock difference
         const currentOrderItem = await prisma.orderItem.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productVariant: true
             }
@@ -198,7 +198,7 @@ export const updateOrderItem = async (req: Request, res: Response): Promise<any>
         }
 
         const orderItem = await prisma.orderItem.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: {
                 ...(quantity !== undefined && { quantity }),
                 ...(price !== undefined && { price })
@@ -230,13 +230,13 @@ export const deleteOrderItem = async (req: Request, res: Response): Promise<any>
     try {
         const { id } = req.params;
 
-        if (!id || isNaN(parseInt(id))) {
-            return res.status(400).json({ message: "Invalid order item ID" });
+        if (!id) {
+            return res.status(400).json({ message: "Order item ID is required" });
         }
 
         // Get the order item to restore stock before deletion
         const orderItem = await prisma.orderItem.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
             include: {
                 productVariant: true
             }
@@ -255,7 +255,7 @@ export const deleteOrderItem = async (req: Request, res: Response): Promise<any>
         });
 
         await prisma.orderItem.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         });
 
         return res.status(200).json({ 
