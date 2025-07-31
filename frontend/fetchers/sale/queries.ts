@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 export interface Sale {
-  id: number;
+  id: string;
   description: string;
   startDate: Date;
   endDate: Date;
@@ -9,7 +9,7 @@ export interface Sale {
   isPercentage: boolean;
   imageUrl: string;
   products: Array<{
-    id: number;
+    id: string;
     name: string;
     imageUrl: string;
   }>;
@@ -18,7 +18,7 @@ export interface Sale {
 // Mock data for development
 const mockSales: Sale[] = [
   {
-    id: 1,
+    id: "1",
     description: "Summer Sale 2024",
     startDate: new Date("2024-06-01"),
     endDate: new Date("2024-08-31"),
@@ -27,19 +27,19 @@ const mockSales: Sale[] = [
     imageUrl: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a",
     products: [
       {
-        id: 1,
+        id: "1",
         name: "Summer T-Shirt",
         imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
       },
       {
-        id: 2,
+        id: "2",
         name: "Beach Shorts",
         imageUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d",
       },
     ],
   },
   {
-    id: 2,
+    id: "2",
     description: "Back to School Sale",
     startDate: new Date("2024-08-15"),
     endDate: new Date("2024-09-15"),
@@ -48,7 +48,7 @@ const mockSales: Sale[] = [
     imageUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
     products: [
       {
-        id: 3,
+        id: "3",
         name: "School Backpack",
         imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62",
       },
@@ -66,7 +66,7 @@ export const useSales = () => {
   });
 };
 
-export const useSale = (id: number) => {
+export const useSale = (id: string) => {
   return useQuery<Sale>({
     queryKey: ["sale", id],
     queryFn: async () => {

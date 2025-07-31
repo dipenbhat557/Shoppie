@@ -8,11 +8,11 @@ export interface CreateSaleDto {
   discount: number;
   isPercentage: boolean;
   imageUrl: string;
-  productIds: number[];
+  productIds: string[];
 }
 
 export interface UpdateSaleDto extends CreateSaleDto {
-  id: number;
+  id: string;
 }
 
 export const useCreateSale = () => {
@@ -23,7 +23,7 @@ export const useCreateSale = () => {
       // TODO: Replace with actual API call
       console.log("Creating sale:", data);
       return {
-        id: Math.random(),
+        id: Math.random().toString(),
         ...data,
         products: data.productIds.map((id) => ({
           id,
@@ -63,7 +63,7 @@ export const useUpdateSale = () => {
 export const useDeleteSale = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, Error, number>({
+  return useMutation<void, Error, string>({
     mutationFn: async (id) => {
       // TODO: Replace with actual API call
       console.log("Deleting sale:", id);

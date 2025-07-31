@@ -44,7 +44,7 @@ const createSaleSchema = z.object({
   discount: z.number().min(0, "Discount must be positive"),
   isPercentage: z.boolean(),
   imageUrl: z.string().min(1, "Image URL is required"),
-  productIds: z.array(z.number()).min(1, "At least one product is required"),
+  productIds: z.array(z.string()).min(1, "At least one product is required"),
 });
 
 type CreateSaleValues = z.infer<typeof createSaleSchema>;
@@ -242,26 +242,15 @@ export default function CreateSalePage() {
                     <div className="flex items-center space-x-3">
                       <div className="relative h-12 w-12 rounded overflow-hidden">
                         <Image
-                          src={product.imageUrl}
+                          src={product.imageUrl || ""}
                           alt={product.name}
                           fill
                           className="object-cover"
                         />
                       </div>
-                      <div>
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-sm text-gray-500">
-                          Original Price: ${product.price}
-                        </div>
-                      </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <div className="text-right">
-                        <div className="text-sm text-gray-500">New Price</div>
-                        <div className="font-medium text-green-600">
-                          ${calculateDiscountedPrice(product.price).toFixed(2)}
-                        </div>
-                      </div>
+                      
                       <Button
                         variant="ghost"
                         size="sm"
@@ -311,7 +300,7 @@ export default function CreateSalePage() {
                 <div className="flex items-center space-x-4">
                   <div className="relative h-16 w-16 rounded overflow-hidden">
                     <Image
-                      src={product.imageUrl}
+                      src={product.imageUrl || ""}
                       alt={product.name}
                       fill
                       className="object-cover"
@@ -321,9 +310,6 @@ export default function CreateSalePage() {
                     <div className="font-medium">{product.name}</div>
                     <div className="text-sm text-gray-500">
                       {product.description}
-                    </div>
-                    <div className="text-sm font-medium">
-                      ${product.price.toFixed(2)}
                     </div>
                   </div>
                 </div>

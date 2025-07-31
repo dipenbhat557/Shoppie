@@ -47,7 +47,7 @@ const saleFormSchema = z.object({
   discount: z.number().min(0, "Discount must be positive"),
   isPercentage: z.boolean(),
   imageUrl: z.string().min(1, "Image URL is required"),
-  productIds: z.array(z.number()).min(1, "At least one product is required"),
+  productIds: z.array(z.string()).min(1, "At least one product is required"),
 });
 
 type SaleFormValues = z.infer<typeof saleFormSchema>;
