@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 
 export function ProductInfo() {
   const params = useParams();
-  const productId = parseInt(params.id as string);
+  const productId = params.id as string;
   
   const { data: product, isLoading } = useProduct(productId);
   const updateProduct = useUpdateProduct();
@@ -19,7 +19,6 @@ export function ProductInfo() {
     description: "",
   });
 
-  // Initialize edit form when product data is loaded
   useState(() => {
     if (product) {
       setEditForm({
@@ -27,7 +26,8 @@ export function ProductInfo() {
         description: product.description,
       });
     }
-  }, [product]);
+    //@ts-ignore
+  }, [ productId]);
 
   const handleSave = async () => {
     try {
@@ -240,7 +240,7 @@ export function ProductInfo() {
         </div>
 
         {/* Recent Reviews */}
-        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm md:col-span-2">
+        {/* <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm md:col-span-2">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Recent Reviews
           </h2>
@@ -273,7 +273,7 @@ export function ProductInfo() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

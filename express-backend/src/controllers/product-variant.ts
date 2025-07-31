@@ -1,28 +1,23 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
-import { getExactFileUrl, uploadToS3 } from "../utils/s3";
+import { deleteFile, getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createVariant = async (req: Request, res: Response): Promise<any> => {
     try {
         const { productId, price, stock, sku, optionIds, storeId } = req.body;
 
-        console.log("req.body", req.body);
-
-        // Validate required fields
         if (!productId || !price || stock === undefined || !sku) {
             return res.status(400).json({
                 message: "Missing required fields: productId, price, stock, and sku are required"
             });
         }
 
-        // Validate numeric values
         if (price < 0 || stock < 0) {
             return res.status(400).json({
                 message: "Price and stock must be non-negative numbers"
             });
         }
 
-        // Check if product exists
         const product = await prisma.product.findUnique({
             where: { id: productId }
         });
@@ -41,12 +36,11 @@ export const createVariant = async (req: Request, res: Response): Promise<any> =
             }));
         }
 
-        // Create base data object without storeId
         const baseData = {
             sku,
             productId,
-            price,
-            stock,
+            price: parseInt(price),
+            stock: parseInt(stock),
             images: imageUrls,
             ...(optionIds && {
                 productOptions: {
@@ -88,7 +82,13 @@ export const getAllVariants = async (_req: Request, res: Response): Promise<any>
                 store: true
             }
         });
-        return res.status(200).json(variants);
+
+        const formattedVariants = await Promise.all(variants.map(async (variant: any) => ({
+            ...variant,
+            images: variant.images.map(async (image: string) => await getExactFileUrl(image))
+        })));
+
+        return res.status(200).json(formattedVariants);
     } catch (err) {
         return res.status(500).json({ message: "Error fetching product variants", error: err });
     }
@@ -115,7 +115,12 @@ export const getVariantById = async (req: Request, res: Response): Promise<any> 
             return res.status(404).json({ message: "Product variant not found" });
         }
 
-        return res.status(200).json(variant);
+        const formattedVariant = {
+            ...variant,
+            images: await Promise.all(variant.images.map(async (image: string) => await getExactFileUrl(image)))
+        };
+
+        return res.status(200).json(formattedVariant);
     } catch (err) {
         return res.status(500).json({ message: "Error fetching product variant", error: err });
     }
@@ -138,12 +143,10 @@ export const getVariantsByProduct = async (req: Request, res: Response): Promise
             }
         });
 
-        const variantsWithImages = variants.map((variant) => {
-            return {
-                ...variant,
-                images: variant.images.map((image: string) => getExactFileUrl(image))
-            }
-        })
+        const variantsWithImages = await Promise.all(variants.map(async (variant: any) => ({
+            ...variant,
+            images: await Promise.all(variant.images.map(async (image: string) => await getExactFileUrl(image)))
+        })));
 
         return res.status(200).json(variantsWithImages);
     } catch (err) {
@@ -160,7 +163,6 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
             return res.status(400).json({ message: "Variant ID is required" });
         }
 
-        // Validate numeric values if provided
         if ((price !== undefined && price < 0) || (stock !== undefined && stock < 0)) {
             return res.status(400).json({
                 message: "Price and stock must be non-negative numbers"
@@ -180,13 +182,13 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
         const variant = await prisma.productVariant.update({
             where: { id },
             data: {
-                ...(price !== undefined && { price }),
-                ...(stock !== undefined && { stock }),
+                ...(price !== undefined && { price: parseInt(price) }),
+                ...(stock !== undefined && { stock: parseInt(stock) }),
                 ...(sku && { sku }),
                 ...(storeId !== undefined && { storeId }),
                 ...(optionIds && {
                     productOptions: {
-                        set: optionIds.map((id: number) => ({ id }))
+                        set: optionIds.map((id: string) => ({ id }))
                     }
                 }),
                 ...(imageUrls.length > 0 && { images: imageUrls })
@@ -213,7 +215,6 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
             return res.status(400).json({ message: "Variant ID is required" });
         }
 
-        // Check if variant exists and get its details for the response
         const variant = await prisma.productVariant.findUnique({
             where: { id },
             include: {
@@ -226,7 +227,6 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
             return res.status(404).json({ message: "Product variant not found" });
         }
 
-        // Check for related cart items or order items
         if (variant.cartItems.length > 0 || variant.orderItems.length > 0) {
             return res.status(400).json({
                 message: "Cannot delete variant with associated cart items or orders",
@@ -238,6 +238,10 @@ export const deleteVariant = async (req: Request, res: Response): Promise<any> =
         await prisma.productVariant.delete({
             where: { id }
         });
+
+        if (variant.images.length > 0) {
+            await Promise.all(variant.images.map(async (image: string) => await deleteFile(image)));
+        }
 
         return res.status(200).json({
             message: "Product variant deleted successfully",

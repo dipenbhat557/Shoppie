@@ -5,14 +5,14 @@ import { toast } from 'sonner';
 
 interface CreateCategoryData {
   name: string;
-  parentCategoryId?: number | null;
+  parentCategoryId?: string | null;
   image: File;
 }
 
 interface UpdateCategoryData {
-  id: number;
+  id: string;
   name: string;
-  parentCategoryId?: number | null;
+  parentCategoryId?: string | null;
   image?: File;
 }
 
@@ -53,7 +53,7 @@ const updateCategory = async (data: UpdateCategoryData) => {
   return response;
 };
 
-const deleteCategory = async (id: number) => {
+const deleteCategory = async (id: string) => {
   await axiosInstance.delete(`/categories/${id}`);
   return id;
 };

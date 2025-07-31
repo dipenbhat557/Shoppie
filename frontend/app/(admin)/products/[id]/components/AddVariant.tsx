@@ -14,7 +14,7 @@ import type { ProductOption, ProductOptionGroup } from "@/fetchers/product/queri
 const variantSchema = z.object({
   price: z.number().min(0, "Price must be non-negative"),
   stock: z.number().min(0, "Stock must be non-negative"),
-  storeId: z.number().optional(),
+  storeId: z.string().optional(),
   optionValues: z.record(z.string(), z.string()),
 });
 
@@ -81,7 +81,7 @@ export function AddVariant({ productId, onClose }: AddVariantProps) {
       const sku = generateSKU(data.optionValues);
       
       // Convert optionValues to optionIds
-      const optionIds: number[] = [];
+      const optionIds: string[] = [];
       for (const [groupName, optionValue] of Object.entries(data.optionValues)) {
         const group = optionGroups?.find((g: ProductOptionGroup) => g.name === groupName);
         const option = group?.productOptions.find((o: ProductOption) => o.name === optionValue);
@@ -101,7 +101,7 @@ export function AddVariant({ productId, onClose }: AddVariantProps) {
       }
 
       await createVariant.mutateAsync({
-        productId: parseInt(productId),
+        productId,
         sku,
         price: data.price,
         stock: data.stock,

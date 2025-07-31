@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
-import { getExactFileUrl, uploadToS3 } from "../utils/s3";
+import { deleteFile, getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createProduct = async (req: Request, res: Response): Promise<any> => {
 	try {
 		const { name, description, categoryId, brandId, optionGroups } = req.body;
 		const image = req.file;
-		
+	
 		// Validate required fields
 		if (!name || !description || !categoryId || !brandId) {
 			return res.status(400).json({
@@ -14,6 +14,25 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			});
 		}
 
+		// Check if brand exists
+		const brand = await prisma.brand.findUnique({
+			where: { id: brandId }
+		});
+
+		if (!brand) {
+			return res.status(404).json({ message: "Brand not found" });
+		}
+
+		// Check if category exists
+		const category = await prisma.category.findUnique({
+			where: { id: categoryId }
+		});
+
+		if (!category) {
+			return res.status(404).json({ message: "Category not found" });
+		}
+
+		// Handle image upload
 		let imageUrl;
 		if (image) {
 			try {
@@ -24,7 +43,7 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			}
 		}
 
-		// Parse option groups if they exist
+		// Parse option groups
 		let parsedOptionGroups;
 		try {
 			parsedOptionGroups = optionGroups ? JSON.parse(optionGroups) : [];
@@ -33,6 +52,7 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			return res.status(400).json({ message: "Invalid option groups format" });
 		}
 
+		// Create product with option groups
 		const product = await prisma.product.create({
 			data: {
 				name,
@@ -63,10 +83,27 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			}
 		});
 
-		return res.status(201).json(product);
+		// Transform the response to include full image URLs
+		const productWithFullUrls = {
+			...product,
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null,
+			brand: {
+				...product.brand,
+				logoUrl: await getExactFileUrl(product.brand.logoUrl)
+			},
+			category: {
+				...product.category,
+				imageUrl: product.category.imageUrl ? await getExactFileUrl(product.category.imageUrl) : null
+			}
+		};
+
+		return res.status(201).json(productWithFullUrls);
 	} catch (err) {
 		console.error('Create product error:', err);
-		return res.status(500).json({ message: "Error creating product", error: err });
+		return res.status(500).json({ 
+			message: "Error creating product", 
+			error: err instanceof Error ? err.message : 'Unknown error' 
+		});
 	}
 };
 
@@ -81,10 +118,10 @@ export const getAllProducts = async (req: Request, res: Response): Promise<any> 
 			}
 		});
 
-		const productsWithImageUrls = products.map(product => ({
+		const productsWithImageUrls = await Promise.all(products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
@@ -116,7 +153,7 @@ export const getProductById = async (req: Request, res: Response): Promise<any> 
 
 		const productWithImageUrl = {
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
 		};
 
 		return res.status(200).json(productWithImageUrl);
@@ -142,10 +179,10 @@ export const getProductsByCategory = async (req: Request, res: Response): Promis
 			}
 		});
 
-		const productsWithImageUrls = products.map(product => ({
+		const productsWithImageUrls = await Promise.all(products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
@@ -170,10 +207,10 @@ export const getProductsByBrand = async (req: Request, res: Response): Promise<a
 			}
 		});
 
-		const productsWithImageUrls = products.map(product => ({
+		const productsWithImageUrls = await Promise.all(products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
@@ -208,10 +245,10 @@ export const getProductsByStore = async (req: Request, res: Response): Promise<a
 			}
 		});
 
-		const productsWithImageUrls = products.map(product => ({
+		const productsWithImageUrls = await Promise.all(products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(productsWithImageUrls);
 	} catch (err) {
@@ -235,13 +272,13 @@ export const getProductsBySale = async (req: Request, res: Response): Promise<an
 			}
 		});
 
-		const productsWithImageUrls = products.map(product => ({
+		const productsWithImageUrls = await Promise.all(products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(productsWithImageUrls);
-	} catch (err) {
+	} catch (err) {	
 		return res.status(500).json({ message: "Error fetching products by sale", error: err });
 	}
 };
@@ -271,10 +308,10 @@ export const getProductsByWishlist = async (req: Request, res: Response): Promis
 			return res.status(404).json({ message: "Wishlist not found" });
 		}
 
-		const wishlistWithImageUrls = wishlist.products.map(product => ({
+		const wishlistWithImageUrls = await Promise.all(wishlist.products.map(async (product: any) => ({
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
-		}));
+			imageUrl: product.imageUrl ? await getExactFileUrl(product.imageUrl) : null
+		})));
 
 		return res.status(200).json(wishlistWithImageUrls);
 	} catch (err) {
@@ -308,7 +345,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<any> =
 
 		const productWithImageUrl = {
 			...product,
-			imageUrl: product.imageUrl ? getExactFileUrl(product.imageUrl) : null
+			imageUrl: product.imageUrl ? await 	getExactFileUrl(product.imageUrl) : null
 		};
 
 		return res.status(200).json(productWithImageUrl);
@@ -357,6 +394,10 @@ export const deleteProduct = async (req: Request, res: Response): Promise<any> =
 		await prisma.product.delete({
 			where: { id }
 		});
+
+		if (product.imageUrl) {
+			await deleteFile(product.imageUrl);
+		}
 
 		return res.status(200).json({
 			message: "Product deleted successfully",

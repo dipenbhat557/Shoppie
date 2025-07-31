@@ -6,7 +6,7 @@ export type PromotionType = 'PERCENTAGE' | 'FIXED_AMOUNT';
 export type PromotionStatus = 'ACTIVE' | 'SCHEDULED' | 'EXPIRED' | 'DISABLED';
 
 export interface Promotion {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   type: PromotionType;
@@ -19,15 +19,15 @@ export interface Promotion {
   couponCode?: string;
   minOrderValue?: number;
   products: {
-    id: number;
+    id: string;
     name: string;
   }[];
   categories: {
-    id: number;
+    id: string;
     name: string;
   }[];
   orders: {
-    id: number;
+    id: string;
     user: {
       firstName: string;
       lastName: string;
@@ -50,7 +50,7 @@ const fetchPromotions = async (): Promise<Promotion[]> => {
   }));
 };
 
-const fetchPromotionById = async (id: number): Promise<Promotion> => {
+const fetchPromotionById = async (id: string): Promise<Promotion> => {
   const { data } = await axiosInstance.get(`/promotions/${id}`);
   return {
     ...data,
@@ -69,7 +69,7 @@ export const usePromotions = () => {
   });
 };
 
-export const usePromotionById = (id: number) => {
+export const usePromotionById = (id: string) => {
   return useQuery({
     queryKey: ['promotions', id],
     queryFn: () => fetchPromotionById(id),

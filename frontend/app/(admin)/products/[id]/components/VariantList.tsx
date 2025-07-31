@@ -2,69 +2,34 @@
 
 import { useState } from "react";
 import { useProductVariants } from "@/fetchers/product/queries";
-import { useCreateVariant, useUpdateVariant, useDeleteVariant } from "@/fetchers/product/mutation";
-import { useProductOptionGroups } from "@/fetchers/product/queries";
+import { useDeleteVariant } from "@/fetchers/product/mutation";
 import Image from "next/image";
-import { Plus, X, Edit2, Save, Upload, AlertTriangle } from "lucide-react";
+import { Plus, X, Package, Search, Edit2, Trash2, AlertTriangle } from "lucide-react";
 import { AddVariant } from "./AddVariant";
 
-interface VariantFormData {
-  sku: string;
-  price: number;
-  stock: number;
-  storeId?: number;
-  optionIds: number[];
-  images: File[];
+interface VariantListProps {
+  productId: string;
+  onVariantSelect: (variantId: string) => void;
 }
 
-export function VariantList({ productId }: { productId: string }) {
+export function VariantList({ productId, onVariantSelect }: VariantListProps) {
   const [showAddVariant, setShowAddVariant] = useState(false);
-  const { data: variants, isLoading } = useProductVariants(parseInt(productId));
-  const { data: optionGroups } = useProductOptionGroups();
-  const createVariant = useCreateVariant();
-  const updateVariant = useUpdateVariant();
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data: variants, isLoading } = useProductVariants(productId);
   const deleteVariant = useDeleteVariant();
 
-  const [editingVariant, setEditingVariant] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState<VariantFormData>({
-    sku: "",
-    price: 0,
-    stock: 0,
-    optionIds: [],
-    images: []
+  const filteredVariants = variants?.filter(variant => {
+    if (!searchQuery) return true;
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      variant.sku.toLowerCase().includes(searchLower) ||
+      variant.productOptions.some(opt => 
+        opt.name.toLowerCase().includes(searchLower)
+      )
+    );
   });
-  const [selectedImages, setSelectedImages] = useState<{ [key: number]: File[] }>({});
 
-  const handleSave = async () => {
-    try {
-      if (editingVariant) {
-        await updateVariant.mutateAsync({
-          id: editingVariant,
-          data: {
-            ...editForm,
-            productId: parseInt(productId)
-          }
-        });
-      } else {
-        await createVariant.mutateAsync({
-          ...editForm,
-          productId: parseInt(productId)
-        });
-      }
-      setEditingVariant(null);
-      setEditForm({
-        sku: "",
-        price: 0,
-        stock: 0,
-        optionIds: [],
-        images: []
-      });
-    } catch (error) {
-      // Error handled by mutation
-    }
-  };
-
-  const handleDelete = async (variantId: number) => {
+  const handleDelete = async (variantId: string) => {
     try {
       await deleteVariant.mutateAsync(variantId);
     } catch (error) {
@@ -73,198 +38,168 @@ export function VariantList({ productId }: { productId: string }) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFC633]"></div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <div className="space-y-6 p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+    <div className="space-y-6 p-6">
+      {/* Header and Search */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
           <h3 className="text-lg font-semibold text-gray-900">Product Variants</h3>
+        </div>
+        <button
+          onClick={() => setShowAddVariant(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666]"
+        >
+          <Plus className="w-4 h-4" />
+          Add Variant
+        </button>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="Search variants..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50"
+        />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+      </div>
+
+      {/* Variants Table */}
+      {filteredVariants?.length && filteredVariants.length > 0 ? (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th className="px-6 py-4">Variant</th>
+                <th className="px-6 py-4">SKU</th>
+                <th className="px-6 py-4">Price</th>
+                <th className="px-6 py-4">Stock</th>
+                <th className="px-6 py-4">Options</th>
+                <th className="px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {filteredVariants.map((variant) => (
+                <tr
+                  key={variant.id}
+                  className="hover:bg-gray-50 transition-colors group"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-lg bg-gray-100 relative overflow-hidden">
+                        {variant.images?.length > 0 ? (
+                          <Image
+                            src={variant.images[0]}
+                            alt={variant.sku}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                        )}
+                      </div>
+                      <div 
+                        className="cursor-pointer"
+                        onClick={() => onVariantSelect(variant.id)}
+                      >
+                        <div className="font-medium text-gray-900 flex items-center gap-2 group-hover:text-[#FFC633]">
+                          Variant #{variant.id.slice(-4)}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {variant.productOptions.map(opt => opt.name).join(" / ")}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-gray-600">{variant.sku}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="font-medium">${variant.price.toFixed(2)}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className={`font-medium ${
+                        variant.stock < 10 ? 'text-yellow-600' : 'text-gray-900'
+                      }`}>
+                        {variant.stock}
+                      </span>
+                      {variant.stock < 10 && (
+                        <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-wrap gap-2">
+                      {variant.productOptions.map((option) => (
+                        <span
+                          key={option.id}
+                          className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs"
+                        >
+                          {option.name}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onVariantSelect(variant.id);
+                        }}
+                        className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      >
+                        <Edit2 className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm("Are you sure you want to delete this variant?")) {
+                            handleDelete(variant.id);
+                          }
+                        }}
+                        className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-500" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+          <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No Variants Found
+          </h3>
+          <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+            {searchQuery
+              ? "No variants match your search criteria."
+              : "Create variants to offer different options for this product."}
+          </p>
           <button
             onClick={() => setShowAddVariant(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666]"
           >
             <Plus className="w-4 h-4" />
             Add Variant
           </button>
         </div>
-
-        {/* Variants Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {variants?.map((variant) => (
-            <div
-              key={variant.id}
-              className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden"
-            >
-              {/* Image Gallery */}
-              <div className="relative h-48 bg-gray-50">
-                {variant.images.length > 0 ? (
-                  <Image
-                    src={variant.images[0] || ""}
-                    alt={variant.sku}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <Upload className="w-8 h-8 text-gray-400" />
-                  </div>
-                )}
-              </div>
-
-              {editingVariant === variant.id ? (
-                <div className="p-4 space-y-4">
-                  <input
-                    type="text"
-                    value={editForm.sku}
-                    onChange={(e) => setEditForm({ ...editForm, sku: e.target.value })}
-                    placeholder="SKU"
-                    className="w-full px-3 py-2 border rounded-lg"
-                  />
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <input
-                        type="number"
-                        value={editForm.price}
-                        onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                        placeholder="Price"
-                        className="w-full px-3 py-2 border rounded-lg"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="number"
-                        value={editForm.stock}
-                        onChange={(e) => setEditForm({ ...editForm, stock: Number(e.target.value) })}
-                        placeholder="Stock"
-                        className="w-full px-3 py-2 border rounded-lg"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Option Groups */}
-                  {optionGroups?.map((group: any) => (
-                    <div key={group.id}>
-                      <label className="block text-sm font-medium mb-1">{group.name}</label>
-                      <select
-                        value={editForm.optionIds.find((id) => 
-                          group.productOptions.some((opt: any) => opt.id === id)
-                        )}
-                        onChange={(e) => {
-                          const newOptionIds = editForm.optionIds.filter((id) =>
-                            !group.productOptions.some((opt: any) => opt.id === id)
-                          );
-                          if (e.target.value) {
-                            newOptionIds.push(Number(e.target.value));
-                          }
-                          setEditForm({ ...editForm, optionIds: newOptionIds });
-                        }}
-                        className="w-full px-3 py-2 border rounded-lg"
-                      >
-                        <option value="">Select {group.name}</option>
-                        {group.productOptions.map((option: any) => (
-                          <option key={option.id} value={option.id}>
-                            {option.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  ))}
-
-                  {/* Image Upload */}
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Images</label>
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={(e) => {
-                        const files = Array.from(e.target.files || []);
-                        setEditForm({ ...editForm, images: files });
-                      }}
-                      className="w-full"
-                    />
-                  </div>
-
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => setEditingVariant(null)}
-                      className="px-4 py-2 text-gray-600 hover:text-gray-800"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSave}
-                      className="px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666]"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">{variant.sku}</h4>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          setEditingVariant(variant.id);
-                          setEditForm({
-                            sku: variant.sku,
-                            price: variant.price,
-                            stock: variant.stock,
-                            optionIds: variant.productOptions.map((opt) => opt.id),
-                            images: []
-                          });
-                        }}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(variant.id)}
-                        className="text-red-400 hover:text-red-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Price</span>
-                      <span className="font-medium">${variant.price}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Stock</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{variant.stock}</span>
-                        {variant.stock < 10 && (
-                          <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {variant.productOptions.map((option) => (
-                      <span
-                        key={option.id}
-                        className="px-2 py-1 bg-gray-100 rounded-full text-sm text-gray-600"
-                      >
-                        {option.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
 
       {showAddVariant && (
         <AddVariant
@@ -272,6 +207,6 @@ export function VariantList({ productId }: { productId: string }) {
           onClose={() => setShowAddVariant(false)}
         />
       )}
-    </>
+    </div>
   );
 }

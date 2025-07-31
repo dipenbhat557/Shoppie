@@ -16,10 +16,10 @@ import { Plus } from "lucide-react";
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
   description: z.string().min(1, "Description is required"),
-  brandId: z.string().min(1, "Brand is required").transform(val => parseInt(val, 10)),
-  categoryId: z.string().min(1, "Category is required").transform(val => parseInt(val, 10)),
-  saleId: z.string().optional().transform(val => val ? parseInt(val, 10) : undefined),
-  image: z.any().optional(), // Add this field
+  brandId: z.string().min(1, "Brand is required"),
+  categoryId: z.string().min(1, "Category is required"),
+  saleId: z.string().optional(),
+  image: z.any().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -48,7 +48,7 @@ export function ProductInfo() {
   const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
 
   const addOptionGroup = () => {
-    setOptionGroups(prev => [...prev, { name: '', options: [''] }]);
+    setOptionGroups(prev => [...prev, { name: '', options: [] }]); // Initialize with empty options array
   };
 
   const removeOptionGroup = (groupIndex: number) => {
@@ -282,7 +282,7 @@ export function ProductInfo() {
         </div>
       </div>
 
-      {/* Option Groups Section */}
+      {/* Option Groups Section - Updated UI */}
       <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
@@ -301,47 +301,53 @@ export function ProductInfo() {
 
         <div className="space-y-6">
           {optionGroups.map((group, groupIndex) => (
-            <div key={groupIndex} className="border rounded-lg p-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <input
-                  type="text"
-                  value={group.name}
-                  onChange={(e) => updateGroupName(groupIndex, e.target.value)}
-                  placeholder="Option Group Name (e.g., Size, Color)"
-                  className="flex-1 px-3 py-2 border rounded-lg mr-2"
-                />
+            <div key={groupIndex} className="border rounded-lg p-6 space-y-4 bg-gray-50">
+              {/* Option Group Header */}
+              <div className="flex items-center justify-between pb-4 border-b">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={group.name}
+                    onChange={(e) => updateGroupName(groupIndex, e.target.value)}
+                    placeholder="Option Group Name (e.g., Size, Color)"
+                    className="w-full px-4 py-2 bg-white border rounded-lg focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50"
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={() => removeOptionGroup(groupIndex)}
-                  className="text-red-500 hover:text-red-600"
+                  className="ml-2 p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="space-y-2">
+              {/* Options List */}
+              <div className="space-y-3">
                 {group.options.map((option, optionIndex) => (
                   <div key={optionIndex} className="flex gap-2">
                     <input
                       type="text"
                       value={option}
                       onChange={(e) => updateOptionValue(groupIndex, optionIndex, e.target.value)}
-                      placeholder={`Option ${optionIndex + 1}`}
-                      className="flex-1 px-3 py-2 border rounded-lg"
+                      placeholder={`Option value (e.g., Small, Red)`}
+                      className="flex-1 px-4 py-2 bg-white border rounded-lg focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50"
                     />
                     <button
                       type="button"
                       onClick={() => removeOption(groupIndex, optionIndex)}
-                      className="text-red-500 hover:text-red-600"
+                      className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
+
+                {/* Add Option Button */}
                 <button
                   type="button"
                   onClick={() => addOption(groupIndex)}
-                  className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                  className="mt-2 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Add Option

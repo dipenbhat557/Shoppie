@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
-  parentCategoryId: number | null;
+  parentCategoryId: string | null;
   subCategories?: Category[];
 }
 
@@ -15,7 +15,7 @@ const fetchCategories = async (): Promise<Category[]> => {
   return data;
 };
 
-const fetchCategoryById = async (id: number): Promise<Category> => {
+const fetchCategoryById = async (id: string): Promise<Category> => {
   const { data } = await axiosInstance.get(`/categories/${id}`);
   return data;
 };
@@ -28,7 +28,7 @@ export const useCategories = () => {
   });
 };
 
-export const useCategoryById = (id: number) => {
+export const useCategoryById = (id: string) => {
   return useQuery({
     queryKey: ['categories', id],
     queryFn: () => fetchCategoryById(id),
@@ -38,7 +38,7 @@ export const useCategoryById = (id: number) => {
 
 // Helper function to organize categories into a tree structure
 export const organizeCategoriesIntoTree = (categories: Category[]): Category[] => {
-  const categoryMap = new Map<number, Category>();
+  const categoryMap = new Map<string, Category>();
   const rootCategories: Category[] = [];
 
   // First pass: Create a map of all categories

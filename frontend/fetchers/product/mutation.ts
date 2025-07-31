@@ -1,4 +1,3 @@
-// frontend/fetchers/product/mutation.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
@@ -7,10 +6,10 @@ import { Product, ProductVariant } from "./queries";
 export interface CreateProductData {
     name: string;
     description: string;
-    categoryId: number;
-    brandId: number;
-    saleId?: number;
-    image?: File; // Add this field
+    categoryId: string;
+    brandId: string;
+    saleId?: string;
+    image?: File;
     optionGroups: {
         name: string;
         options: string[];
@@ -55,12 +54,12 @@ export const useCreateProduct = () => {
 };
 
 export interface CreateVariantData {
-  productId: number;
+  productId: string;
   sku: string;
   price: number;
   stock: number;
-  storeId?: number;
-  optionIds: number[];
+  storeId?: string;
+  optionIds: string[];
   images: File[];
 }
 
@@ -78,9 +77,6 @@ export const useCreateVariant = () => {
       data.optionIds.forEach(id => formData.append("optionIds[]", id.toString()));
       data.images.forEach(file => formData.append("images", file));
 
-      console.log("formData", formData.entries().forEach(([key, value]) => {
-        console.log(key, value);
-      }));
       const { data: response } = await axiosInstance.post<ProductVariant>(
         "/product-variants",
         formData,
@@ -103,7 +99,7 @@ export const useUpdateProduct = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ id, data }: { id: number; data: Partial<CreateProductData> }) => {
+        mutationFn: async ({ id, data }: { id: string; data: Partial<CreateProductData> }) => {
             const { data: response } = await axiosInstance.put<Product>(`/products/${id}`, data);
             return response;
         },
@@ -122,7 +118,7 @@ export const useDeleteProduct = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: number) => {
+        mutationFn: async (id: string) => {
             await axiosInstance.delete(`/products/${id}`);
         },
         onSuccess: () => {
@@ -139,13 +135,13 @@ export const useUpdateVariant = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ id, data }: { id: number; data: Partial<CreateVariantData> }) => {
+        mutationFn: async ({ id, data }: { id: string; data: Partial<CreateVariantData> }) => {
             const formData = new FormData();
             Object.entries(data).forEach(([key, value]) => {
                 if (key === 'images') {
                     (value as File[]).forEach(file => formData.append('images', file));
                 } else if (key === 'optionIds') {
-                    (value as number[]).forEach(id => formData.append('optionIds[]', id.toString()));
+                    (value as string[]).forEach(id => formData.append('optionIds[]', id));
                 } else {
                     formData.append(key, value?.toString() || '');
                 }
@@ -168,7 +164,7 @@ export const useDeleteVariant = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: number) => {
+        mutationFn: async (id: string) => {
             await axiosInstance.delete(`/product-variants/${id}`);
         },
         onSuccess: () => {

@@ -44,7 +44,7 @@ type PromotionType = "PERCENTAGE" | "FIXED_AMOUNT";
 type PromotionStatus = "ACTIVE" | "SCHEDULED" | "EXPIRED" | "DISABLED";
 
 interface Promotion {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   type: PromotionType;
@@ -57,15 +57,15 @@ interface Promotion {
   couponCode?: string;
   minOrderValue?: number;
   products: {
-    id: number;
+    id: string;
     name: string;
   }[];
   categories: {
-    id: number;
+    id: string;
     name: string;
   }[];
   orders: {
-    id: number;
+    id: string;
     user: {
       firstName: string;
       lastName: string;
@@ -86,8 +86,8 @@ interface NewPromotion {
   usageLimit?: number;
   couponCode?: string;
   minOrderValue?: number;
-  productIds: number[];
-  categoryIds: number[];
+  productIds: string[];
+  categoryIds: string[];
 }
 
 const statusColors = {
@@ -105,7 +105,7 @@ const StatusIcon = ({ status }: { status: keyof typeof statusColors }) => {
 // Mock data
 const mockPromotions: Promotion[] = [
   {
-    id: 1,
+    id: "1",
     name: "Summer Sale 2024",
     description: "Get amazing discounts on summer collection",
     type: "PERCENTAGE",
@@ -117,19 +117,19 @@ const mockPromotions: Promotion[] = [
     usedCount: 145,
     minOrderValue: 50,
     products: [
-      { id: 1, name: "Summer T-Shirt" },
-      { id: 2, name: "Beach Shorts" },
+      { id: "1", name: "Summer T-Shirt" },
+      { id: "2", name: "Beach Shorts" },
     ],
     categories: [
-      { id: 1, name: "Summer Wear" },
-      { id: 2, name: "Beach Collection" },
+      { id: "1", name: "Summer Wear" },
+      { id: "2", name: "Beach Collection" },
     ],
     orders: [],
     createdAt: new Date("2024-05-15"),
     updatedAt: new Date("2024-05-15"),
   },
   {
-    id: 2,
+    id: "2",
     name: "First Purchase Discount",
     description: "Special discount for new customers",
     type: "FIXED_AMOUNT",
@@ -148,7 +148,7 @@ const mockPromotions: Promotion[] = [
     updatedAt: new Date("2024-01-01"),
   },
   {
-    id: 3,
+      id: "3",
     name: "Flash Sale - 50% Off",
     description: "Limited time mega discount on selected items",
     type: "PERCENTAGE",
@@ -159,8 +159,8 @@ const mockPromotions: Promotion[] = [
     usageLimit: 500,
     usedCount: 0,
     products: [
-      { id: 3, name: "Premium Watch" },
-      { id: 4, name: "Designer Bag" },
+      { id: "3", name: "Premium Watch" },
+      { id: "4", name: "Designer Bag" },
     ],
     categories: [],
     orders: [],
@@ -168,7 +168,7 @@ const mockPromotions: Promotion[] = [
     updatedAt: new Date("2024-06-15"),
   },
   {
-    id: 4,
+    id: "4",
     name: "Holiday Bundle",
     description: "Special holiday season discounts",
     type: "PERCENTAGE",
@@ -182,15 +182,15 @@ const mockPromotions: Promotion[] = [
     minOrderValue: 100,
     products: [],
     categories: [
-      { id: 3, name: "Winter Collection" },
-      { id: 4, name: "Accessories" },
+      { id: "3", name: "Winter Collection" },
+      { id: "4", name: "Accessories" },
     ],
     orders: [],
     createdAt: new Date("2023-11-15"),
     updatedAt: new Date("2024-01-01"),
   },
   {
-    id: 5,
+    id: "5",
     name: "Clearance Sale",
     description: "Up to 70% off on last season items",
     type: "PERCENTAGE",
@@ -201,7 +201,7 @@ const mockPromotions: Promotion[] = [
     usageLimit: undefined,
     usedCount: 432,
     products: [],
-    categories: [{ id: 5, name: "Last Season" }],
+    categories: [{ id: "5", name: "Last Season" }],
     orders: [],
     createdAt: new Date("2024-02-15"),
     updatedAt: new Date("2024-04-01"),

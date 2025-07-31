@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   description: string;
   imageUrl?: string; // Add this field
   sale?: {
-    id: number;
+    id: string;
     description: string;
     startDate: Date;
     endDate: Date;
@@ -16,12 +16,12 @@ export interface Product {
     imageUrl: string;
   };
   brand: {
-    id: number;
+    id: string;
     name: string;
     logoUrl: string;
   };
   category: {
-    id: number;
+    id: string;
     name: string;
     imageUrl: string;
   };
@@ -30,39 +30,44 @@ export interface Product {
 }
 
 export interface ProductVariant {
-  id: number;
+  id: string;
   sku: string;
   price: number;
   stock: number;
-  productId: number;
+  productId: string;
   productOptions: ProductOption[];
   store?: {
-    id: number;
+    id: string;
     name: string;
     location: {
       city: string;
       state: string;
     };
   };
+  product: {
+    id: string;
+    name: string;
+    description: string;
+  };
   images: string[];
 }
 
 export interface ProductOption {
-  id: number;
+  id: string;
   name: string;
   productOptionGroup: {
-    id: number;
+    id: string;
     name: string;
   };
 }
 
 export interface Review {
-  id: number;
+  id: string;
   rating: number;
   comment?: string;
   createdAt: Date;
   user: {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     profileUrl: string;
@@ -70,9 +75,9 @@ export interface Review {
 }
 
 export const useProducts = (filters?: {
-  categoryId?: number;
-  brandId?: number;
-  saleId?: number;
+  categoryId?: string;
+  brandId?: string;
+  saleId?: string;
 }) => {
   return useQuery({
     queryKey: ["products", filters],
@@ -99,7 +104,7 @@ export const useProduct = (id: string) => {
   });
 };
 
-export const useProductVariants = (productId: number) => {
+export const useProductVariants = (productId: string) => {
   return useQuery({
     queryKey: ["product-variants", productId],
     queryFn: async () => {
@@ -121,7 +126,18 @@ export const useProductOptionGroups = (productId: string) => {
   });
 };
 
-export const useProductReviews = (productId: number) => {
+export const useProductVariant = (variantId: string) => {
+  return useQuery({
+    queryKey: ["product-variant", variantId],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get<ProductVariant>(`/product-variants/${variantId}`);
+      return data;
+    },
+    enabled: !!variantId,
+  });
+};
+
+export const useProductReviews = (productId: string) => {
   return useQuery({
     queryKey: ["product-reviews", productId],
     queryFn: async () => {
@@ -153,8 +169,8 @@ export const useCategories = () => {
 };
 
 export interface ProductOptionGroup {
-  id: number;
+  id: string;
   name: string;
-  productId: number;
+  productId: string;
   productOptions: ProductOption[];
 } 

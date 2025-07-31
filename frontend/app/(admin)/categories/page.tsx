@@ -13,7 +13,7 @@ import Image from 'next/image'
 export default function CategoriesPage() {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-  const [selectedParentId, setSelectedParentId] = useState<number | null>(null)
+  const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
   const [name, setName] = useState('')
   const [image, setImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState('')
@@ -190,14 +190,17 @@ export default function CategoriesPage() {
                 </label>
                 <select
                   value={selectedParentId || ''}
-                  onChange={(e) => setSelectedParentId(Number(e.target.value) || null)}
+                  onChange={(e) => setSelectedParentId(e.target.value || null)}
                   className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FFC633]"
                 >
                   <option value="">None</option>
                   {categories?.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
+                    // Don't show the current category in the parent options to prevent circular reference
+                    selectedCategory?.id !== category.id && (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    )
                   ))}
                 </select>
               </div>

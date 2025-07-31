@@ -13,12 +13,12 @@ interface CreatePromotionData {
   usageLimit?: number;
   couponCode?: string;
   minOrderValue?: number;
-  productIds?: number[];
-  categoryIds?: number[];
+  productIds?: string[];
+  categoryIds?: string[];
 }
 
 interface UpdatePromotionData extends Partial<CreatePromotionData> {
-  id: number;
+  id: string;
   status?: PromotionStatus;
 }
 
@@ -33,7 +33,7 @@ const updatePromotion = async ({ id, ...data }: UpdatePromotionData) => {
   return response;
 };
 
-const deletePromotion = async (id: number) => {
+const deletePromotion = async (id: string) => {
   await axiosInstance.delete(`/promotions/${id}`);
   return id;
 };

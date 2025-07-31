@@ -55,10 +55,10 @@ export const getAllCategories = async (
       },
     });
 
-    const formattedCategories = categories.map((category: any) => ({
+    const formattedCategories = await Promise.all(categories.map(async (category: any) => ({
       ...category,
-      imageUrl: category.imageUrl ? getExactFileUrl(category.imageUrl) : null,
-    }));
+      imageUrl: category.imageUrl ? await getExactFileUrl(category.imageUrl) : null,
+    })));
 
     return res.status(200).json(formattedCategories);
   } catch (err) {
@@ -87,7 +87,7 @@ export const getCategoryById = async (
 
     const formattedCategory = {
       ...category,
-      imageUrl: category.imageUrl ? getExactFileUrl(category.imageUrl) : null,
+      imageUrl: category.imageUrl ? await getExactFileUrl(category.imageUrl) : null,
     };
 
     return res.status(200).json(formattedCategory);
@@ -143,8 +143,7 @@ export const deleteCategory = async (
     const { id } = req.params;
     const category = await prisma.category.delete({
       where: { id },
-    });
-    console.log(category);
+	});
 
     if (category.imageUrl) {
       await deleteFile(category.imageUrl);

@@ -5,7 +5,7 @@ import { useProductReviews } from "@/fetchers/product/queries";
 import { Star, Search, Flag, ThumbsUp, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
-export function ReviewsList({ productId }: { productId: number }) {
+export function ReviewsList({ productId }: { productId: string }) {
   const { data: reviews, isLoading } = useProductReviews(productId);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"recent" | "rating" | "helpful">("recent");
@@ -122,7 +122,7 @@ export function ReviewsList({ productId }: { productId: number }) {
               <div className="flex items-start gap-4">
                 <div className="relative h-10 w-10 rounded-full overflow-hidden">
                   <Image
-                    src={review.user.avatarUrl}
+                    src={review.user.profileUrl}
                     alt={`${review.user.firstName} ${review.user.lastName}`}
                     fill
                     className="object-cover"

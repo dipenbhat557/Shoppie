@@ -23,7 +23,7 @@ export const ProductList = () => {
   const router = useRouter();
   const { data: products, isLoading } = useProducts();
   const deleteProduct = useDeleteProduct();
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -38,7 +38,7 @@ export const ProductList = () => {
     );
   });
 
-  const toggleProductSelection = (productId: number) => {
+  const toggleProductSelection = (productId: string) => {
     setSelectedProducts((prev) =>
       prev.includes(productId)
         ? prev.filter((id) => id !== productId)
@@ -54,11 +54,11 @@ export const ProductList = () => {
     );
   };
 
-  const handleProductClick = (productId: number) => {
+  const handleProductClick = (productId: string) => {
     router.push(`/products/${productId}`);
   };
 
-  const handleDeleteProduct = async (productId: number) => {
+  const handleDeleteProduct = async (productId: string) => {
     try {
       await deleteProduct.mutateAsync(productId);
     } catch (error) {
@@ -152,7 +152,7 @@ export const ProductList = () => {
         </div>
 
         {/* Products Table or Empty State */}
-        {filteredProducts?.length > 0 ? (
+        {filteredProducts && filteredProducts.length > 0 ? (
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
