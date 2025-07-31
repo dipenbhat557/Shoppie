@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import logo from "@/public/images/dashboard/logo.png";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -17,7 +17,9 @@ import {
   Wallet2Icon,
   User,
   MessageSquare,
+  Store,
 } from "lucide-react";
+import { CommandMenu } from "./CommandMenu";
 
 const navigationItems = [
   {
@@ -75,7 +77,13 @@ const navigationItems = [
     icon: MessageSquare,
   },
   {
-    id: 9,
+    id: 10,
+    name: "Stores",
+    link: "/store",
+    icon: Store,
+  },
+  {
+    id: 11,
     name: "User Management",
     link: "/user",
     icon: User,
@@ -86,24 +94,26 @@ export const DesktopSidebar = () => {
   const pathname = usePathname();
   const [active, setActive] = useState(pathname);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const router = useRouter();
 
   return (
     <div
       className={`hidden md:flex md:flex-col bg-white border-r border-gray-200 h-screen sticky top-0 transition-all duration-300 ease-in-out ${
-        isCollapsed ? "w-20" : "w-72"
+        isCollapsed ? "w-20" : "w-full"
       }`}
     >
       <div className="flex items-center justify-between px-5 py-6 border-b border-gray-200">
         <div
-          className={`flex items-center ${
+          className={`flex items-center cursor-pointer ${
             isCollapsed ? "justify-center w-full" : ""
           }`}
+          onClick={() => router.push("/dashboard")}
         >
           <Image
             src={logo}
             alt="logo"
-            width={isCollapsed ? 32 : 40}
-            height={isCollapsed ? 32 : 40}
+            width={isCollapsed ? 36 : 44}
+            height={isCollapsed ? 36 : 44}
             className="transition-all duration-300"
           />
           {!isCollapsed && (
@@ -124,6 +134,13 @@ export const DesktopSidebar = () => {
           )}
         </button>
       </div>
+
+      {/* Command Menu */}
+      {!isCollapsed && (
+        <div className="px-4 py-5">
+          <CommandMenu />
+        </div>
+      )}
 
       <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
         {navigationItems.map((item) => {
@@ -146,12 +163,12 @@ export const DesktopSidebar = () => {
               `}
             >
               <Icon
-                className={`w-5 h-5 ${
+                className={`w-6 h-6 ${
                   isActive ? "text-gray-900" : "text-gray-500"
                 }`}
               />
               {!isCollapsed && (
-                <span className="ml-3 text-sm font-medium">{item.name}</span>
+                <span className="ml-3 text-sm md:text-base font-medium">{item.name}</span>
               )}
               {isCollapsed && <span className="sr-only">{item.name}</span>}
             </Link>
@@ -165,7 +182,7 @@ export const DesktopSidebar = () => {
             isCollapsed ? "justify-center" : "space-x-3"
           }`}
         >
-          <div className="w-9 h-9 rounded-full bg-[#FFC633] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-[#FFC633] flex items-center justify-center">
             <span className="text-sm font-medium text-gray-900">
               {!isCollapsed ? "AB" : "A"}
             </span>

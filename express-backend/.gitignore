@@ -2,3 +2,13 @@ node_modules
 # Keep environment variables out of version control
 .env
 dist
+.env.production
+docker-compose.ec2.yml
+deploy-ec2.sh
+.dockerignore.ec2
+.env.production
+docker-compose.ec2.yml
+deploy-ec2.sh
+.dockerignore.ec2
+.env.production
+docker-compose.ec2.yml

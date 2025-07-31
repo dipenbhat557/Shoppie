@@ -294,33 +294,24 @@ export function PromotionsList() {
         {/* Header */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
-              <div className="h-8 w-2 bg-[#FFC633] rounded-full mr-3" />
-              Promotions
-              <span className="ml-2 text-sm font-normal text-gray-500">
-                ({promotions.length} total)
-              </span>
-            </h2>
-
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1 md:min-w-[300px]">
-                <input
-                  type="text"
-                  placeholder="Search promotions..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50"
-                />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              </div>
-              <button
-                onClick={() => setShowModal(true)}
-                className="px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg font-medium hover:bg-[#FFD666] transition-colors flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Create new promotion
-              </button>
+            <div className="relative flex-1 md:min-w-[300px]">
+              <input
+                type="text"
+                placeholder="Search promotions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-[#FFC633] focus:ring focus:ring-[#FFC633] focus:ring-opacity-50"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
+
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg font-medium hover:bg-[#FFD666] transition-colors flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Create new promotion
+            </button>
           </div>
         </div>
 

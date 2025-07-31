@@ -12,7 +12,7 @@ import total from "@/public/images/dashboard/total.png";
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-8">
+      <div className="p-4 sm:p-6 lg:p-0 max-w-[1600px] mx-auto space-y-8">
         {/* Mobile Header */}
         <div className="flex items-center justify-between md:hidden">
           <MobileSidebar />
