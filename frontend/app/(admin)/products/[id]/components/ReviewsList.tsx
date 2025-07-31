@@ -146,7 +146,7 @@ export function ReviewsList({ productId }: { productId: string }) {
                   </div>
                   <p className="mt-2 text-gray-600">{review.comment}</p>
                   
-                  {review.reply && (
+                  {/* {review.reply && (
                     <div className="mt-4 pl-4 border-l-2 border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-gray-900">Store Response</span>
@@ -157,12 +157,12 @@ export function ReviewsList({ productId }: { productId: string }) {
                       </div>
                       <p className="mt-1 text-gray-600">{review.reply.comment}</p>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-700">
+                {/* <button className="flex items-center gap-1 text-gray-500 hover:text-gray-700">
                   <ThumbsUp className="w-4 h-4" />
                   <span className="text-sm">{review.helpfulCount}</span>
                 </button>
@@ -173,7 +173,7 @@ export function ReviewsList({ productId }: { productId: string }) {
                   <button className="text-gray-500 hover:text-gray-700">
                     <MessageCircle className="w-4 h-4" />
                   </button>
-                )}
+                )} */}
               </div>
             </div>
           </div>
