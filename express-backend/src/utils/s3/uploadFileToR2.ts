@@ -47,13 +47,6 @@ export const uploadFileToR2 = async (file: Express.Multer.File, bucketName = 'pr
     const randomId = uuidv4();
     let fileKey = randomId;
 
-    if (acceptedFiles.includes(file.mimetype) && file.originalname) {
-      const fileExt = file.originalname.split('.').pop()?.toLowerCase();
-      if (fileExt) {
-        fileKey = `${randomId}.${fileExt}`;
-      }
-    }
-
     const putObjectCommand = new PutObjectCommand({
       Bucket: bucketName,
       Key: fileKey,
@@ -104,7 +97,7 @@ export const getPublicUrl = (key: string): string => {
 export const getSignedUrlForR2 = async (key: string, bucketName = 'product-images'): Promise<string> => {
   try {
     const fileKey = getKeyFromPath(key);
-    
+
     const command = new GetObjectCommand({
       Bucket: bucketName,
       Key: fileKey,

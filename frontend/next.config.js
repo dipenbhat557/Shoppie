@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "imgs.search.brave.com",
       },
+      {
+        protocol: "https",
+        hostname: "05867c4768776fda3a03d4e2e5e54d46.r2.cloudflarestorage.com",
+      }
     ],
   },
 }

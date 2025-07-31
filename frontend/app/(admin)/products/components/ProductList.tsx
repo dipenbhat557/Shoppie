@@ -151,137 +151,157 @@ export const ProductList = () => {
           )}
         </div>
 
-        {/* Products Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="px-6 py-4">
-                  <input
-                    type="checkbox"
-                    checked={selectedProducts.length === products?.length}
-                    onChange={toggleAllProducts}
-                    className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
-                  />
-                </th>
-                <th className="px-6 py-4">Product</th>
-                <th className="px-6 py-4">Category</th>
-                <th className="px-6 py-4">Brand</th>
-                <th className="px-6 py-4">Variants</th>
-                <th className="px-6 py-4">Reviews</th>
-                <th className="px-6 py-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {filteredProducts?.map((product) => (
-                <tr
-                  key={product.id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.includes(product.id)}
-                      onChange={() => toggleProductSelection(product.id)}
-                      className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </td>
-                  <td
-                    className="px-6 py-4 cursor-pointer"
-                    onClick={() => handleProductClick(product.id)}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-lg bg-gray-100 relative overflow-hidden">
-                        {product.imageUrl ? (
-                          <Image
-                            src={product.imageUrl}
-                            alt={product.name}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-medium text-gray-900 flex items-center gap-2">
-                          {product.name}
-                          <ExternalLink className="w-4 h-4 text-gray-400" />
-                        </div>
-                        <div className="text-xs text-gray-500 line-clamp-1">
-                          {product.description}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-gray-600">{product.category.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-gray-600">{product.brand.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
-                      {product.variants.length} variants
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs flex items-center gap-1 w-fit">
-                      <Star className="w-3 h-3" />
-                      {product.reviews.length}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleProductClick(product.id);
-                        }}
+        {/* Products Table or Empty State */}
+        {filteredProducts?.length > 0 ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.length === products?.length}
+                        onChange={toggleAllProducts}
+                        className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
+                      />
+                    </th>
+                    <th className="px-6 py-4">Product</th>
+                    <th className="px-6 py-4">Category</th>
+                    <th className="px-6 py-4">Brand</th>
+                    <th className="px-6 py-4">Variants</th>
+                    <th className="px-6 py-4">Reviews</th>
+                    <th className="px-6 py-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {filteredProducts?.map((product) => (
+                    <tr
+                      key={product.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="px-6 py-4">
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts.includes(product.id)}
+                          onChange={() => toggleProductSelection(product.id)}
+                          className="rounded border-gray-300 text-[#FFC633] focus:ring-[#FFC633]"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </td>
+                      <td
+                        className="px-6 py-4 cursor-pointer"
+                        onClick={() => handleProductClick(product.id)}
                       >
-                        <Edit2 className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button
-                        className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteProduct(product.id);
-                        }}
-                      >
-                        <Trash2 className="w-4 h-4 text-red-500" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="h-12 w-12 rounded-lg bg-gray-100 relative overflow-hidden">
+                            {product.imageUrl ? (
+                              <Image
+                                src={product.imageUrl}
+                                alt={product.name}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-medium text-gray-900 flex items-center gap-2">
+                              {product.name}
+                              <ExternalLink className="w-4 h-4 text-gray-400" />
+                            </div>
+                            <div className="text-xs text-gray-500 line-clamp-1">
+                              {product.description}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-600">{product.category.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-600">{product.brand.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                          {product.variants.length} variants
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs flex items-center gap-1 w-fit">
+                          <Star className="w-3 h-3" />
+                          {product.reviews.length}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleProductClick(product.id);
+                            }}
+                          >
+                            <Edit2 className="w-4 h-4 text-gray-600" />
+                          </button>
+                          <button
+                            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteProduct(product.id);
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4 text-red-500" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-        {/* Pagination */}
-        <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-          <div>
-            <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">1</span> to{" "}
-              <span className="font-medium">{filteredProducts?.length || 0}</span> of{" "}
-              <span className="font-medium">{products?.length || 0}</span> results
+            {/* Pagination */}
+            <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+              <div>
+                <p className="text-sm text-gray-700">
+                  Showing <span className="font-medium">1</span> to{" "}
+                  <span className="font-medium">{filteredProducts?.length || 0}</span> of{" "}
+                  <span className="font-medium">{products?.length || 0}</span> results
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-12 px-4">
+            <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+            <p className="text-gray-500 text-lg">
+              {searchQuery
+                ? "No products found matching your search."
+                : "No products found. Add your first product!"}
             </p>
+            <Button 
+              className="bg-[#FFC633] text-gray-900 hover:bg-[#FFD666] mt-4"
+              onClick={() => router.push('/add-product')}
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Add Product
+            </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button className="p-2 border rounded-lg text-gray-600 hover:bg-gray-50">
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
