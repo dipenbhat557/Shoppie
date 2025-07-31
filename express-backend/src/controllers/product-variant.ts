@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
+import { getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createVariant = async (req: Request, res: Response): Promise<any> => {
     try {
         const { productId, price, stock, sku, optionIds, storeId } = req.body;
+
+        console.log("req.body", req.body);
 
         // Validate required fields
         if (!productId || !price || stock === undefined || !sku) {
@@ -21,29 +24,51 @@ export const createVariant = async (req: Request, res: Response): Promise<any> =
 
         // Check if product exists
         const product = await prisma.product.findUnique({
-            where: { id: productId }
+            where: { id: parseInt(productId) }
         });
 
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
 
+        const images = req.files as Express.Multer.File[];
+        let imageUrls: string[] = [];
+        
+        if (images?.length > 0) {
+            imageUrls = await Promise.all(images.map(async (image) => {
+                const url = await uploadToS3(image);
+                return url;
+            }));
+        }
+
+        // Create base data object without storeId
+        const baseData = {
+            sku,
+            productId: parseInt(productId),
+            price: parseInt(price),
+            stock: parseInt(stock),
+            images: imageUrls,
+            ...(optionIds && {
+                productOptions: {
+                    connect: optionIds.map((id: string) => ({ id: parseInt(id) }))
+                }
+            })
+        };
+
+        // Add storeId only if it exists and is valid
+        if (storeId && !isNaN(parseInt(storeId))) {
+            Object.assign(baseData, { storeId: parseInt(storeId) });
+        }
+
         const variant = await prisma.productVariant.create({
-            data: {
-                sku,
-                productId,
-                price,
-                stock,
-                storeId,
-                ...(optionIds && {
-                    productOptions: {
-                        connect: optionIds.map((id: number) => ({ id }))
-                    }
-                })
-            },
+            data: baseData,
             include: {
                 product: true,
-                productOptions: true,
+                productOptions: {
+                    include: {
+                        productOptionGroup: true
+                    }
+                },
                 store: true
             }
         });
@@ -113,7 +138,15 @@ export const getVariantsByProduct = async (req: Request, res: Response): Promise
                 store: true
             }
         });
-        return res.status(200).json(variants);
+
+        const variantsWithImages = variants.map((variant) => {
+            return {
+                ...variant,
+                images: variant.images.map((image: string) => getExactFileUrl(image))
+            }
+        })
+
+        return res.status(200).json(variantsWithImages);
     } catch (err) {
         return res.status(500).json({ message: "Error fetching variants by product", error: err });
     }
@@ -135,6 +168,16 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
             });
         }
 
+        const images = req.files as Express.Multer.File[];
+        let imageUrls: string[] = [];
+        
+        if (images.length > 0) {
+            imageUrls = await Promise.all(images.map(async (image) => {
+                const url = await uploadToS3(image);
+                return url;
+            }));
+        }
+
         const variant = await prisma.productVariant.update({
             where: { id: parseInt(id) },
             data: {
@@ -146,7 +189,8 @@ export const updateVariant = async (req: Request, res: Response): Promise<any> =
                     productOptions: {
                         set: optionIds.map((id: number) => ({ id }))
                     }
-                })
+                }),
+                ...(imageUrls.length > 0 && { images: imageUrls })
             },
             include: {
                 product: true,

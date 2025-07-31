@@ -44,10 +44,7 @@ export interface ProductVariant {
       state: string;
     };
   };
-  images: {
-    id: number;
-    imageUrl: string;
-  }[];
+  images: string[];
 }
 
 export interface ProductOption {
@@ -91,7 +88,7 @@ export const useProducts = (filters?: {
   });
 };
 
-export const useProduct = (id: number) => {
+export const useProduct = (id: string) => {
   return useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
@@ -113,18 +110,16 @@ export const useProductVariants = (productId: number) => {
   });
 };
 
-export const useProductOptionGroups = (categoryId?: number) => {
+export const useProductOptionGroups = (productId: string) => {
   return useQuery({
-    queryKey: ["product-option-groups", categoryId],
+    queryKey: ["product-option-groups", productId],
     queryFn: async () => {
-      const url = categoryId 
-        ? `/product-option-groups/category/${categoryId}`
-        : '/product-option-groups';
-      const { data } = await axiosInstance.get(url);
+      const { data } = await axiosInstance.get<ProductOptionGroup[]>(`/product-option-groups/product/${productId}`);
       return data;
     },
+    enabled: !!productId,
   });
-}; 
+};
 
 export const useProductReviews = (productId: number) => {
   return useQuery({
@@ -135,7 +130,7 @@ export const useProductReviews = (productId: number) => {
     },
     enabled: !!productId,
   });
-}; 
+};
 
 export const useBrands = () => {
   return useQuery({
@@ -155,4 +150,11 @@ export const useCategories = () => {
       return data;
     },
   });
-}; 
+};
+
+export interface ProductOptionGroup {
+  id: number;
+  name: string;
+  productId: number;
+  productOptions: ProductOption[];
+} 

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -22,6 +23,11 @@ const productSchema = z.object({
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
+
+interface OptionGroup {
+  name: string;
+  options: string[];
+}
 
 export function ProductInfo() {
   const createProduct = useCreateProduct();
@@ -39,17 +45,62 @@ export function ProductInfo() {
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
+
+  const addOptionGroup = () => {
+    setOptionGroups(prev => [...prev, { name: '', options: [''] }]);
+  };
+
+  const removeOptionGroup = (groupIndex: number) => {
+    setOptionGroups(prev => prev.filter((_, i) => i !== groupIndex));
+  };
+
+  const addOption = (groupIndex: number) => {
+    setOptionGroups(prev => {
+      const newGroups = [...prev];
+      newGroups[groupIndex].options.push('');
+      return newGroups;
+    });
+  };
+
+  const removeOption = (groupIndex: number, optionIndex: number) => {
+    setOptionGroups(prev => {
+      const newGroups = [...prev];
+      newGroups[groupIndex].options = newGroups[groupIndex].options.filter((_, i) => i !== optionIndex);
+      return newGroups;
+    });
+  };
+
+  const updateGroupName = (groupIndex: number, name: string) => {
+    setOptionGroups(prev => {
+      const newGroups = [...prev];
+      newGroups[groupIndex].name = name;
+      return newGroups;
+    });
+  };
+
+  const updateOptionValue = (groupIndex: number, optionIndex: number, value: string) => {
+    setOptionGroups(prev => {
+      const newGroups = [...prev];
+      newGroups[groupIndex].options[optionIndex] = value;
+      return newGroups;
+    });
+  };
 
   const onSubmit = async (data: ProductFormData) => {
     try {
-      await createProduct.mutateAsync({
+      const response = await createProduct.mutateAsync({
         ...data,
         image: selectedImage || undefined,
+        optionGroups: optionGroups.map(group => ({
+          name: group.name,
+          options: group.options.filter(opt => opt.trim() !== '')
+        }))
       });
       toast.success("Product created successfully");
-      router.push(`/products/${product.id}`);
+      router.push(`/products/${response.id}`);
     } catch (error) {
-      // Error is handled by the mutation
+      // Error handled by mutation
     }
   };
 
@@ -228,6 +279,76 @@ export function ProductInfo() {
               />
             </label>
           </div>
+        </div>
+      </div>
+
+      {/* Option Groups Section */}
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-2">
+            <div className="h-8 w-2 bg-[#FFC633] rounded-full" />
+            <h2 className="text-2xl font-semibold text-gray-800">Product Options</h2>
+          </div>
+          <button
+            type="button"
+            onClick={addOptionGroup}
+            className="flex items-center gap-2 px-4 py-2 bg-[#FFC633] text-gray-900 rounded-lg hover:bg-[#FFD666]"
+          >
+            <Plus className="w-4 h-4" />
+            Add Option Group
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          {optionGroups.map((group, groupIndex) => (
+            <div key={groupIndex} className="border rounded-lg p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <input
+                  type="text"
+                  value={group.name}
+                  onChange={(e) => updateGroupName(groupIndex, e.target.value)}
+                  placeholder="Option Group Name (e.g., Size, Color)"
+                  className="flex-1 px-3 py-2 border rounded-lg mr-2"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeOptionGroup(groupIndex)}
+                  className="text-red-500 hover:text-red-600"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-2">
+                {group.options.map((option, optionIndex) => (
+                  <div key={optionIndex} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={option}
+                      onChange={(e) => updateOptionValue(groupIndex, optionIndex, e.target.value)}
+                      placeholder={`Option ${optionIndex + 1}`}
+                      className="flex-1 px-3 py-2 border rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeOption(groupIndex, optionIndex)}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addOption(groupIndex)}
+                  className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Option
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

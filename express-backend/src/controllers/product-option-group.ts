@@ -3,19 +3,30 @@ import prisma from "../config/prisma";
 
 export const createOptionGroup = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { name } = req.body;
+        const { name, productId } = req.body;
 
-        if (!name) {
+        if (!name || !productId) {
             return res.status(400).json({
-                message: "Name is required for option group"
+                message: "Name and productId are required for option group"
             });
         }
 
+        const product = await prisma.product.findUnique({
+            where: { id: parseInt(productId) }
+        });
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
         const optionGroup = await prisma.productOptionGroup.create({
-            data: { name },
+            data: {
+                name,
+                productId: parseInt(productId)
+            },
             include: {
                 productOptions: true,
-                categories: true
+                product: true
             }
         });
         return res.status(201).json(optionGroup);
@@ -29,7 +40,7 @@ export const getAllOptionGroups = async (_req: Request, res: Response): Promise<
         const optionGroups = await prisma.productOptionGroup.findMany({
             include: {
                 productOptions: true,
-                categories: true
+                product: true
             }
         });
         return res.status(200).json(optionGroups);
@@ -50,7 +61,7 @@ export const getOptionGroupById = async (req: Request, res: Response): Promise<a
             where: { id: parseInt(id) },
             include: {
                 productOptions: true,
-                categories: true
+                product: true
             }
         });
 
@@ -64,30 +75,26 @@ export const getOptionGroupById = async (req: Request, res: Response): Promise<a
     }
 };
 
-export const getByCategory = async (req: Request, res: Response): Promise<any> => {
+export const getByProduct = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { categoryId } = req.params;
+        const { productId } = req.params;
 
-        if (!categoryId || isNaN(parseInt(categoryId))) {
-            return res.status(400).json({ message: "Invalid category ID" });
+        if (!productId || isNaN(parseInt(productId))) {
+            return res.status(400).json({ message: "Invalid product ID" });
         }
 
         const optionGroups = await prisma.productOptionGroup.findMany({
             where: {
-                categories: {
-                    some: {
-                        id: parseInt(categoryId)
-                    }
-                }
+                productId: parseInt(productId)
             },
             include: {
                 productOptions: true,
-                categories: true
+                product: true
             }
         });
         return res.status(200).json(optionGroups);
     } catch (err) {
-        return res.status(500).json({ message: "Error fetching option groups by category", error: err });
+        return res.status(500).json({ message: "Error fetching option groups by product", error: err });
     }
 };
 
@@ -109,7 +116,7 @@ export const updateOptionGroup = async (req: Request, res: Response): Promise<an
             data: { name },
             include: {
                 productOptions: true,
-                categories: true
+                product: true
             }
         });
 
@@ -139,10 +146,10 @@ export const deleteOptionGroup = async (req: Request, res: Response): Promise<an
             return res.status(404).json({ message: "Option group not found" });
         }
 
+        // Delete associated options first
         if (optionGroup.productOptions.length > 0) {
-            return res.status(400).json({
-                message: "Cannot delete option group with associated options",
-                optionCount: optionGroup.productOptions.length
+            await prisma.productOption.deleteMany({
+                where: { productOptionGroupId: parseInt(id) }
             });
         }
 
@@ -151,7 +158,7 @@ export const deleteOptionGroup = async (req: Request, res: Response): Promise<an
         });
 
         return res.status(200).json({
-            message: "Option group deleted successfully",
+            message: "Option group and associated options deleted successfully",
             deletedGroup: {
                 id: optionGroup.id,
                 name: optionGroup.name
@@ -159,73 +166,5 @@ export const deleteOptionGroup = async (req: Request, res: Response): Promise<an
         });
     } catch (err) {
         return res.status(500).json({ message: "Error deleting option group", error: err });
-    }
-};
-
-export const addOptionGroupToCategory = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const { optionGroupId, categoryId } = req.params;
-
-        if (!optionGroupId || isNaN(parseInt(optionGroupId)) || !categoryId || isNaN(parseInt(categoryId))) {
-            return res.status(400).json({ message: "Invalid option group ID or category ID" });
-        }
-
-        // Check if both option group and category exist
-        const [optionGroup, category] = await Promise.all([
-            prisma.productOptionGroup.findUnique({ where: { id: parseInt(optionGroupId) } }),
-            prisma.category.findUnique({ where: { id: parseInt(categoryId) } })
-        ]);
-
-        if (!optionGroup) {
-            return res.status(404).json({ message: "Option group not found" });
-        }
-
-        if (!category) {
-            return res.status(404).json({ message: "Category not found" });
-        }
-
-        const updatedOptionGroup = await prisma.productOptionGroup.update({
-            where: { id: parseInt(optionGroupId) },
-            data: {
-                categories: {
-                    connect: { id: parseInt(categoryId) }
-                }
-            },
-            include: {
-                productOptions: true,
-                categories: true
-            }
-        });
-
-        return res.status(200).json(updatedOptionGroup);
-    } catch (err) {
-        return res.status(500).json({ message: "Error adding option group to category", error: err });
-    }
-};
-
-export const removeOptionGroupFromCategory = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const { optionGroupId, categoryId } = req.params;
-
-        if (!optionGroupId || isNaN(parseInt(optionGroupId)) || !categoryId || isNaN(parseInt(categoryId))) {
-            return res.status(400).json({ message: "Invalid option group ID or category ID" });
-        }
-
-        const updatedOptionGroup = await prisma.productOptionGroup.update({
-            where: { id: parseInt(optionGroupId) },
-            data: {
-                categories: {
-                    disconnect: { id: parseInt(categoryId) }
-                }
-            },
-            include: {
-                productOptions: true,
-                categories: true
-            }
-        });
-
-        return res.status(200).json(updatedOptionGroup);
-    } catch (err) {
-        return res.status(500).json({ message: "Error removing option group from category", error: err });
     }
 };

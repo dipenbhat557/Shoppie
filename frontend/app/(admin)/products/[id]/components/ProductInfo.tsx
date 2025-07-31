@@ -3,110 +3,51 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Edit2, Save, X, Tag, Package, Star } from "lucide-react";
-
-// Interface based on Prisma schema
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  brand: {
-    id: number;
-    name: string;
-    logoUrl: string;
-  };
-  category: {
-    id: number;
-    name: string;
-    imageUrl: string;
-  };
-  sale?: {
-    id: number;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    discount: number;
-    isPercentage: boolean;
-    imageUrl: string;
-  };
-  variants: Array<{
-    id: number;
-    sku: string;
-    price: number;
-    stock: number;
-  }>;
-  reviews: Array<{
-    id: number;
-    rating: number;
-    comment?: string;
-    createdAt: Date;
-  }>;
-}
-
-import { mockProducts } from "@/data/data";
-
-// Mock data matching schema
-const mockProduct: Product = {
-  id: 1,
-  name: "Nike Air Max 270",
-  description: "The Nike Air Max 270 delivers a plush ride for everyday wear.",
-  brand: {
-    id: 1,
-    name: "Nike",
-    logoUrl: mockProducts[0].image,
-  },
-  category: {
-    id: 1,
-    name: "Footwear",
-    imageUrl: mockProducts[0].image,
-  },
-  sale: {
-    id: 1,
-    description: "Summer Sale",
-    startDate: new Date("2024-03-01"),
-    endDate: new Date("2024-03-31"),
-    discount: 20,
-    isPercentage: true,
-    imageUrl: mockProducts[0].image,
-  },
-  variants: [
-    {
-      id: 1,
-      sku: "NK-AM270-BLK-42",
-      price: 149.99,
-      stock: 25,
-    },
-    {
-      id: 2,
-      sku: "NK-AM270-WHT-41",
-      price: 149.99,
-      stock: 15,
-    },
-  ],
-  reviews: [
-    {
-      id: 1,
-      rating: 5,
-      comment: "Great product!",
-      createdAt: new Date("2024-03-15"),
-    },
-    {
-      id: 2,
-      rating: 4,
-      comment: "Good comfort and style",
-      createdAt: new Date("2024-03-14"),
-    },
-  ],
-};
+import { useProduct } from "@/fetchers/product/queries";
+import { useUpdateProduct } from "@/fetchers/product/mutation";
+import { useParams } from "next/navigation";
 
 export function ProductInfo() {
-  const [product, setProduct] = useState(mockProduct);
+  const params = useParams();
+  const productId = parseInt(params.id as string);
+  
+  const { data: product, isLoading } = useProduct(productId);
+  const updateProduct = useUpdateProduct();
   const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState(product);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    description: "",
+  });
 
-  const handleSave = () => {
-    setProduct(editForm);
-    setIsEditing(false);
+  // Initialize edit form when product data is loaded
+  useState(() => {
+    if (product) {
+      setEditForm({
+        name: product.name,
+        description: product.description,
+      });
+    }
+  }, [product]);
+
+  const handleSave = async () => {
+    try {
+      await updateProduct.mutateAsync({
+        id: productId,
+        data: editForm
+      });
+      setIsEditing(false);
+    } catch (error) {
+      // Error handled by mutation
+    }
   };
+
+  if (isLoading || !product) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   // Calculate average rating
   const averageRating =
@@ -128,8 +69,8 @@ export function ProductInfo() {
         <div className="flex items-center gap-4">
           <div className="relative h-16 w-16 rounded-xl overflow-hidden">
             <Image
-              src={product.brand.logoUrl}
-              alt={product.brand.name}
+              src={product.imageUrl || ""}
+              alt={product.name}
               fill
               className="object-cover"
             />

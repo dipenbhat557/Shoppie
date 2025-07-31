@@ -11,6 +11,10 @@ export interface CreateProductData {
     brandId: number;
     saleId?: number;
     image?: File; // Add this field
+    optionGroups: {
+        name: string;
+        options: string[];
+    }[];
 }
 
 export const useCreateProduct = () => {
@@ -29,6 +33,7 @@ export const useCreateProduct = () => {
             if (data.image) {
                 formData.append("image", data.image);
             }
+            formData.append("optionGroups", JSON.stringify(data.optionGroups));
 
             const { data: response } = await axiosInstance.post<Product>("/products",
                 formData,
@@ -49,31 +54,49 @@ export const useCreateProduct = () => {
     });
 };
 
+export interface CreateVariantData {
+  productId: number;
+  sku: string;
+  price: number;
+  stock: number;
+  storeId?: number;
+  optionIds: number[];
+  images: File[];
+}
+
 export const useCreateVariant = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (data: CreateVariantData) => {
-            const formData = new FormData();
-            formData.append("productId", data.productId.toString());
-            formData.append("sku", data.sku);
-            formData.append("price", data.price.toString());
-            formData.append("stock", data.stock.toString());
-            if (data.storeId) formData.append("storeId", data.storeId.toString());
-            data.optionIds.forEach(id => formData.append("optionIds[]", id.toString()));
-            data.images.forEach(file => formData.append("images", file));
+  return useMutation({
+    mutationFn: async (data: CreateVariantData) => {
+      const formData = new FormData();
+      formData.append("productId", data.productId.toString());
+      formData.append("sku", data.sku);
+      formData.append("price", data.price.toString());
+      formData.append("stock", data.stock.toString());
+      if (data.storeId) formData.append("storeId", data.storeId.toString());
+      data.optionIds.forEach(id => formData.append("optionIds[]", id.toString()));
+      data.images.forEach(file => formData.append("images", file));
 
-            const { data: response } = await axiosInstance.post<ProductVariant>("/product-variants", formData);
-            return response;
-        },
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: ["product-variants", variables.productId] });
-            toast.success("Variant created successfully");
-        },
-        onError: (error: any) => {
-            toast.error(error.response?.data?.message || "Failed to create variant");
-        },
-    });
+      console.log("formData", formData.entries().forEach(([key, value]) => {
+        console.log(key, value);
+      }));
+      const { data: response } = await axiosInstance.post<ProductVariant>(
+        "/product-variants",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["product-variants", variables.productId] });
+      queryClient.invalidateQueries({ queryKey: ["product", variables.productId] });
+    },
+  });
 };
 
 export const useUpdateProduct = () => {

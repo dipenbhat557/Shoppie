@@ -56,7 +56,6 @@ model Category {
   parentCategoryId   Int?                @map("parent_category_id")
   subCategories      Category[]          @relation("CategoryToCategory")
   products           Product[]
-  productOptionGroups ProductOptionGroup[] @relation("CategoryToProductOptionGroup")
   
   promotions         Promotion[]
 }
@@ -124,6 +123,24 @@ enum PaymentStatus {
   SUCCESS
 }
 
+// Let’s say you're selling a T-Shirt.
+
+// Product: "Classic T-Shirt"
+
+// Category: "Men > Clothing > T-Shirts"
+
+// Brand: "H&M"
+
+// ProductOptionGroups: "Size", "Color" (linked to the product)
+
+// ProductOptions: "S", "M", "L" (in Size), "Red", "Black" (in Color)
+
+// ProductVariants:
+
+// Variant 1: "Size: M", "Color: Black" → price: $15, SKU: "TSH123-BLK-M"
+
+// Variant 2: "Size: L", "Color: Red" → price: $15, SKU: "TSH123-RED-L"
+
 model Product {
   id          Int             @id @default(autoincrement())
   name        String
@@ -138,7 +155,7 @@ model Product {
   variants    ProductVariant[]
   reviews     Review[]
   wishlists   Wishlist[]
-  // Optional Feature for promotions
+  optionGroups ProductOptionGroup[]
   promotions  Promotion[]
 }
 
@@ -153,8 +170,9 @@ model ProductOption {
 model ProductOptionGroup {
   id             Int             @id @default(autoincrement())
   name           String
+  product        Product         @relation(fields: [productId], references: [id])
+  productId      Int            @map("product_id")
   productOptions ProductOption[]
-  categories     Category[]      @relation("CategoryToProductOptionGroup")
 }
 
 model ProductVariant {

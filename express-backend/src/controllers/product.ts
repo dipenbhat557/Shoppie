@@ -4,7 +4,7 @@ import { getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createProduct = async (req: Request, res: Response): Promise<any> => {
 	try {
-		const { name, description, categoryId, brandId } = req.body;
+		const { name, description, categoryId, brandId, optionGroups } = req.body;
 		const image = req.file;
 		
 		// Validate required fields
@@ -24,20 +24,45 @@ export const createProduct = async (req: Request, res: Response): Promise<any> =
 			}
 		}
 
+		// Parse option groups if they exist
+		let parsedOptionGroups;
+		try {
+			parsedOptionGroups = optionGroups ? JSON.parse(optionGroups) : [];
+		} catch (error) {
+			console.error('Option groups parse error:', error);
+			return res.status(400).json({ message: "Invalid option groups format" });
+		}
+
 		const product = await prisma.product.create({
 			data: {
 				name,
 				description,
 				categoryId: parseInt(categoryId),
 				brandId: parseInt(brandId),
-				imageUrl: imageUrl
+				imageUrl,
+				optionGroups: {
+					create: parsedOptionGroups.map((group: any) => ({
+						name: group.name,
+						productOptions: {
+							create: group.options.map((option: string) => ({
+								name: option
+							}))
+						}
+					}))
+				}
 			},
 			include: {
 				category: true,
 				brand: true,
-				variants: true
+				variants: true,
+				optionGroups: {
+					include: {
+						productOptions: true
+					}
+				}
 			}
 		});
+
 		return res.status(201).json(product);
 	} catch (err) {
 		console.error('Create product error:', err);
