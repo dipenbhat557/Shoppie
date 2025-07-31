@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kinamna-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kinamna-backend
+  template:
+    metadata:
+      labels:
+        app: kinamna-backend
+    spec:
+      containers:
+        - name: kinamna-backend
+          image: dipenbhat557/kinamna-backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
+          volumeMounts:
+            - name: secret
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: secret
+          secret:
+            secretName: kinamna-backend-secrets
+            items:
+              - key: .env
+                path: .env
+               
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kinamna-backend
+spec:
+  ports:
+  - port: 80
+    targetPort: 3001
+  selector:
+    app: kinamna-backend

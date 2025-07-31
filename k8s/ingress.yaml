@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - kinamna.com
+      secretName: kinamna-tls
+    - hosts:
+      - api.kinamna.com
+      secretName: kinamna-backend-tls
+  rules:
+    - host: kinamna.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kinamna-frontend
+                port:
+                  number: 80
+    - host: api.kinamna.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kinamna-backend
+                port:
+                  number: 80
