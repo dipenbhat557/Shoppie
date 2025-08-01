@@ -61,7 +61,7 @@ export default function RegisterPage() {
               type="button"
               className="w-full py-2 flex items-center justify-center gap-2 border rounded-md font-semibold text-gray-800 bg-white hover:bg-gray-100 transition"
             >
-              <Image src="/google.svg" alt="Google" width={20} height={20} />
+              <Image src="/google.svg" alt="Google" width={20} height={20}  unoptimized/>
               Sign up with Google
             </button>
 

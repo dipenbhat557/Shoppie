@@ -234,6 +234,7 @@ export default function UsersPage() {
                   alt={`${user.firstName} ${user.lastName}`}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
                 {user.isFraudSuspected && (
                   <div className="absolute inset-0 bg-red-500 bg-opacity-20 flex items-center justify-center">
@@ -351,6 +352,7 @@ export default function UsersPage() {
                     alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
                 <div>

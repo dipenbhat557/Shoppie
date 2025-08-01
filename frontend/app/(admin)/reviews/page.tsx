@@ -153,6 +153,7 @@ export default function ReviewsPage() {
                       alt={`${review.user.firstName} ${review.user.lastName}`}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                   <div>
@@ -207,6 +208,7 @@ export default function ReviewsPage() {
                         width={24}
                         height={24}
                         className="rounded"
+                        unoptimized
                       />
                       <span className="text-sm font-medium">
                         {review.product.name}

@@ -58,6 +58,7 @@ export const AdBanner = () => {
               fill
               alt={banners[currentBannerIndex].alt}
               className="w-full h-full object-cover transition-opacity duration-500"
+              unoptimized
             />
           </div>
 

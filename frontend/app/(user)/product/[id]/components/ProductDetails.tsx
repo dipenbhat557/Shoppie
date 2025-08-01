@@ -65,6 +65,7 @@ export const ProductDetails = () => {
                   width={64}
                   height={64}
                   className="object-contain w-full h-full rounded"
+                  unoptimized
                 />
               </div>
             ))}
@@ -79,6 +80,7 @@ export const ProductDetails = () => {
                 width={400}
                 height={400}
                 className="object-contain w-full h-full"
+                unoptimized
               />
             </div>
           </div>

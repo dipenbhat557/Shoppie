@@ -164,6 +164,7 @@ export default function BrandsPage() {
                         alt="Preview"
                         fill
                         className="object-contain"
+                        unoptimized
                       />
                     </div>
                   )}
@@ -226,6 +227,7 @@ export default function BrandsPage() {
                     alt={brand.name}
                     fill
                     className="object-contain"
+                    unoptimized
                   />
                 </div>
 

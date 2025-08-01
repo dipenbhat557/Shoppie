@@ -211,6 +211,7 @@ export default function Orders({ params }: { params: { userId: string } }) {
                           alt={item.name}
                           fill
                           className="object-cover"
+                          unoptimized
                         />
                       </div>
                       <div className="flex-1 min-w-0">

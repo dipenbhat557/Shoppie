@@ -101,6 +101,7 @@ export default function CategoriesPage() {
                 alt={category.name}
                 fill
                 className="object-cover"
+                unoptimized
               />
             </div>
             <div>
@@ -217,6 +218,7 @@ export default function CategoriesPage() {
                         alt="Preview"
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     </div>
                   )}

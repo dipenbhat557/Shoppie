@@ -103,6 +103,7 @@ export function VariantList({ productId, onVariantSelect }: VariantListProps) {
                             alt={variant.sku}
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         ) : (
                           <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />

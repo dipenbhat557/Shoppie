@@ -22,6 +22,7 @@ function ProductItem({ image, name, sales, stock }: ProductItemProps) {
             width={40} 
             height={40}
             className="object-contain" 
+            unoptimized
           />
         </div>
         <div>

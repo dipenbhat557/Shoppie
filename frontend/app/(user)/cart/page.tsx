@@ -88,6 +88,7 @@ export default function Cart() {
                               width={64}
                               height={64}
                               className="object-contain w-full h-full"
+                              unoptimized
                             />
                           </div>
                           <button

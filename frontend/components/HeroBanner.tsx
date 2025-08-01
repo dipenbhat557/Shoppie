@@ -51,6 +51,7 @@ export const HeroBanner = () => {
             height={400}
             className="object-contain w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] rounded-xl shadow transition-opacity duration-500"
             priority
+            unoptimized
           />
         </div>
 

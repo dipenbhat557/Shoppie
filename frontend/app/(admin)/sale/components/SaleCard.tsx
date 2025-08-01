@@ -58,6 +58,7 @@ export function SaleCard({ sale }: SaleCardProps) {
             alt={sale.description}
             fill
             className="object-cover"
+            unoptimized
           />
           <div className="absolute top-4 right-4 flex space-x-2">
             <Badge
@@ -124,6 +125,7 @@ export function SaleCard({ sale }: SaleCardProps) {
                       alt={product.name}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                 ))}

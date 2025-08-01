@@ -121,7 +121,7 @@ export default function SignInPage() {
               variant="outline"
               className="w-full flex items-center justify-center gap-2"
             >
-              <Image src="/google.svg" alt="Google" width={20} height={20} />
+              <Image src="/google.svg" alt="Google" width={20} height={20} unoptimized/>
               Sign in with Google
             </CustomButton>
             

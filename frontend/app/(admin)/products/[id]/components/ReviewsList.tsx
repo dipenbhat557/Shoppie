@@ -126,6 +126,7 @@ export function ReviewsList({ productId }: { productId: string }) {
                     alt={`${review.user.firstName} ${review.user.lastName}`}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
                 <div>

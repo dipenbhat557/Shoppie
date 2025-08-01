@@ -49,6 +49,7 @@ export const ProductsCards: React.FC<ProductsCardsProps> = ({ product }) => {
           alt={product.name}
           fill
           className="object-cover"
+          unoptimized
         />
       </div>
 

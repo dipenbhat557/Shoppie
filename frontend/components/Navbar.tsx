@@ -46,7 +46,7 @@ export const Navbar = () => {
       <div className="flex items-center justify-between w-full md:w-auto">
         {/* Logo */}
         <Link href="/" className="flex items-center h-10 w-auto">
-          <Image src="/newImages/logo.png" alt="Kinamna Logo" width={150} height={70} className="object-contain h-16 w-auto" priority />
+          <Image src="/newImages/logo.png" alt="Kinamna Logo" width={150} height={70} className="object-contain h-16 w-auto" priority unoptimized/>
         </Link>
         {/* Hamburger for mobile */}
         <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(v => !v)}>

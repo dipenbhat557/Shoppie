@@ -231,6 +231,7 @@ export function AddVariant({ productId, onClose }: AddVariantProps) {
                         width={100}
                         height={100}
                         className="rounded-lg object-cover"
+                        unoptimized
                       />
                       <button
                         type="button"

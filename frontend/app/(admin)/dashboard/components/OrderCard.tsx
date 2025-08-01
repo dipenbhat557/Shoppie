@@ -27,6 +27,7 @@ export const OrderCard = ({ color, logo, title = "AVG. Order Value", value = "$ 
               width={32} 
               alt={title}
               className="object-contain" 
+              unoptimized
             />
           </div>
         </div>

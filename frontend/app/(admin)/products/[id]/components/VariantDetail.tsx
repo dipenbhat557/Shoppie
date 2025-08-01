@@ -106,6 +106,7 @@ export function VariantDetail({ productId, selectedVariantId }: VariantDetailPro
                       alt={`${variant.sku} - ${index + 1}`}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                 ))

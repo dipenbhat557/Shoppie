@@ -53,7 +53,7 @@ export const NewArrival = () => {
       >
         {/* Left big card: aspect-square, spans 2 rows */}
         <div className="relative rounded-xl overflow-hidden aspect-square min-w-[260px] max-w-[320px] w-full row-span-2 col-span-1 group md:min-w-0 md:max-w-none">
-          <Image src={cards[0].img} alt={cards[0].title} fill className="object-cover w-full h-full" />
+          <Image src={cards[0].img} alt={cards[0].title} fill className="object-cover w-full h-full " unoptimized />
           <div className="absolute inset-0 bg-black/60" />
           <div className="relative z-10 p-6 flex flex-col gap-2 items-start justify-end h-full">
             <h3 className="text-xl font-bold text-white mb-1">{cards[0].title}</h3>
@@ -63,7 +63,7 @@ export const NewArrival = () => {
         </div>
         {/* Top right card: spans 2 columns */}
         <div className="relative rounded-xl overflow-hidden min-h-[120px] min-w-[260px] max-w-[320px] w-full col-span-2 row-span-1 group md:min-w-0 md:max-w-none">
-          <Image src={cards[1].img} alt={cards[1].title} fill className="object-cover w-full h-full" />
+          <Image src={cards[1].img} alt={cards[1].title} fill className="object-cover w-full h-full" unoptimized  />
           <div className="absolute inset-0 bg-black/60" />
           <div className="relative z-10 p-6 flex flex-col gap-2 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[1].title}</h3>
@@ -73,7 +73,7 @@ export const NewArrival = () => {
         </div>
         {/* Bottom right cards: Speakers - improved visibility */}
         <div className="relative rounded-xl overflow-hidden min-h-[120px] min-w-[260px] max-w-[320px] w-full col-span-1 row-span-1 group bg-gray-800 md:min-w-0 md:max-w-none">
-          <Image src={cards[2].img} alt={cards[2].title} fill className="object-contain object-center w-full h-full p-2" />
+          <Image src={cards[2].img} alt={cards[2].title} fill unoptimized className="object-contain object-center w-full h-full p-2" />
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 p-4 flex flex-col gap-1 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[2].title}</h3>
@@ -83,7 +83,7 @@ export const NewArrival = () => {
         </div>
         {/* Bottom right cards: Perfume - improved visibility */}
         <div className="relative rounded-xl overflow-hidden min-h-[120px] min-w-[260px] max-w-[320px] w-full col-span-1 row-span-1 group bg-gray-800 md:min-w-0 md:max-w-none">
-          <Image src={cards[3].img} alt={cards[3].title} fill className="object-contain object-center w-full h-full p-2" />
+          <Image src={cards[3].img} alt={cards[3].title} unoptimized fill className="object-contain object-center w-full h-full p-2" />
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 p-4 flex flex-col gap-1 items-start justify-end h-full">
             <h3 className="text-lg font-bold text-white mb-1">{cards[3].title}</h3>

@@ -89,6 +89,7 @@ export default function Account() {
                       width={80}
                       height={80}
                       className="object-cover w-full h-full"
+                      unoptimized
                     />
                   </div>
                   <button className="absolute bottom-0 right-0 w-6 h-6 bg-[#E73C17] rounded-full flex items-center justify-center">

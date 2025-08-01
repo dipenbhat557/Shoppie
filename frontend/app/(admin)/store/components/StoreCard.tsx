@@ -169,6 +169,7 @@ export function StoreCard({ store, onView, onDelete }: StoreCardProps) {
                         alt={`${store.manager.firstName} ${store.manager.lastName}`}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     </div>
                     <div className="text-sm">
@@ -256,6 +257,7 @@ export function StoreCard({ store, onView, onDelete }: StoreCardProps) {
                             alt={variant.product.name}
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                         <div>

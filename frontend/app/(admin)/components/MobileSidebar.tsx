@@ -87,6 +87,7 @@ export function MobileSidebar() {
                 width={40}
                 height={40}
                 className="rounded-md"
+                unoptimized
               />
               <span className="text-xl font-semibold text-gray-800">
                 <span className="text-orange-400">Kinam</span>na

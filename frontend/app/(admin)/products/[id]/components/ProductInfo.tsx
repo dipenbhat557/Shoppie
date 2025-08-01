@@ -73,6 +73,7 @@ export function ProductInfo() {
               alt={product.name}
               fill
               className="object-cover"
+              unoptimized
             />
           </div>
           <div>

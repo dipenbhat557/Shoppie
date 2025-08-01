@@ -115,6 +115,7 @@ export const DesktopSidebar = () => {
             width={isCollapsed ? 36 : 44}
             height={isCollapsed ? 36 : 44}
             className="transition-all duration-300"
+            unoptimized
           />
           {!isCollapsed && (
             <span className="ml-3 text-xl font-semibold text-gray-800">
