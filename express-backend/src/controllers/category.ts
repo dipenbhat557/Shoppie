@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
-import {
-  deleteFile,
-  getExactFileUrl,
-  uploadToS3,
-} from "../utils/s3";
+import { deleteFile, getExactFileUrl, uploadToS3 } from "../utils/s3";
 
 export const createCategory = async (req: any, res: any): Promise<any> => {
   try {
@@ -55,10 +51,14 @@ export const getAllCategories = async (
       },
     });
 
-    const formattedCategories = await Promise.all(categories.map(async (category: any) => ({
-      ...category,
-      imageUrl: category.imageUrl ? await getExactFileUrl(category.imageUrl) : null,
-    })));
+    const formattedCategories = await Promise.all(
+      categories.map(async (category: any) => ({
+        ...category,
+        imageUrl: category.imageUrl
+          ? await getExactFileUrl(category.imageUrl)
+          : null,
+      }))
+    );
 
     return res.status(200).json(formattedCategories);
   } catch (err) {
@@ -73,7 +73,9 @@ export const getCategoryById = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as any;
+    // parse the id string to number
+
     const category = await prisma.category.findUnique({
       where: { id },
       include: {
@@ -87,7 +89,9 @@ export const getCategoryById = async (
 
     const formattedCategory = {
       ...category,
-      imageUrl: category.imageUrl ? await getExactFileUrl(category.imageUrl) : null,
+      imageUrl: category.imageUrl
+        ? await getExactFileUrl(category.imageUrl)
+        : null,
     };
 
     return res.status(200).json(formattedCategory);
@@ -103,7 +107,7 @@ export const updateCategory = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as any;
     const { name, parentCategoryId } = req.body;
 
     if (!name) {
@@ -140,10 +144,10 @@ export const deleteCategory = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as any;
     const category = await prisma.category.delete({
       where: { id },
-	});
+    });
 
     if (category.imageUrl) {
       await deleteFile(category.imageUrl);
