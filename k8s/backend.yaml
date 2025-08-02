@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: kinamna-backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kinamna-backend
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kinamna-backend
-          image: dipenbhat557/kinamna-backend
+          image: siddjuugi/kinamna:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
@@ -29,7 +29,7 @@ spec:
             items:
               - key: .env
                 path: .env
-               
+
 ---
 apiVersion: v1
 kind: Service
@@ -37,7 +37,7 @@ metadata:
   name: kinamna-backend
 spec:
   ports:
-  - port: 80
-    targetPort: 3001
+    - port: 3001
+      targetPort: 3001
   selector:
     app: kinamna-backend

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: kinamna-frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kinamna-frontend
@@ -13,11 +13,11 @@ spec:
         app: kinamna-frontend
     spec:
       containers:
-      - name: kinamna-frontend
-        image: dipenbhat557/kinamna-frontend
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3000
+        - name: kinamna-frontend
+          image: siddjuugi/kinamna-frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
 
 ---
 apiVersion: v1
@@ -26,7 +26,7 @@ metadata:
   name: kinamna-frontend
 spec:
   ports:
-  - port: 80
-    targetPort: 3000
+    - port: 3010
+      targetPort: 3000
   selector:
     app: kinamna-frontend

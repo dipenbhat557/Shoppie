@@ -7,22 +7,30 @@ import path from "path";
 const app = express();
 configDotenv();
 
-app.use('/uploads', express.static(path.join(process.cwd(), "uploads")));
+const PORT = process.env.PORT || 3001;
+
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(express.json());
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-app.use('/api/v1', router);
+app.use("/api/v1", router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Server is healthy');
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server is healthy");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+app.get("/health", (req: Request, res: Response) => {
+  res.send("Server is healthy");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
