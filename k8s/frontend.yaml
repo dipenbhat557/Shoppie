@@ -18,6 +18,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              value: http://kinamna-backend:3001/api/v1
 
 ---
 apiVersion: v1
@@ -25,8 +28,8 @@ kind: Service
 metadata:
   name: kinamna-frontend
 spec:
+  selector:
+    app: kinamna-frontend
   ports:
     - port: 3010
       targetPort: 3000
-  selector:
-    app: kinamna-frontend

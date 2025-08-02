@@ -250,6 +250,7 @@ export function ProductInfo() {
                     alt="Preview"
                     fill
                     className="object-contain p-4"
+                    unoptimized
                   />
                   <button
                     type="button"

@@ -23,8 +23,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
           
           // Validate token and get user data
-          const response = await axios.get(`${API_URL}/auth/me`)
-          setUser(response.data.user)
+        //   const response = await axios.get(`${API_URL}/auth/me`)
+        //   setUser(response.data.user)
         }
       } catch (error) {
         localStorage.removeItem('accessToken')
