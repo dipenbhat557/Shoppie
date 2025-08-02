@@ -41,3 +41,4 @@ spec:
     targetPort: 3001
   selector:
     app: kinamna-backend
+  type: LoadBalancer

@@ -3,12 +3,13 @@ kind: Ingress
 metadata:
   name: ingress-nginx
   annotations:
+    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - kinamna.com
+      - kinamna.com
       secretName: kinamna-tls
     - hosts:
       - api.kinamna.com

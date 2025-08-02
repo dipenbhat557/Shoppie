@@ -1,10 +1,12 @@
 'use client'
-import Image from 'next/image'
+
+import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Navbar } from '@/components/Navbar'
-import { Topbar } from '@/components/Topbar'
+import { useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
+import axiosInstance from '@/lib/axios'
+import { toast } from 'sonner'
 
 // Custom Input Component
 const CustomInput = ({ 
@@ -72,10 +74,22 @@ export default function SignInPage() {
     password: ''
   })
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     // Handle form submission
     console.log('Form submitted:', formData)
+
+    const response = await axiosInstance.post('/auth/login', formData)
+    console.log(response)
+
+    if(response.status !== 200){
+      toast.error("Login Failed")
+    }
+
+    localStorage.setItem('accessToken', response.data.accessToken)
+    router.push("/dashboard")
   }
   
   return (
@@ -107,7 +121,7 @@ export default function SignInPage() {
             </div>
             
             <div className="flex justify-end">
-              <Link href="/forgot-password" className="text-sm text-[#E73C17] hover:underline">
+              <Link href="/forgot-password" aria-disabled className="text-sm text-[#E73C17] hover:underline">
                 Forget Password?
               </Link>
             </div>
@@ -119,15 +133,16 @@ export default function SignInPage() {
             <CustomButton
               type="button"
               variant="outline"
+              disabled={true}
               className="w-full flex items-center justify-center gap-2"
             >
-              <Image src="/google.svg" alt="Google" width={20} height={20} unoptimized/>
+              <FcGoogle />
               Sign in with Google
             </CustomButton>
             
             <p className="text-center text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <Link href="/register" className="text-[#E73C17] hover:underline">
+              <Link href="/register" aria-disabled className="text-[#E73C17] hover:underline">
                 Sign up
               </Link>
             </p>

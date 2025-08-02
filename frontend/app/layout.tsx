@@ -5,6 +5,7 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { AuthGuard } from "@/components/AuthGuard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,12 +41,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
           <QueryProvider>
-            {children}
+          <AuthGuard>{children}</AuthGuard>
             <Toaster />
           </QueryProvider>
         </AuthProvider>

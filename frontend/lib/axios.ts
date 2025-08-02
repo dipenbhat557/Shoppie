@@ -10,24 +10,19 @@ const axiosInstance = axios.create({
 });
 
 // Request interceptor for adding auth token and handling content type
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem('accessToken');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-//     // If the request contains FormData, let the browser set the Content-Type
-//     if (config.data instanceof FormData) {
-//       delete config.headers['Content-Type'];
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // // Response interceptor for handling errors
 // axiosInstance.interceptors.response.use(
