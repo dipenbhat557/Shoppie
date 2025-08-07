@@ -71,3 +71,25 @@ jobs:
           tags: |
             ${{ env.FRONTEND_IMAGE_NAME }}:latest
             ${{ env.FRONTEND_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+  deploy:
+    needs: [build-backend, build-frontend]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Kubectl
+      uses: azure/k8s-set-context@v1
+      with:
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+
+    - name: Update deployment images
+      run: |
+        kubectl set image deployment/kinamna-backend kinamna-backend=${{ env.BACKEND_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        kubectl set image deployment/kinamna-frontend kinamna-frontend=${{ env.FRONTEND_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+ 
+    - name: Verify deployments
+      run: |
+        kubectl rollout status deployment/kinamna-backend
+        kubectl rollout status deployment/kinamna-frontend
