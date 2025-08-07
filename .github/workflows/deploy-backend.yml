@@ -55,7 +55,7 @@ jobs:
       - name: Debug Build Args
         run: |
           echo "Building frontend with:"
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
+          echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}"
 
       - name: Build and push Frontend Docker image
         uses: docker/build-push-action@v5
@@ -65,7 +65,7 @@ jobs:
           push: true
           no-cache: true
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
           tags: |
             ${{ env.FRONTEND_IMAGE_NAME }}:latest
             ${{ env.FRONTEND_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
