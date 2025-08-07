@@ -15,7 +15,14 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icon.svg",
   },
-  keywords: ["fashion", "clothing", "shoes", "accessories", "online shopping", "nepal"],
+  keywords: [
+    "fashion",
+    "clothing",
+    "shoes",
+    "accessories",
+    "online shopping",
+    "nepal",
+  ],
   authors: [{ name: "Kinamna" }],
   robots: "index, follow",
   openGraph: {
@@ -30,10 +37,10 @@ export const metadata: Metadata = {
         url: "/icon.svg",
         width: 1200,
         height: 630,
-        alt: "Kinamna Preview"
-      }
-    ]
-  }
+        alt: "Kinamna Preview",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -41,13 +48,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Debug: Check environment variables at runtime
+  console.log("🔍 Debug - Environment Variables:");
+  console.log("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
+  console.log("NODE_ENV:", process.env.NODE_ENV);
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
           <QueryProvider>
-          <AuthGuard>{children}</AuthGuard>
+            <AuthGuard>{children}</AuthGuard>
             <Toaster />
           </QueryProvider>
         </AuthProvider>

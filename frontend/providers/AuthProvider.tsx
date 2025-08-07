@@ -32,11 +32,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           //   const response = await axios.get(`${API_URL}/auth/me`)
           //   setUser(response.data.user)
         }
+
+        // Debug logging for all requests
+        console.log("🚀 Making request to:", `${API_URL}`);
       } catch (error) {
         localStorage.removeItem("accessToken");
         delete axios.defaults.headers.common["Authorization"];
       } finally {
         setIsLoading(false);
+        console.log("🚀 Making request to:", `${API_URL}`);
       }
     };
 
@@ -47,6 +51,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
+
+      console.log("🚀 Making request to:", `${API_URL}/auth/login`);
 
       const response = await axios.post(`${API_URL}/auth/login`, {
         email,
@@ -75,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setError(null);
 
+      console.log("🚀 Making request to:", `${API_URL}/auth/register`);
       const response = await axios.post(`${API_URL}/auth/register`, userData);
 
       const { accessToken, user } = response.data;
@@ -97,6 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       setIsLoading(true);
+
+      console.log("🚀 Making request to:", `${API_URL}/auth/logout`);
 
       // Call logout endpoint
       await axios.post(`${API_URL}/auth/logout`);

@@ -26,6 +26,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Add ARG to make it available in this stage
+ARG NEXT_PUBLIC_API_URL
+
 RUN apk add --no-cache libc6-compat
 RUN npm install -g pnpm
 RUN pnpm add sharp
@@ -47,7 +50,8 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 ENV HOSTNAME="0.0.0.0"
 
 CMD ["pnpm", "next", "start"]

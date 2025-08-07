@@ -6,7 +6,9 @@ if (!API_URL) {
   throw new Error("NEXT_PUBLIC_API_URL is not set");
 }
 
-console.log("API_URL", API_URL);
+console.log("🔧 Axios Configuration:");
+console.log("📍 API_URL:", API_URL);
+console.log("🌍 Environment:", process.env.NODE_ENV);
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -22,6 +24,11 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Debug logging for all requests
+    console.log("🚀 Making request to:", `${config.baseURL || ''}${config.url || ''}`);
+    console.log("📤 Method:", config.method?.toUpperCase());
+    
     return config;
   },
   (error) => {

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kinamna-frontend
-          image: siddjuugi/kinamna-fronten-1d:latest
+          image: siddjuugi/kinamna-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
