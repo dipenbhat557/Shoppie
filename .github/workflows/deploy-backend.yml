@@ -6,6 +6,8 @@ on:
     paths:
       - "express-backend/**"
       - "frontend/**"
+      - ".github/workflows/**"
+  workflow_dispatch: # Allow manual triggering
 
 env:
   BACKEND_IMAGE_NAME: siddjuugi/kinumna-backend
