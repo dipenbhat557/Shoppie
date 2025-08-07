@@ -33,6 +33,7 @@ jobs:
           context: ./express-backend
           file: ./express-backend/Dockerfile.prod
           push: true
+          no-cache: true
           tags: |
             ${{ env.BACKEND_IMAGE_NAME }}:latest
             ${{ env.BACKEND_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
@@ -57,6 +58,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          no-cache: true
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
           tags: |
