@@ -52,6 +52,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Debug Build Args
+        run: |
+          echo "Building frontend with:"
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
+
       - name: Build and push Frontend Docker image
         uses: docker/build-push-action@v5
         with:
